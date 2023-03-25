@@ -1,0 +1,726 @@
+{
+    "player": {
+        "_statPoints": 0,
+        "_shieldDuration": 0,
+        "_inventory": {
+            "Gold": 0,
+            "Headers": {
+                "Equipped": [
+                    "Equipment Slot",
+                    "Name",
+                    "Stats"
+                ],
+                "Weapon": [
+                    "Weapon Name",
+                    "Stats",
+                    "Amount"
+                ],
+                "Shield": [
+                    "Shield Name",
+                    "Stats",
+                    "Amount"
+                ],
+                "Consumable": [
+                    "Consumable Name",
+                    "Effect",
+                    "Amount"
+                ],
+                "Ingredient": [
+                    "Ingredient Name",
+                    "Used For",
+                    "Amount"
+                ]
+            },
+            "Equipped": {
+                "Weapon": "Wooden Sword",
+                "Shield": "Wooden Shield"
+            },
+            "Weapon": {
+                "Fists": {
+                    "_rarity": "F",
+                    "_damage": 0,
+                    "_quantity": 1
+                },
+                "Wooden Sword": {
+                    "_rarity": "E",
+                    "_damage": 5,
+                    "_quantity": 1
+                }
+            },
+            "Shield": {
+                "Fists": {
+                    "_rarity": "F",
+                    "_defense": 0,
+                    "_quantity": 1
+                },
+                "Wooden Shield": {
+                    "_rarity": "F",
+                    "_defense": 2,
+                    "_quantity": 1
+                }
+            },
+            "Consumable": {
+                "Burrito": {
+                    "_rarity": "D",
+                    "_stats": {
+                        "Health": 15
+                    },
+                    "_quantity": 3
+                },
+                "Block of Cheese": {
+                    "_rarity": "E",
+                    "_stats": {
+                        "Health": 5
+                    },
+                    "_quantity": 1
+                }
+            },
+            "Ingredient": {}
+        }
+    },
+    "tiles": {
+        "tile00": {
+            "_name": "Beginning Plains",
+            "_description": [
+                "The grassy plain before you stretches out for miles, its lush green carpet broken only by the\noccasional wildflower or shrub. The gentle breeze carries with it the sweet scent of the blooming\nflora, and the warm sun envelops you in its comforting embrace. In the distance to the north, you\ncan see a cluster of small buildings, their thatched roofs and wooden walls standing out against the\nverdant landscape. A faint murmur of activity reaches your ears, indicating that the settlement is\nnot entirely deserted.",
+                "To the east, the forest looms darkly, its dense canopy casting deep shadows across the ground. The\nair is noticeably cooler here, and the rustling of leaves and the occasional snap of a twig hint at\nthe presence of wildlife. It would be unwise to venture too far into the woods without proper\npreparation.",
+                "To the south, the river roars tumultuously, its frothy white water churning over rocks and boulders.\nThe riverbank is steep and treacherous, offering no viable crossing points for miles. You can hear\nthe distant thunder of a waterfall somewhere upstream, and it's clear that the river's power and\nferocity cannot be underestimated.",
+                "As you gaze westward, the grassy plain seems to stretch on endlessly, the horizon punctuated only by\nthe occasional hill or copse of trees. The landscape is peaceful and serene, yet there's a sense of\nuntamed wildness that pervades it, as if anything could happen at any moment."
+            ],
+            "_actions": {
+                "Travel North": {
+                    "_action": "Travel",
+                    "_direction": "North",
+                    "_targetTile": "tile01"
+                },
+                "Travel East": {
+                    "_action": "Travel",
+                    "_direction": "East",
+                    "_targetTile": "tile10"
+                },
+                "Travel South": {
+                    "_action": "Travel",
+                    "_direction": "South",
+                    "_targetTile": "tile0-1"
+                }
+            },
+            "_visited": true,
+            "_image": "BeginningPlains.png",
+            "_mapCoords": [
+                400,
+                400
+            ],
+            "_encounterTable": [
+                "Plains",
+                0,
+                0,
+                0
+            ]
+        },
+        "tile01": {
+            "_name": "Peaceful Clearing",
+            "_description": [
+                "You come across a small clearing in the midst of the grassy plain. The tall blades of grass give way to a flat expanse of earth, and the air is filled with the scent of damp earth and fresh grass. In the center of the clearing, there lies a large boulder, its rough surface weathered by years of exposure to the elements.",
+                "It is encircled by several trees, their branches intermingling in a natural canopy that provides shade from the bright sun. A small stream flows nearby, its gentle babbling adding to the tranquility of the spot. The ground around the boulder is littered with fallen leaves and twigs, and a few mushrooms have sprouted in the damp soil.",
+                "As you pause to take in the peaceful scene, you notice the sound of birds chirping in the distance and the rustling of leaves as a light breeze passes through the trees. It's clear that this is a place of respite, a natural oasis in the midst of the vast grasslands."
+            ],
+            "_actions": {
+                "Travel North": {
+                    "_action": "Travel",
+                    "_direction": "North",
+                    "_targetTile": "tile02"
+                },
+                "Travel South": {
+                    "_action": "Travel",
+                    "_direction": "South",
+                    "_targetTile": "tile00"
+                },
+                "Meditate in Nature": {
+                    "_action": "Rest",
+                    "_description": [
+                        "With each breath, you feel yourself becoming more and more grounded, as if your roots are sinking deep into the earth below. You visualize your body being filled with a soft, glowing light, and you feel your health and mana being restored.",
+                        "As you sit in silence, you become aware of the sounds of nature around you - the chirping of birds, the rustling of leaves, and the gentle hum of the wind. You feel a deep connection to the natural world, and a sense of peace and harmony fills your entire being.",
+                        "After some time, you open your eyes and feel refreshed and rejuvenated, as if a weight has been lifted from your shoulders. You stand up and take a deep breath, feeling ready to face whatever challenges may lie ahead, with a newfound sense of clarity and focus."
+                    ],
+                    "_locked": true,
+                    "_locked_message": "You must inspect the Mossy Boulder first."
+                },
+                "Inspect Mossy Boulder": {
+                    "_action": "Inspect",
+                    "_description": [
+                        "As you approach the boulder, the texture of the moss and lichen covering its rough and pitted surface becomes more apparent. You reach out and run your fingertips over the cool and slightly abrasive rock, noting the smooth areas that have been worn down over time.",
+                        "Upon closer inspection, you notice intricate carvings etched into the surface of the boulder, depicting various symbols and shapes, such as a sun, moon, and star. These carvings are a testament to the human presence and history of this place, adding to the mysterious energy that seems to linger around the boulder.",
+                        "As you take in the scene around you, you realize that this small clearing is more than just a peaceful oasis in the midst of the grasslands. It's a significant place where generations have gathered to connect with nature and seek guidance from the spirits that reside here."
+                    ],
+                    "_change_name": [
+                        true,
+                        "Spirits Sanctuary"
+                    ],
+                    "_change_description": [
+                        true,
+                        [
+                            "The small clearing amidst the vast grassy plain exudes a sense of tranquility and calm. The rough and weathered surface of the large boulder at its center suggests that it has stood there for many years, as a silent witness to the people who have come here seeking solace and guidance.",
+                            "Surrounded by tall trees that form a natural canopy, the boulder is decorated with intricate symbols of the sun, moon and stars, a testament to the spiritual significance of this place. The fallen leaves and twigs scattered on the ground and the mushrooms sprouting from the damp soil bear witness to the many visitors who have come here over the generations.",
+                            "As you stand in the clearing, you can hear the distant chirping of birds and the rustling of leaves as a light breeze passes through the trees. It's easy to imagine the many people who have come here over the years, seeking to connect with the natural world."
+                        ]
+                    ],
+                    "_change_image": [
+                        true,
+                        "SpiritsSanctuary.png"
+                    ],
+                    "_seen": false,
+                    "_update_action": {
+                        "tile01": {
+                            "Meditate in Nature": [
+                                "_locked",
+                                false
+                            ]
+                        }
+                    }
+                }
+            },
+            "_visited": false,
+            "_image": "PeacefulClearing.png",
+            "_mapCoords": [
+                400,
+                350
+            ],
+            "_encounterTable": [
+                "Plains",
+                100,
+                30,
+                70
+            ]
+        },
+        "tile02": {
+            "_name": "Village Gate",
+            "_description": [
+                "As you approach the small village from the grassy plain, you see a cluster of low-rise buildings with thatched roofs nestled amidst lush greenery. The village appears to be small, with only a few dozen structures visible from your vantage point. Smoke rises lazily from a few chimneys, and you can hear the distant sounds of clucking chickens and bleating goats.",
+                "As you draw nearer, you notice the guard stationed at the gate. He seems to be a young man, dressed in simple garments and armed with a spear. His posture is tense, and he appears to be scanning the plains with a wary expression. You can't help but wonder what has put him on edge.",
+                "As you approach the gate, the guard notices you and raises his spear slightly, but he doesn't seem to suspect you of anything. Perhaps your demeanor is calm and non-threatening, or maybe he is simply accustomed to visitors."
+            ],
+            "_actions": {
+                "Travel South": {
+                    "_action": "Travel",
+                    "_direction": "South",
+                    "_targetTile": "tile01"
+                },
+                "Speak with the Guard": {
+                    "_action": "Speak",
+                    "_description": [
+                        "Speak with the guard."
+                    ],
+                    "_response": [
+                        ""
+                    ],
+                    "_seen": false,
+                    "_options": {
+                        "1": {
+                            "_action": "Speak",
+                            "_description": [
+                                "\"Good day, sir. I'm just passing through your village. May I ask what has put you on edge?\""
+                            ],
+                            "_response": [
+                                "\"Good day, sir. I'm just passing through your village. May I ask what has put you on edge?\" you say to the guard at the gate.",
+                                "The guard relaxes slightly and replies, \"Good day to you too, traveler. Apologies for my tense demeanor, but we've had some trouble with bandits and raiders in the past. We're always on the lookout for potential threats.\"",
+                                "You nod sympathetically, \"I understand. Is there anything I should be aware of while I'm here?\"",
+                                "The guard thinks for a moment before responding, \"Not particularly. Just be respectful to the villagers and their customs. If you need anything, feel free to ask around or visit the local market.\""
+                            ],
+                            "_seen": false,
+                            "_options": {}
+                        },
+                        "2": {
+                            "_action": "Speak",
+                            "_description": [
+                                "\"I am a traveler seeking food and shelter for the night. Can you recommend an inn or a guesthouse?\""
+                            ],
+                            "_response": [
+                                "\"I am a traveler seeking food and shelter for the night. Can you recommend an inn or a guesthouse?\"",
+                                "The guard nods and replies, \"Of course. We have a few options in the village. The most popular one is the Golden Rooster Inn, which is just down the main road to your left. They serve hot meals and have clean rooms for a reasonable price.\"",
+                                "You thank him for the recommendation and ask if there are any other options in case the Golden Rooster is full.",
+                                "The guard nods again and responds, \"There is also the Rusty Bucket Inn, which is further down the road to your right. It's a bit cheaper, but the rooms are not as clean. And there's the Oak Tree Guesthouse, which is just outside the village gates, but it's a bit more expensive.\""
+                            ],
+                            "_seen": false,
+                            "_options": {
+                                "1": {
+                                    "_action": "Speak",
+                                    "_description": [
+                                        "\"Are there any particular dishes you recommend at the Golden Rooster Inn?\" you ask the guard."
+                                    ],
+                                    "_response": [
+                                        "\"Are there any particular dishes you recommend at the Golden Rooster Inn?\" you ask the guard.",
+                                        "The guard smiles, \"Ah, the Golden Rooster is known for their roasted chicken with potatoes and carrots. They also serve a delicious beef stew with crusty bread. And if you have a sweet tooth, their apple pie is a must-try.\""
+                                    ],
+                                    "_seen": false,
+                                    "_options": {}
+                                },
+                                "2": {
+                                    "_action": "Speak",
+                                    "_description": [
+                                        "\"Excuse me,\" you say to the guard, \"but did you say that the Oak Tree Guesthouse is located outside the gates? That seems risky given the bandits and goblins around here.\""
+                                    ],
+                                    "_response": [
+                                        "\"Excuse me,\" you say to the guard, \"but did you say that the Oak Tree Guesthouse is located outside the gates? That seems risky given the bandits and goblins around here.\"",
+                                        "The guard nods, \"Yes, it is a bit farther out from the village, but it's a lovely place with beautiful views of the surrounding countryside. And don't worry, they have their own security measures in place to keep their guests safe.\"",
+                                        "You look a bit skeptical, \"Are you sure it's safe out there? I don't want to risk my life or belongings.\"",
+                                        "The guard assures you, \"Yes, I'm sure. The guesthouse has a reputation for being safe and secure. And if you're really concerned, you can hire a guide or an escort to accompany you there.\""
+                                    ],
+                                    "_seen": false,
+                                    "_options": {}
+                                },
+                                "3": {
+                                    "_action": "Speak",
+                                    "_description": [
+                                        "\"Thanks for the recommendations. Do you have any advice for a traveler looking to explore the area around the village?\" you ask the guard."
+                                    ],
+                                    "_response": [
+                                        "\"Thanks for the recommendations. Do you have any advice for a traveler looking to explore the area around the village?\" you ask the guard.",
+                                        "The guard looks at you with a serious expression before responding, \"The area around the village can be quite dangerous, traveler. To the south is the Treacherous River, which lives up to its name. It's fast-moving and full of dangerous creatures like river snakes and crocodiles. The only way to cross is the Old Bridge, which is to the southwest of the village.\"",
+                                        "He continues, \"To the southeast of the village is the Darkwood Forest. It's a dangerous place filled with wolves and other creatures. There are also rumors of a necromancer who has taken up residence deep in the forest. We advise travelers to stay away from the forest if possible.\"",
+                                        "He pauses for a moment before adding, \"The grasslands around the village are mostly peaceful, but there have been increasing reports of goblin and bandit attacks lately. We're not sure why, but it's best to be cautious. And be careful of the slimes that inhabit the area, as they can be quite dangerous.\""
+                                    ],
+                                    "_seen": false,
+                                    "_options": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "_visited": false,
+            "_image": "PeacefulClearing.png",
+            "_mapCoords": [
+                375,
+                350
+            ],
+            "_encounterTable": [
+                "Plains",
+                0,
+                0,
+                0
+            ]
+        },
+        "tile10": {
+            "_name": "Entrance to Darkwood Forest",
+            "_description": [
+                "The dense canopy of trees overhead casts a dim light upon the forest floor, obscuring much of the terrain from view. A mist clings to the air, enveloping everything in a damp shroud that muffles sound and blurs the edges of your vision. The forest is alive with the sounds of rustling leaves, chirping insects, and the occasional snap of a twig, but you can't quite pinpoint their origins.",
+                "The underbrush is thick and tangled, making it difficult to move through the forest. Fallen branches and decaying logs litter the ground, providing habitats for a variety of insects and small animals. The trunks of the trees are covered in thick layers of moss and lichen, adding to the eerie and otherworldly atmosphere of the woods.",
+                "As you push deeper into the forest, the mist grows thicker, and the trees loom taller and more imposing. You can hear the distant roar of a waterfall, indicating that a river must be nearby. The mist and the dim light make it difficult to see far ahead, but you can sense that this forest is ancient and powerful, and you feel a sense of reverence and awe for the natural world that surrounds you."
+            ],
+            "_actions": {
+                "Travel West": {
+                    "_action": "Travel",
+                    "_direction": "West",
+                    "_targetTile": "tile00"
+                }
+            },
+            "_visited": false,
+            "_image": "DarkwoodEntrance.png",
+            "_mapCoords": [
+                450,
+                400
+            ],
+            "_encounterTable": [
+                "Darkwood",
+                0,
+                0,
+                0
+            ]
+        },
+        "tile0-1": {
+            "_name": "Thundering River",
+            "_description": [
+                "Standing on the bank of the river, you can see that the water rushes by with great force, churning over rocks and boulders as it flows downstream. The white froth of the rapids contrasts with the deep blue-green of the river's calmer stretches, creating a dynamic and captivating scene. The riverbank is steep and treacherous, making it impossible to cross here.",
+                "To the west, you can just make out what appears to be a bridge spanning the river. The bridge looks sturdy and well-constructed, offering the possibility of safe passage to the other side.",
+                "To the east, the river disappears into the dense forest, its path obscured by trees and underbrush. The sound of rushing water can still be heard, hinting at the possibility of other waterfalls or rapids further downstream.",
+                "To the north, the grassy plain stretches outwards, interrupted only by the occasional small copse of trees or boulder. The wall of the village can be seen in the distance, with the thatched roofs of its buildings visible over the top."
+            ],
+            "_actions": {
+                "Travel North": {
+                    "_action": "Travel",
+                    "_direction": "North",
+                    "_targetTile": "tile00"
+                },
+                "Inspect Riverbank": {
+                    "_action": "Inspect",
+                    "_description": [
+                        "As you move closer to the riverbank, you notice that the ground beneath your feet is damp and muddy. The steep embankment leading down to the water's edge is covered in slippery rocks and boulders, making it clear that crossing the river here would be difficult and dangerous.",
+                        "As you look out at the rushing water, you can see that the riverbed is uneven and dotted with large rocks and boulders that create numerous rapids and small waterfalls. The water itself is a deep shade of blue-green, sparkling in the sunlight as it rushes downstream.",
+                        "You can also see that the banks of the river are lined with tall trees and thick underbrush, creating a natural barrier that would make it difficult to pass through the forest along the river's edge."
+                    ],
+                    "_change_name": [
+                        false
+                    ],
+                    "_change_description": [
+                        false
+                    ],
+                    "_change_image": [
+                        false
+                    ]
+                }
+            },
+            "_visited": false,
+            "_image": "BeginningPlains.png",
+            "_mapCoords": [
+                400,
+                400
+            ],
+            "_encounterTable": [
+                "River",
+                0,
+                0,
+                0
+            ]
+        }
+    },
+    "encounterTables": {
+        "Plains": {
+            "hostile": {
+                "1": {
+                    "_name": "Two Goblins",
+                    "_startDescription": [
+                        "As you make your way through the plains, your peaceful reverie is abruptly shattered by the sudden appearance of two goblins. They emerge from behind a nearby rock, their beady eyes fixed on you with a mixture of curiosity and hostility. The goblins are small, barely up to your waist, with green skin, pointy ears, and long, sharp teeth.",
+                        "As they step out of hiding, they brandish crude weapons made of wood and rusted metal, and let out a guttural snarl. You can see that they're clearly spoiling for a fight, their stance aggressive and threatening."
+                    ],
+                    "_enemies": {
+                        "Goblin": {
+                            "_levelTable": {
+                                "con": 0.1,
+                                "int": 0,
+                                "str": 0.1,
+                                "end": 0.1,
+                                "agi": 0.2
+                            },
+                            "_health": 0,
+                            "_maxHealth": 0,
+                            "_mana": 0,
+                            "_maxMana": 0,
+                            "_damage": 0,
+                            "_accuracy": 50,
+                            "_inventory": {
+                                "Equipped": {
+                                    "Weapon": "Crude Club",
+                                    "Shield": "Fists"
+                                },
+                                "Weapon": {
+                                    "Crude Club": {
+                                        "_rarity": "F",
+                                        "_damage": 2,
+                                        "_quantity": 1
+                                    }
+                                },
+                                "Shield": {
+                                    "Fists": {
+                                        "_rarity": "F",
+                                        "_defense": 0,
+                                        "_quantity": 1
+                                    }
+                                }
+                            },
+                            "quantity": 2
+                        }
+                    },
+                    "_victoryText": [
+                        "The goblins lie motionless on the ground, their weapons clattering to the earth beside them. You take a moment to catch your breath, your heart pounding with the adrenaline of the fight. You're glad to have emerged victorious, but you know that there may be more dangers ahead as you continue on your journey towards the village."
+                    ],
+                    "_defeatText": [
+                        "The goblins prove to be more formidable opponents than you had anticipated. Their small size belies their strength and cunning, and they quickly begin to overwhelm you with their fast, brutal attacks. Despite your best efforts to fend them off, you are soon outnumbered and outmatched. The goblins move in for the kill, their weapons flashing in the sunlight. You try to defend yourself, but it's no use - they are too quick and too skilled. In your final moments, you feel a sharp pain in your chest as one of the goblins' blades finds its mark."
+                    ],
+                    "_loot": {
+                        "Gold": [
+                            6,
+                            14
+                        ],
+                        "Weapon": {
+                            "Crude Club": {
+                                "_rarity": "F",
+                                "_damage": 2,
+                                "_minQuantity": 1,
+                                "_maxQuantity": 2,
+                                "_dropChance": 70
+                            }
+                        }
+                    }
+                },
+                "2": {
+                    "_name": "Bandit Ambush",
+                    "_startDescription": [
+                        "As you make your way through the open fields, you hear a faint rustling sound coming from the nearby trees. Suddenly, a group of bandits emerges from the cover of the trees, blocking your path forward. They are armed with swords and daggers, and their eyes glint with malice as they approach you.",
+                        "The bandit leader steps forward, a cruel smile on his face. 'Well, well, what do we have here?' he sneers. 'Looks like we've got ourselves a traveler, and he's carrying some pretty valuable-looking gear.' The bandits close in around you, ready to attack.",
+                        "You draw your weapon and prepare to defend yourself, knowing that the bandits won't be easy to defeat. But you're determined to protect yourself and your belongings, and you're ready to face whatever comes your way."
+                    ],
+                    "_enemies": {
+                        "Bandit": {
+                            "_levelTable": {
+                                "con": 0.2,
+                                "int": 0,
+                                "str": 0.1,
+                                "end": 0.2,
+                                "agi": 0.1
+                            },
+                            "_inventory": {
+                                "Equipped": {
+                                    "Weapon": "Rusty Sword",
+                                    "Shield": "Leather Shield"
+                                },
+                                "Weapon": {
+                                    "Rusty Sword": {
+                                        "_rarity": "E",
+                                        "_damage": 8,
+                                        "_quantity": 1
+                                    }
+                                },
+                                "Shield": {
+                                    "Leather Shield": {
+                                        "_rarity": "E",
+                                        "_defense": 5,
+                                        "_quantity": 1
+                                    }
+                                }
+                            },
+                            "quantity": 2
+                        },
+                        "Bandit Leader": {
+                            "_levelTable": {
+                                "con": 0.2,
+                                "int": 0,
+                                "str": 0.1,
+                                "end": 0.2,
+                                "agi": 0.1
+                            },
+                            "_inventory": {
+                                "Equipped": {
+                                    "Weapon": "Iron Sword",
+                                    "Shield": "Leather Shield"
+                                },
+                                "Weapon": {
+                                    "Iron Sword": {
+                                        "_rarity": "D",
+                                        "_damage": 12,
+                                        "_quantity": 1
+                                    }
+                                },
+                                "Shield": {
+                                    "Leather Shield": {
+                                        "_rarity": "E",
+                                        "_defense": 5,
+                                        "_quantity": 1
+                                    }
+                                }
+                            },
+                            "quantity": 1
+                        }
+                    },
+                    "_victoryText": [
+                        "The bandits lie defeated on the ground, their weapons scattered around them. You take a deep breath, relieved that the fight is over, but also a little shaken by the encounter. You quickly search the bandits' belongings, finding a few coins and some useful items.",
+                        "You continue on your way, watching your back for any more bandits or other dangers that may lie ahead."
+                    ],
+                    "_defeatText": [
+                        "The bandits prove to be more than you can handle. Despite your best efforts to defend yourself, their sheer numbers overwhelm you, and you soon find yourself surrounded and outnumbered. Swords and daggers rain down on you from all sides, and you feel a sharp pain as one of the bandits' blades finds its mark. You stumble and fall to the ground, your vision fading as the bandits continue to rain blows down upon you. In your final moments, you realize that your journey has come to a sudden and violent end, and your possessions are now in the hands of the very bandits who have taken your life."
+                    ],
+                    "_loot": {
+                        "Gold": [
+                            15,
+                            30
+                        ],
+                        "Weapon": {
+                            "Rusty Sword": {
+                                "_rarity": "E",
+                                "_damage": 8,
+                                "_minQuantity": 1,
+                                "_maxQuantity": 2,
+                                "_dropChance": 60
+                            },
+                            "Iron Sword": {
+                                "_rarity": "D",
+                                "_damage": 12,
+                                "_minQuantity": 1,
+                                "_maxQuantity": 1,
+                                "_dropChance": 30
+                            }
+                        },
+                        "Shield": {
+                            "Leather Shield": {
+                                "_rarity": "E",
+                                "_defense": 5,
+                                "_quantity": 1,
+                                "_dropChance": 40
+                            }
+                        }
+                    }
+                },
+                "3": {
+                    "_name": "Dire Rabbit",
+                    "_startDescription": [
+                        "As you walk through the plains, you notice movement out of the corner of your eye. You turn to look and see a white rabbit, but something about it seems off. Its eyes are a deep, blood red, and as it hops closer to you, you realize that it's twice the size of a normal rabbit.",
+                        "You start to back away, but the rabbit suddenly leaps at you with a ferocity you wouldn't expect from such a small creature. Its teeth are razor sharp, and you can see that it has no intention of letting you leave this encounter alive.",
+                        "You draw your weapon and prepare to fight the terrifying beast, hoping that you can come out of this encounter with your life intact."
+                    ],
+                    "_enemies": {
+                        "Dire Rabbit": {
+                            "_levelTable": {
+                                "con": 0.1,
+                                "int": 0,
+                                "str": 0.2,
+                                "end": 0.1,
+                                "agi": 0.3
+                            },
+                            "_inventory": {
+                                "Equipped": {
+                                    "Weapon": "Claws",
+                                    "Shield": "Dire Rabbit Hide"
+                                },
+                                "Weapon": {
+                                    "Claws": {
+                                        "_rarity": "E",
+                                        "_damage": 8,
+                                        "_quantity": 1
+                                    }
+                                },
+                                "Shield": {
+                                    "Dire Rabbit Hide": {
+                                        "_rarity": "E",
+                                        "_defense": 8,
+                                        "_quantity": 1
+                                    }
+                                }
+                            },
+                            "quantity": 1
+                        }
+                    },
+                    "_victoryText": [
+                        "After a hard-fought battle, you manage to slay the terrifying dire rabbit. As you catch your breath, you can't help but wonder how such a small creature could be so deadly.",
+                        "You search the area around you, hoping to find some loot or clues as to why the rabbit was so aggressive. All you find is a small, blood-stained carrot. You shudder and quickly move on, hoping that you never have to face another creature like that again."
+                    ],
+                    "_defeatText": [
+                        "The dire rabbit's claws tear into your flesh, and you feel your life force draining away. You try to fight back, but the rabbit is too strong, and you fall to the ground, defeated.",
+                        "You close your eyes, knowing that this is the end. You feel a sharp pain in your chest, and then everything goes black."
+                    ],
+                    "_loot": {
+                        "Gold": [
+                            10,
+                            20
+                        ],
+                        "Weapon": {
+                            "Claws": {
+                                "_rarity": "D",
+                                "_damage": 12,
+                                "_minQuantity": 1,
+                                "_maxQuantity": 2,
+                                "_dropChance": 60
+                            }
+                        },
+                        "Shield": {
+                            "Dire Rabbit Hide": {
+                                "_rarity": "E",
+                                "_defense": 8,
+                                "_quantity": 1,
+                                "_dropChance": 40
+                            }
+                        }
+                    }
+                }
+            },
+            "passive": {
+                "1": {
+                    "_name": "Friendly Slime",
+                    "_startDescription": [
+                        "As you are roaming through the vast grassland, you suddenly spot a single green slime. Your heart races as you cautiously approach it, unsure of what to expect. The slime seems to be just as curious about you as you are about it, and it bounces towards you with a friendly gurgle.",
+                        "You take a closer look at the slime, and notice its translucent body and gelatinous texture. It doesn't seem to pose any immediate threat, so you tentatively reach out to touch it. As your hand makes contact with the slime, you feel a cool and slimy sensation, almost like touching jelly.",
+                        "To your surprise, the slime seems to be friendly and playful, and it starts bouncing around you, leaving a slimy trail behind. You can't help but smile at its antics, and you even start to play with it, bouncing it back and forth.",
+                        "As you spend more time with the slime, you begin to notice its unique properties. It seems to be able to absorb and dissolve certain materials, and it can even change its color depending on its surroundings. You feel a sense of wonder and curiosity about this strange and fascinating creature.",
+                        "Eventually, it's time to move on, and you say goodbye to the slime, watching as it bounces off into the distance. As the slime fades into the distance, you notice that it left something behind.",
+                        "Upon closer inspection, you see a small translucent green crystal lying where the slime had been resting on your palm. It emits a soft green glow, mesmerizing you with its beauty. You decide to hold onto it, stowing it away in your bag.",
+                        "As you continue on your journey through the grassland, you can't help but wonder what other fascinating creatures you might encounter along the way."
+                    ],
+                    "_loot": {
+                        "Ingredient": {
+                            "Alchemical Catalyst": {
+                                "_rarity": "D",
+                                "_use": "Alchemical Crafting",
+                                "_minQuantity": 1,
+                                "_maxQuantity": 3,
+                                "_dropChance": 100
+                            }
+                        }
+                    }
+                },
+                "2": {
+                    "_name": "Butterfly Garden",
+                    "_startDescription": [
+                        "As you wander through the grassy plains, you come across a small clearing surrounded by colorful wildflowers. You pause to take in the beautiful sight, marveling at the vibrant hues of the blooms and the gentle fluttering of the butterflies that have gathered there.",
+                        "The butterflies seem to be drawn to you, perhaps curious about your presence. As you stand still, one of them lands on your outstretched hand, its delicate wings brushing against your skin. You feel a sense of calm and wonder as you watch the butterfly explore your hand, its tiny legs tickling your palm.",
+                        "As you continue to stand there, more and more butterflies land on you, filling the air around you with their soft wings and colorful patterns. You feel a sense of joy and peace, grateful for this moment of pure natural beauty.",
+                        "Eventually, it's time to move on, and you gently coax the butterflies off of you, letting them return to their garden. As you make your way out of the clearing, you can still hear the gentle hum of their wings in the distance."
+                    ],
+                    "_loot": {
+                        "Ingredient": {
+                            "Butterfly Wing": {
+                                "_rarity": "E",
+                                "_use": "Alchemical Crafting",
+                                "_minQuantity": 2,
+                                "_maxQuantity": 4,
+                                "_dropChance": 100
+                            }
+                        }
+                    }
+                },
+                "3": {
+                    "_name": "Grazing Herd",
+                    "_startDescription": [
+                        "As you wander through the grassy plains, you come across a large herd of grazing animals. They seem to be a mix of different species, including deer, antelope, and bison. The herd is peaceful and seems unfazed by your presence, continuing to graze as you approach.",
+                        "You watch as they move in unison, their muscles rippling beneath their fur. Some of the animals glance up at you briefly, but they don't seem alarmed. Instead, they seem content to continue their grazing, undisturbed.",
+                        "As you move closer to the herd, you can see that some of the animals are nursing their young, while others are playfully butting heads with each other. You feel a sense of awe and reverence for these magnificent creatures, and you take care not to disturb them.",
+                        "Eventually, it's time to move on, and you quietly make your way out of the herd's grazing area. As you leave, you feel a sense of gratitude for having witnessed such a peaceful and beautiful moment in nature."
+                    ],
+                    "_loot": {
+                        "Ingredient": {
+                            "Deer Antler": {
+                                "_rarity": "D",
+                                "_use": "Crafting",
+                                "_minQuantity": 1,
+                                "_maxQuantity": 2,
+                                "_dropChance": 80
+                            },
+                            "Bison Hide": {
+                                "_rarity": "D",
+                                "_use": "Crafting",
+                                "_minQuantity": 1,
+                                "_maxQuantity": 2,
+                                "_dropChance": 80
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Darkwood": {},
+        "River": {
+            "passive": {
+                "1": {
+                    "_name": "Fishing Spot",
+                    "_startDescription": [
+                        "You come across a peaceful spot along the river where the water is calm and clear. You notice a group of fishermen nearby, casting their lines into the water in hopes of catching a big one.",
+                        "The fishermen seem friendly enough and offer you a smile and a nod as you approach. They offer to let you try your hand at fishing if you have the necessary equipment, or you can simply sit and watch them at work.",
+                        "After spending some time at the fishing spot, you say goodbye to the friendly fishermen and continue on your journey. You feel relaxed and refreshed, grateful for the chance to enjoy the simple pleasures of life along the river."
+                    ],
+                    "_loot": {
+                        "Gold": [
+                            2,
+                            5
+                        ],
+                        "Ingredient": {
+                            "Fish": {
+                                "_rarity": "E",
+                                "_use": "Cooking",
+                                "_minQuantity": 1,
+                                "_maxQuantity": 3,
+                                "_dropChance": 100
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
