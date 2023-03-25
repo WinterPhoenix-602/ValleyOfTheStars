@@ -79,7 +79,7 @@
         }
     },
     "tiles": {
-        "tile00": {
+        "BeginningPlains": {
             "_name": "Beginning Plains",
             "_description": [
                 "The grassy plain before you stretches out for miles, its lush green carpet broken only by the\noccasional wildflower or shrub. The gentle breeze carries with it the sweet scent of the blooming\nflora, and the warm sun envelops you in its comforting embrace. In the distance to the north, you\ncan see a cluster of small buildings, their thatched roofs and wooden walls standing out against the\nverdant landscape. A faint murmur of activity reaches your ears, indicating that the settlement is\nnot entirely deserted.",
@@ -91,17 +91,17 @@
                 "Travel North": {
                     "_action": "Travel",
                     "_direction": "North",
-                    "_targetTile": "tile01"
+                    "_targetTile": "SpiritsSanctuary"
                 },
                 "Travel East": {
                     "_action": "Travel",
                     "_direction": "East",
-                    "_targetTile": "tile10"
+                    "_targetTile": "DarkwoodEntrance"
                 },
                 "Travel South": {
                     "_action": "Travel",
                     "_direction": "South",
-                    "_targetTile": "tile0-1"
+                    "_targetTile": "ThunderingRiver"
                 }
             },
             "_visited": true,
@@ -117,7 +117,7 @@
                 0
             ]
         },
-        "tile01": {
+        "SpiritsSanctuary": {
             "_name": "Peaceful Clearing",
             "_description": [
                 "You come across a small clearing in the midst of the grassy plain. The tall blades of grass give way to a flat expanse of earth, and the air is filled with the scent of damp earth and fresh grass. In the center of the clearing, there lies a large boulder, its rough surface weathered by years of exposure to the elements.",
@@ -128,12 +128,12 @@
                 "Travel North": {
                     "_action": "Travel",
                     "_direction": "North",
-                    "_targetTile": "tile02"
+                    "_targetTile": "VillageGate"
                 },
                 "Travel South": {
                     "_action": "Travel",
                     "_direction": "South",
-                    "_targetTile": "tile00"
+                    "_targetTile": "BeginningPlains"
                 },
                 "Meditate in Nature": {
                     "_action": "Rest",
@@ -170,7 +170,7 @@
                     ],
                     "_seen": false,
                     "_update_action": {
-                        "tile01": {
+                        "SpiritsSanctuary": {
                             "Meditate in Nature": [
                                 "_locked",
                                 false
@@ -192,7 +192,7 @@
                 70
             ]
         },
-        "tile02": {
+        "VillageGate": {
             "_name": "Village Gate",
             "_description": [
                 "As you approach the small village from the grassy plain, you see a cluster of low-rise buildings with thatched roofs nestled amidst lush greenery. The village appears to be small, with only a few dozen structures visible from your vantage point. Smoke rises lazily from a few chimneys, and you can hear the distant sounds of clucking chickens and bleating goats.",
@@ -203,7 +203,7 @@
                 "Travel South": {
                     "_action": "Travel",
                     "_direction": "South",
-                    "_targetTile": "tile01"
+                    "_targetTile": "SpiritsSanctuary"
                 },
                 "Speak with the Guard": {
                     "_action": "Speak",
@@ -300,7 +300,7 @@
                 0
             ]
         },
-        "tile10": {
+        "DarkwoodEntrance": {
             "_name": "Entrance to Darkwood Forest",
             "_description": [
                 "The dense canopy of trees overhead casts a dim light upon the forest floor, obscuring much of the terrain from view. A mist clings to the air, enveloping everything in a damp shroud that muffles sound and blurs the edges of your vision. The forest is alive with the sounds of rustling leaves, chirping insects, and the occasional snap of a twig, but you can't quite pinpoint their origins.",
@@ -311,7 +311,7 @@
                 "Travel West": {
                     "_action": "Travel",
                     "_direction": "West",
-                    "_targetTile": "tile00"
+                    "_targetTile": "BeginningPlains"
                 }
             },
             "_visited": false,
@@ -327,7 +327,7 @@
                 0
             ]
         },
-        "tile0-1": {
+        "ThunderingRiver": {
             "_name": "Thundering River",
             "_description": [
                 "Standing on the bank of the river, you can see that the water rushes by with great force, churning over rocks and boulders as it flows downstream. The white froth of the rapids contrasts with the deep blue-green of the river's calmer stretches, creating a dynamic and captivating scene. The riverbank is steep and treacherous, making it impossible to cross here.",
@@ -339,7 +339,7 @@
                 "Travel North": {
                     "_action": "Travel",
                     "_direction": "North",
-                    "_targetTile": "tile00"
+                    "_targetTile": "BeginningPlains"
                 },
                 "Inspect Riverbank": {
                     "_action": "Inspect",
