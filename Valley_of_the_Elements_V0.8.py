@@ -209,9 +209,10 @@ def loadGame():
         try:
             # Open the selected saved game file
             currentGame = shelve.open(saveFilePath, "r")
-        except FileNotFoundError:
+        except Exception:
             # If the selected file doesn't exist, report an error and continue the loop
-            print("I'm sorry, that save slot is empty.")
+            invalidChoice("I'm sorry, that save slot is empty.")
+            continue
         # Extract the necessary data from the saved game and return it
         player = currentGame["player"]
         tiles_dict = currentGame["tiles_dict"]
