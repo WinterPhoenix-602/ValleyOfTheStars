@@ -79,13 +79,14 @@
         }
     },
     "tiles": {
-        "BeginningPlains": {
-            "_name": "Beginning Plains",
+        "Crossroads": {
+            "_name": "The Crossroads",
             "_description": [
-                "The grassy plain before you stretches out for miles, its lush green carpet broken only by the\noccasional wildflower or shrub. The gentle breeze carries with it the sweet scent of the blooming\nflora, and the warm sun envelops you in its comforting embrace. In the distance to the north, you\ncan see a cluster of small buildings, their thatched roofs and wooden walls standing out against the\nverdant landscape. A faint murmur of activity reaches your ears, indicating that the settlement is\nnot entirely deserted.",
-                "To the east, the forest looms darkly, its dense canopy casting deep shadows across the ground. The\nair is noticeably cooler here, and the rustling of leaves and the occasional snap of a twig hint at\nthe presence of wildlife. It would be unwise to venture too far into the woods without proper\npreparation.",
-                "To the south, the river roars tumultuously, its frothy white water churning over rocks and boulders.\nThe riverbank is steep and treacherous, offering no viable crossing points for miles. You can hear\nthe distant thunder of a waterfall somewhere upstream, and it's clear that the river's power and\nferocity cannot be underestimated.",
-                "As you gaze westward, the grassy plain seems to stretch on endlessly, the horizon punctuated only by\nthe occasional hill or copse of trees. The landscape is peaceful and serene, yet there's a sense of\nuntamed wildness that pervades it, as if anything could happen at any moment."
+                "As you stand at the crossroads, you take in the vast expanse of the grassland before you. The grass is tall and lush, swaying gently in the breeze. You can hear the rustling of the blades as they brush against each other, a soft whispering sound that fills the air.",
+                "In front of you, the path cuts through the grassland, stretching out in three different directions. To the north, the path disappears into a small thicket of trees, partially obscuring your view. However, as you peer closer, you notice plumes of smoke rising from chimneys in the distance, indicating the presence of a village.",
+                "Turning your attention to the east, the path winds its way towards a river. As you follow the path with your eyes, you spot a bridge that spans the river, providing a convenient way to cross. Once on the other side, the path continues on into a dark forest, shrouded in mystery and intrigue.",
+                "To the south, there is no path, only an expanse of green grass stretching out as far as the eye can see. Suddenly, the grassland abruptly ends, cut off by a violent river. You can hear the roar of the water as it rushes past, a powerful force that commands respect.",
+                "Finally, the path to the west continues on through the grass, turning southward and disappearing from view. You can see the gentle curve of the path as it meanders away, beckoning you to follow and see where it leads."
             ],
             "_actions": {
                 "Travel North": {
