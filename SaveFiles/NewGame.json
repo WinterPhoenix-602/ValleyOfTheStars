@@ -92,7 +92,7 @@
                 "Travel North": {
                     "_action": "Travel",
                     "_direction": "North",
-                    "_targetTile": "SpiritsSanctuary"
+                    "_targetTile": "CelestialSentinel"
                 },
                 "Travel East": {
                     "_action": "Travel",
@@ -118,12 +118,13 @@
                 0
             ]
         },
-        "SpiritsSanctuary": {
+        "CelestialSentinel": {
             "_name": "Peaceful Clearing",
             "_description": [
-                "You come across a small clearing in the midst of the grassy plain. The tall blades of grass give way to a flat expanse of earth, and the air is filled with the scent of damp earth and fresh grass. In the center of the clearing, there lies a large boulder, its rough surface weathered by years of exposure to the elements.",
-                "It is encircled by several trees, their branches intermingling in a natural canopy that provides shade from the bright sun. A small stream flows nearby, its gentle babbling adding to the tranquility of the spot. The ground around the boulder is littered with fallen leaves and twigs, and a few mushrooms have sprouted in the damp soil.",
-                "As you pause to take in the peaceful scene, you notice the sound of birds chirping in the distance and the rustling of leaves as a light breeze passes through the trees. It's clear that this is a place of respite, a natural oasis in the midst of the vast grasslands."
+                "You stand in the midst of a calm clearing, surrounded by tall trees that form a natural boundary around the space. The ground beneath your feet is covered in soft, loamy soil, and the sweet, earthy scent of dampness fills the air.",
+                "In the center of the clearing stands a large boulder, its surface covered in moss and lichen. A gap in the trees above allows a beam of sunlight to shine down onto the stone, creating a natural spotlight and illuminating it with an otherworldly glow.",
+                "As you gaze upon the boulder, you can sense a powerful, ancient energy emanating from it, as if it has been imbued with the wisdom and knowledge of generations past. It's possible that this stone once held great significance as a site for spiritual or cultural ceremonies, or perhaps it's simply a natural formation that has withstood the test of time.",
+                "Either way, you feel a sense of calm and tranquility settle over you as you stand in the clearing, surrounded by the peaceful beauty of nature."
             ],
             "_actions": {
                 "Travel North": {
@@ -136,7 +137,7 @@
                     "_direction": "South",
                     "_targetTile": "BeginningPlains"
                 },
-                "Meditate in Nature": {
+                "Meditate Under the Stars": {
                     "_action": "Rest",
                     "_description": [
                         "With each breath, you feel yourself becoming more and more grounded, as if your roots are sinking deep into the earth below. You visualize your body being filled with a soft, glowing light, and you feel your health and mana being restored.",
@@ -144,35 +145,36 @@
                         "After some time, you open your eyes and feel refreshed and rejuvenated, as if a weight has been lifted from your shoulders. You stand up and take a deep breath, feeling ready to face whatever challenges may lie ahead, with a newfound sense of clarity and focus."
                     ],
                     "_locked": true,
-                    "_locked_message": "You must inspect the Mossy Boulder first."
+                    "_locked_message": "You have not learned the significance of this location yet."
                 },
                 "Inspect Mossy Boulder": {
                     "_action": "Inspect",
                     "_description": [
-                        "As you approach the boulder, the texture of the moss and lichen covering its rough and pitted surface becomes more apparent. You reach out and run your fingertips over the cool and slightly abrasive rock, noting the smooth areas that have been worn down over time.",
-                        "Upon closer inspection, you notice intricate carvings etched into the surface of the boulder, depicting various symbols and shapes, such as a sun, moon, and star. These carvings are a testament to the human presence and history of this place, adding to the mysterious energy that seems to linger around the boulder.",
-                        "As you take in the scene around you, you realize that this small clearing is more than just a peaceful oasis in the midst of the grasslands. It's a significant place where generations have gathered to connect with nature and seek guidance from the spirits that reside here."
+                        "As you approach the boulder, you notice that it's covered in intricate carvings of various celestial bodies. The images of the sun and moon are particularly prominent, their shapes and features standing out against the other stars and constellations that adorn the stone.",
+                        "As you study the carvings more closely, you begin to notice that they seem to follow a pattern or sequence, as if they were arranged in a specific order. You can't quite decipher what the pattern is, but it's clear that there was a great deal of thought and care put into the design of this sacred stone.",
+                        "The more you look at it, the more you realize that this place was undoubtedly important to those who came before you. Perhaps it was a place of worship or a site for ancient ceremonies, where the movements of the stars and planets were observed and recorded.",
+                        "Even now, you can feel the energy of the place, a sense of mystery and wonder that seems to emanate from the boulder itself. It's clear that this site still holds great significance, even if its original purpose has been lost to time."
                     ],
                     "_change_name": [
                         true,
-                        "Spirits Sanctuary"
+                        "Celestial Sentinel"
                     ],
                     "_change_description": [
                         true,
                         [
-                            "The small clearing amidst the vast grassy plain exudes a sense of tranquility and calm. The rough and weathered surface of the large boulder at its center suggests that it has stood there for many years, as a silent witness to the people who have come here seeking solace and guidance.",
-                            "Surrounded by tall trees that form a natural canopy, the boulder is decorated with intricate symbols of the sun, moon and stars, a testament to the spiritual significance of this place. The fallen leaves and twigs scattered on the ground and the mushrooms sprouting from the damp soil bear witness to the many visitors who have come here over the generations.",
-                            "As you stand in the clearing, you can hear the distant chirping of birds and the rustling of leaves as a light breeze passes through the trees. It's easy to imagine the many people who have come here over the years, seeking to connect with the natural world."
+                            "You stand in the midst of a calm clearing, surrounded by tall trees that form a natural boundary around the space. The ground beneath your feet is covered in soft, loamy soil, and the sweet, earthy scent of dampness fills the air.",
+                            "The clearing is dominated by a large boulder in the center, covered in intricate carvings of celestial bodies. The carvings of the sun and moon stand out prominently, arranged in a pattern that suggests a deep understanding of the movements of the heavens.",
+                            "As you gaze at the stone, you feel a sense of awe and reverence, as if you are standing in a sacred place that has been revered for centuries. The air is filled with a palpable energy, as if the boulder itself is radiating a powerful aura that surrounds the entire clearing. It's clear that this site has held great significance to many people over the ages, and that its secrets and mysteries are still waiting to be uncovered.",
+                            "You feel a sense of calm and tranquility settle over you as you stand in the clearing, surrounded by the peaceful beauty of nature."
                         ]
                     ],
                     "_change_image": [
-                        true,
-                        "SpiritsSanctuary.png"
+                        false
                     ],
                     "_seen": false,
                     "_update_action": {
-                        "SpiritsSanctuary": {
-                            "Meditate in Nature": [
+                        "CelestialSentinel": {
+                            "Meditate Under the Stars": [
                                 "_locked",
                                 false
                             ]
