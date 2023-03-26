@@ -2,6 +2,7 @@
 # Description: Contains functions for displaying messages to the user.
 
 import os
+import textwrap
 from colorama import Fore, Style
 import time
 from tabulate import tabulate
@@ -71,6 +72,12 @@ def slow_table(string=tabulate([["Testing"], [1], [2]], tablefmt="fancy_outline"
         #Print the line, wait for specified delay
         print(line)
         time.sleep(delay)
+
+# Formats a description for display
+def formatForTable(description="", wrap=100):
+    for count, paragraph in enumerate(description):
+        description[count] = textwrap.fill(
+            description[count], wrap, break_long_words=False, break_on_hyphens=False)
 
 
 # Defines a custom exception for invalid endline characters
