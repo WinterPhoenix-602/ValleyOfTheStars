@@ -107,10 +107,8 @@ class Tile:
                 continue
         # If the description is not an empty string
         if self._description != "":
-            # Wrap each paragraph in the description to 100 characters
-            for count, paragraph in enumerate(self._description):
-                self._description[count] = textwrap.fill(
-                    self._description[count], 100)
+            # Format the description to fit the table
+            formatForTable(self._description)
         # If there are available actions
         if self._actions != {}:
             # Convert each to dictionary to the appropriate action object
@@ -262,14 +260,14 @@ class Tile:
 
 
 class Action(ABC):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_action=None, seen=False):
-        if update_action is None:
-            update_action = {}
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False):
+        if update_tile is None:
+            update_tile = {}
         self._name = name
         self._description = description
         self._locked = locked
         self._locked_message = locked_message
-        self._update_action = update_action
+        self._update_tile = update_tile
         self._seen = seen
     
     # Getters
@@ -290,8 +288,8 @@ class Action(ABC):
         return self._locked_message
     
     @property
-    def update_action(self):
-        return self._update_action
+    def update_tile(self):
+        return self._update_tile
     
     @property
     def seen(self):
@@ -323,24 +321,26 @@ class Action(ABC):
     # Takes action
     @abstractmethod
     def take_action(self, tiles_dict):
-        if self._update_action != {}:
-            self.update_action_value(tiles_dict, self._update_action)
+        pass
 
     # Updates action values
-    def update_action_value(self, dict, update):
+    def update_tile_attribute(self, dict, update):
         for key, value in update.items():
-            if isinstance(dict[key], Tile):
-                self.update_action_value(dict.get(key, {}).actions, value)
+            if key in dict and isinstance(dict[key], Tile):
+                for key2, value2 in value.items():
+                    self.update_tile_attribute(getattr(dict[key], key2), value2)
             elif isinstance(dict[key], Action):
-                setattr(dict[key], value[0], value[1])
+                for key2, value2 in value.items():
+                    setattr(dict[key], key2, value2)
+                self._update_tile = {}
         return dict
 
 
 class Travel(Action):
-    def __init__(self, name="", direction="", targetTile="", locked=False, locked_message="", update_action=None, seen=False):
-        if update_action is None:
-            update_action = {}
-        super().__init__(name, locked=locked, locked_message=locked_message, update_action=update_action, seen=seen)
+    def __init__(self, name="", direction="", targetTile="", locked=False, locked_message="", update_tile=None, seen=False):
+        if update_tile is None:
+            update_tile = {}
+        super().__init__(name, locked=locked, locked_message=locked_message, update_tile=update_tile, seen=seen)
         self._direction = direction
         self._targetTile = targetTile
 
@@ -357,21 +357,24 @@ class Travel(Action):
         super().take_action(tiles_dict)
         if tiles_dict is None:
             tiles_dict = {}
+        # If the action has an update_tile attribute, update the target tile's attributes
+        if self._update_tile != {}:
+            self.update_tile_attribute(tiles_dict, self._update_tile)
         # Return the tile the player is now on
         return tiles_dict[self._targetTile]
 
 
 class InspectElement(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_action=None, seen=False, change_name=None, change_description=None, change_image=None):
-        if update_action is None:
-            update_action = {}
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False, change_name=None, change_description=None, change_image=None):
+        if update_tile is None:
+            update_tile = {}
         if change_name is None:
             change_name = [False]
         if change_description is None:
             change_description = [False]
         if change_image is None:
             change_image = [False]
-        super().__init__(name, description, locked, locked_message, update_action, seen)
+        super().__init__(name, description, locked, locked_message, update_tile, seen)
         self._change_name = change_name
         self._change_description = change_description
         self._change_image = change_image
@@ -411,17 +414,19 @@ class InspectElement(Action):
         # Wait for user input before setting the seen property to True
         waitForKey("inspect")
         self._seen = True
-
+        # If the action has an update_tile attribute, update the target tile's attributes
+        if self._update_tile != {}:
+            self.update_tile_attribute(tiles_dict, self._update_tile)
 
 class Speak(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_action=None, seen=False, response=None, options=None):
-        if update_action is None:
-            update_action = {}
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False, response=None, options=None):
+        if update_tile is None:
+            update_tile = {}
         if response is None:
             response = [""]
         if options is None:
             options = {}
-        super().__init__(name, description, locked, locked_message, update_action, seen)
+        super().__init__(name, description, locked, locked_message, update_tile, seen)
         self._response = response
         self._options = options
 
@@ -509,26 +514,36 @@ class Speak(Action):
                         self._options[option].take_action()
                 if count + 2 == choice:
                     break
-                # Update the _seen property for each option based on whether it has been seen or not
+                # Update the _seen property based on if all options have been seen
                 for option in self._options:
                     if self._options[option].seen == True:
                         self._seen = True
+                        # If the action has an update_tile attribute, update the target tile's attributes
+                        if self._update_tile != {}:
+                            self.update_tile_attribute(tiles_dict, self._update_tile)
                 for option in self._options:
                     if self._options[option].seen == False:
                         self._seen = False
+                        # If the action has an update_tile attribute, update the target tile's attributes
+                        if self._update_tile != {}:
+                            self.update_tile_attribute(tiles_dict, self._update_tile)
             # If there are no options available, wait for user input to continue
             else:
                 waitForKey("conversation")
+                # Sets the _seen property to True
                 self._seen = True
+                # If the action has an update_tile attribute, update the target tile's attributes
+                if self._update_tile != {}:
+                    self.update_tile_attribute(tiles_dict, self._update_tile)
                 break
 
 
 # Rest action
 class Rest(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_action=None, seen=False):
-        if update_action is None:
-            update_action = {}
-        super().__init__(name, description, locked, locked_message, update_action, seen)
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False):
+        if update_tile is None:
+            update_tile = {}
+        super().__init__(name, description, locked, locked_message, update_tile, seen)
 
     # Process the Rest action
     def take_action(self, tiles_dict, player=Player()):
@@ -541,6 +556,9 @@ class Rest(Action):
         player.health = player.maxHealth
         player.mana = player.maxMana
         waitForKey("rest")
+        # If the action has an update_tile attribute, update the target tile's attributes
+        if self._update_tile != {}:
+            self.update_tile_attribute(tiles_dict, self._update_tile)
 
 def testing():
     # Testing
@@ -553,7 +571,7 @@ def testing():
         a = Tile(tile)
         a.reader(tiles_dict[tile])
         tiles_dict[tile] = a
-    currentTile = tiles_dict["tile01"]
+    currentTile = tiles_dict["CelestialSentinel"]
     p = Player()
     p.reader(player_dict)
     currentTile.tileMenu(currentTile, 0, p, tiles_dict)
