@@ -124,8 +124,8 @@ def newGame():
             a = Tile(tile)
             a.reader(tiles_dict[tile])
             tiles_dict[tile] = a
-        # Set the currentTile to the starting tile (tile00) in tiles_dict
-        currentTile = tiles_dict["tile00"]
+        # Set the currentTile to the starting tile (Crossroads) in tiles_dict
+        currentTile = tiles_dict["Crossroads"]
         # Extract the encounter tables from currentGame_dict and create objects for them
         encounterTables_dict = currentGame_dict["encounterTables"]
         for biome in encounterTables_dict:
