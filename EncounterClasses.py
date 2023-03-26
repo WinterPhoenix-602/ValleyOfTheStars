@@ -1,7 +1,6 @@
 # Date: 2023-03-10
 # Description: Contains the Encounter class and its subclasses, which are used to create encounters for the game.
 
-import textwrap
 from CustomMessages import *
 from abc import ABC, abstractmethod
 from EntityClasses import *
@@ -62,10 +61,8 @@ class Encounter(ABC):
                 continue
         # If the description is not an empty string
         if self._startDescription != [""]:
-            # Wrap each paragraph in the description to 100 characters
-            for count, paragraph in enumerate(self._startDescription):
-                self._startDescription[count] = textwrap.fill(
-                    self._startDescription[count], 100)
+            # Format the description to fit the table
+            formatForTable(self._startDescription)
         # If there is loot for the encounter, convert each entry in the loot dictionary to the appropriate object
         for itemType in self._loot:
             # Convert Weapons
@@ -143,7 +140,7 @@ class Encounter(ABC):
                 gainsString = gainsString.replace(",", "")
             gainsString += "."
             # Prints the gainsString in a formatted table
-            slow_table(tabulate([[textwrap.fill(gainsString, 100)]], tablefmt="fancy_grid"))
+            slow_table(tabulate([[formatForTable(gainsString)]], tablefmt="fancy_grid"))
 
 
 class PassiveEncounter(Encounter):
@@ -219,16 +216,12 @@ class CombatEncounter(Encounter):
         super().reader(input_dict)        
         # If the victory text is not an empty string
         if self._victoryText != [""]:
-            # Wrap each paragraph in the description to 100 characters
-            for count, paragraph in enumerate(self._victoryText):
-                self._victoryText[count] = textwrap.fill(
-                    self._victoryText[count], 100)
+            # Format the text to fit the table
+            formatForTable(self._victoryText)
         # If the defeat text is not an empty string
         if self._defeatText != [""]:
-            # Wrap each paragraph in the description to 100 characters
-            for count, paragraph in enumerate(self._defeatText):
-                self._defeatText[count] = textwrap.fill(
-                    self._defeatText[count], 100)
+            # Format the text to fit the table
+            formatForTable(self._defeatText)
 
     def generate_enemies(self, player=Player()):
         # Creates Enemy objects based on encounter data and adds them to a dictionary
