@@ -145,7 +145,21 @@
                         "After some time, you open your eyes and feel refreshed and rejuvenated, as if a weight has been lifted from your shoulders. You stand up and take a deep breath, feeling ready to face whatever challenges may lie ahead, with a newfound sense of clarity and focus."
                     ],
                     "_locked": true,
-                    "_locked_message": "You have not learned the significance of this location yet."
+                    "_locked_message": "You have not learned the significance of this location yet.",
+                    "_update_tile":{
+                        "CelestialSentinel": {
+                            "_actions": {
+                                "Meditate Under the Stars": {
+                                    "_description": [
+                                        "As you return to the clearing and sit down in your familiar spot, you feel a sense of anticipation building within you. You close your eyes and focus on your breath, and as you do, you feel the energy from the boulder flowing into you once again. The carvings of the sun and moon seem to come alive, glowing with a soft, otherworldly light that surrounds you in a warm, comforting aura.",
+                                        "As before, you feel your wounds and ailments beginning to heal, your body and mind becoming stronger and more focused with each passing moment. You revel in the sensation of the healing energy coursing through your body, feeling as though you are being renewed from the inside out.",
+                                        "But this time, there is something different. You feel a sense of gratitude and appreciation for this sacred place, as if you are reconnecting with an old friend. You know that this clearing and the boulder at its center are more than just a source of healing, they are a source of spiritual nourishment and guidance. You feel humbled by the power of the energy here, and grateful for the opportunity to connect with it once again.",
+                                        "As you open your eyes and look up at the night sky, you feel a sense of wonder and awe at the beauty of the stars above you. The darkness seems less intimidating now."
+                                    ]
+                                }
+                            }
+                        }
+                    }
                 },
                 "Inspect Mossy Boulder": {
                     "_action": "Inspect",
@@ -172,12 +186,13 @@
                         false
                     ],
                     "_seen": false,
-                    "_update_action": {
+                    "_update_tile": {
                         "CelestialSentinel": {
-                            "Meditate Under the Stars": [
-                                "_locked",
-                                false
-                            ]
+                            "_actions": {
+                                "Meditate Under the Stars": {
+                                    "_locked": false
+                                }
+                            }
                         }
                     }
                 }
