@@ -106,7 +106,7 @@
                 }
             },
             "_visited": true,
-            "_image": "BeginningPlains.png",
+            "_image": "Crossroads.png",
             "_mapCoords": [
                 400,
                 400
@@ -135,7 +135,7 @@
                 "Travel South": {
                     "_action": "Travel",
                     "_direction": "South",
-                    "_targetTile": "BeginningPlains"
+                    "_targetTile": "Crossroads"
                 },
                 "Meditate Under the Stars": {
                     "_action": "Rest",
@@ -206,7 +206,7 @@
                 "Travel South": {
                     "_action": "Travel",
                     "_direction": "South",
-                    "_targetTile": "SpiritsSanctuary"
+                    "_targetTile": "CelestialSentinel"
                 },
                 "Speak with the Guard": {
                     "_action": "Speak",
@@ -314,7 +314,7 @@
                 "Travel West": {
                     "_action": "Travel",
                     "_direction": "West",
-                    "_targetTile": "BeginningPlains"
+                    "_targetTile": "Crossroads"
                 }
             },
             "_visited": false,
@@ -342,7 +342,7 @@
                 "Travel North": {
                     "_action": "Travel",
                     "_direction": "North",
-                    "_targetTile": "BeginningPlains"
+                    "_targetTile": "Crossroads"
                 },
                 "Inspect Riverbank": {
                     "_action": "Inspect",
@@ -363,7 +363,7 @@
                 }
             },
             "_visited": false,
-            "_image": "BeginningPlains.png",
+            "_image": "Crossroads.png",
             "_mapCoords": [
                 400,
                 400
