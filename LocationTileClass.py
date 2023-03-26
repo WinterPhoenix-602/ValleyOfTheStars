@@ -457,15 +457,31 @@ class Speak(Action):
             if self._options != {}:
                 optionsTable = [["", "What would you like to say?"]]
                 for count, option in enumerate(self._options):
-                    # If an option is another Speak object and has not been seen before, display it with its index
-                    if self._options[option].action == "Speak" and self._options[option].seen == False:
+                    # If an option is another Speak object and has not been seen before, display it with its index in yellow
+                    if isinstance(self._options[option], Speak) and self._options[option].seen == False:
+                        # If the option's description is more than one line, format each line
+                        if len(self._options[option].description[0].splitlines(True)) > 1:
+                            optionDescription = [
+                                f"{Fore.YELLOW}{escape_ansi(line)}{Style.RESET_ALL}".format(
+                                    line
+                                )
+                                for line in self._options[option]
+                                .description[0]
+                                .splitlines()
+                            ]
+                            self._options[option].description[0] = "\n".join(optionDescription)
                         optionsTable.append(
-                            [f"{count + 1}:", f"{self._options[option].description[0]}"])
-                    # Otherwise, display the option with its index in gray to indicate that it has already been seen
+                            [f"{Fore.YELLOW}{count + 1}:{Style.RESET_ALL}", f"{Fore.YELLOW}{self._options[option].description[0]}{Style.RESET_ALL}"])
+                    # If an option is another Speak object and has been seen before, display it with its index in light black. If the option's description is more than one line, format each line
                     elif len(self._options[option].description[0].splitlines(True)) > 1:
-                        optionDescription = []
-                        for count, line in enumerate(self._options[option].description[0].splitlines()):
-                            optionDescription.append(f"{Fore.LIGHTBLACK_EX}{line}{Style.RESET_ALL}".format(line))
+                        optionDescription = [
+                            f"{Fore.LIGHTBLACK_EX}{escape_ansi(line)}{Style.RESET_ALL}".format(
+                                line
+                            )
+                            for line in self._options[option]
+                            .description[0]
+                            .splitlines()
+                        ]
                         self._options[option].description[0] = "\n".join(optionDescription)
                         optionsTable.append(
                             [f"{Fore.LIGHTBLACK_EX}{count + 1}:{Style.RESET_ALL}", f"{Fore.LIGHTBLACK_EX}".join(self._options[option].description[0].splitlines(True))])
