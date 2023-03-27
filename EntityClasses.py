@@ -636,7 +636,7 @@ class Player(Entity):
         elif result == "crit":
             # Display a message indicating the attack critically hit
             slow_table(tabulate(
-                [[f"You strike a critical blow, delivering a crushing hit that leaves {target.name} reeling!"]], tablefmt="fancy_outline"))
+                [[f"You strike a critical blow, delivering a crushing hit and dealing {Fore.RED}{damage}{Style.RESET_ALL} damage to {target.name}"]], tablefmt="fancy_outline"))
 
     # Casts fireball on input targets
     def cast_fireball(self, targets):
@@ -1130,12 +1130,12 @@ class Enemy(Entity):
         elif result == "shield block":
             # Display a message indicating the shield blocked the attack
             slow_table(tabulate(
-                [[f"{self._name} attempts to attack with its {self._equippedWeapon.name}, but you deflect it with your {target.equippedShield.name}!{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+                [[f"{self._name} attempts to attack with their {self._equippedWeapon.name}, but you deflect the blow with your {target.equippedShield.name}!{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
         # If the attack hit but was blocked by the player's base defense
         elif result == "block":
             # Display a message indicating the player blocked the attack
             slow_table(tabulate(
-                [[f"{self._name} swings its {self._equippedWeapon.name} at you, but you parry the attack!{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+                [[f"{self._name} swings their {self._equippedWeapon.name} at you, but you parry the attack!{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
         # If the attack critically hit
         elif result == "crit":
             # Display a message indicating that they crit
