@@ -255,9 +255,9 @@ class CombatEncounter(Encounter):
             slow_table(player.__repr__())
 
             # Displays combat actions, gets choice of player
+            slow_table(
+                f"{tabulate([['What would you like to do?'], ['1: Melee Attack'], ['2: Cast Magic'], ['3: Use Item']], headers='firstrow', tablefmt='fancy_outline')}")
             try:
-                slow_table(
-                    f"{tabulate([['What would you like to do?'], ['1: Melee Attack'], ['2: Cast Magic'], ['3: Use Item']], headers='firstrow', tablefmt='fancy_outline')}")
                 choice = int(input("? "))
                 clrscr()
             except Exception:
@@ -268,158 +268,23 @@ class CombatEncounter(Encounter):
             match choice:
                 # Case 1 is melee attack
                 case 1:
-                    if len(self._enemies_dict) > 1:
-                        # Displays target selection
-                        enemyTable = [["", "Enemy Name", "Success Chance"]]
-                        for count, enemy in enumerate(self._enemies_dict):
-                            enemyTable.append(
-                                [f"{count + 1}:", f"{self._enemies_dict[enemy].name}", f"{50 + (5 * (player.agility - self._enemies_dict[enemy].agility))}% Crit Chance"])
-                        enemyTable.append([f"{count + 2}:", "Go Back", ""])
-                        slow_table(tabulate(enemyTable, headers="firstrow",
-                                                    tablefmt="fancy_outline"))
-                        # Gets target selection from player
-                        try:
-                            attackEnemy = int(input("? "))
-                            clrscr()
-                            if attackEnemy > len(self._enemies_dict) + 1:
-                                invalidChoice()
-                                continue
-                            if attackEnemy == len(self._enemies_dict) + 1:
-                                continue
-                        except Exception:
-                            invalidChoice()
-                            continue
-                    # If only one enemy is present, they are the target by default
-                    else:
-                        attackEnemy = 1
+                    target = self.target_menu(player)
+                    # If player chooses to go back, continue
+                    if target == "Go Back":
+                        continue
                     # Damages selected target
-                    for count, enemy in enumerate(self._enemies_dict):
-                        if count + 1 == attackEnemy:
-                            player.melee_attack(self._enemies_dict[enemy])
-                            break
+                    player.melee_attack(self._enemies_dict[target])
                 # Case 2 is casting magic
                 case 2:
-                    # Instantiates low mana warning
-                    insufficientMana = tabulate([["You don't have enough mana."]], tablefmt="fancy_outline")
-                    # Displays available spells, gets spell selection from player
-                    try:
-                        slow_table(tabulate([["", "Name", "Mana Cost", "What would you like to cast?"], ["1:", "Fireball", 5, "Deals 75% of Intelligence as Damage to all enemies"], ["2:", "Force Bolt", 5, "Deals 150% of Intelligence as Damage to one Enemy"], [
-                            "3:", "Force Shield", 15, "Doubles Defense for 3 Turns"], ["4:", "Heal", "Variable", "Converts 2x Mana Cost to Health"], ["5:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline"))
-                        spell = int(input("? "))
-                        clrscr()
-                    except Exception:
-                        invalidChoice()
+                    spell = self.magic_menu(player)
+                    # If player chooses to go back, continue
+                    if spell == "Go Back":
                         continue
-                    # Casts spell chosen by player
-                    match spell:
-                        # Case 1 is fireball
-                        case 1:
-                            if player.mana >= 5:
-                                player.cast_fireball(self._enemies_dict)
-                            else:
-                                print(insufficientMana)
-                                continue
-                        # Case 2 is force bolt
-                        case 2:
-                            if player.mana >= 5:
-                                if len(self._enemies_dict) > 1:
-                                    # Displays target selection
-                                    enemyTable = [["", "Enemy Name"]]
-                                    for count, enemy in enumerate(self._enemies_dict):
-                                        enemyTable.append(
-                                            [f"{count + 1}:", f"{self._enemies_dict[enemy].name}"])
-                                    enemyTable.append([f"{count + 2}:", "Go Back", ""])
-                                    slow_table(tabulate(enemyTable, headers="firstrow",
-                                                                tablefmt="fancy_outline"))
-                                    # Gets target selection from player
-                                    try:
-                                        attackEnemy = int(input("? "))
-                                        clrscr()
-                                        if attackEnemy > len(self._enemies_dict) + 1:
-                                            invalidChoice()
-                                            continue
-                                        if attackEnemy == len(self._enemies_dict) + 1:
-                                            continue
-                                    except Exception:
-                                        invalidChoice()
-                                        continue
-                                # If only one enemy is present, they are the target by default
-                                else:
-                                    attackEnemy = 1
-                                # Damages selected target
-                                for count, enemy in enumerate(self._enemies_dict):
-                                    if count + 1 == attackEnemy:
-                                        player.cast_force_bolt(self._enemies_dict[enemy])
-                                        break
-                            else:
-                                print(insufficientMana)
-                                continue
-                        # Case 3 is shield
-                        case 3:
-                            if player.mana >= 15:
-                                player.modify_attribute("mana", -15)
-                                player.modify_shieldDuration(3)
-                            else:
-                                print(insufficientMana)
-                                continue
-                        # Case 4 is heal
-                        case 4:
-                            # Gets input mana from player
-                            try:
-                                heal = int(
-                                    input("How much mana will you expend? "))
-                                clrscr()
-                            except Exception:
-                                clrscr()
-                                print(
-                                    tabulate([["Not a valid amount of mana."]], tablefmt="fancy_outline"))
-                                continue
-                            if heal <= player.mana and heal > 0:
-                                player.modify_attribute("mana", -heal)
-                                player.modify_attribute("health", heal * 2)
-                            elif heal <= 0:
-                                clrscr()
-                                print(
-                                    tabulate([["You can't expend less than 1 mana."]], tablefmt="fancy_outline"))
-                                continue
-                            else:
-                                clrscr()
-                                print(insufficientMana)
-                                continue
-                        # Case 5 is going back
-                        case 5:
-                            continue
-                        case _:
-                            invalidChoice()
-                            continue
                 # Case 3 is using an item
                 case 3:
-                    goBack = False
-                    # Prints available items
-                    slow_table(
-                        tabulate([["Which item would you like to use?"]], tablefmt="fancy_grid"))
-                    slow_table(player.sub_inventory_table("Consumable", True))
-                    try:
-                        # Gets player selection
-                        itemChoice = int(input("? "))
-                        clrscr()
-                    except Exception:
-                        invalidChoice()
-                        continue
-                    if itemChoice > len(player.inventory["Consumable"]) + 1:
-                        invalidChoice()
-                        continue
-                    # Uses selected item
-                    for count, item in enumerate(list(player.inventory["Consumable"].keys())):
-                        if count + 1 == itemChoice:
-                            player.use_item(
-                                player.inventory["Consumable"][item])
-                            break
-                        elif count + 1 == len(player.inventory["Consumable"]):
-                            slow_table(
-                            tabulate([["You decided against using anything."]], tablefmt="fancy_outline"))
-                            goBack = True
-                    if goBack == True:
+                    item = player.sub_inventory_menu("Consumable")
+                    # If player chooses to go back, continue
+                    if item == "Go Back":
                         continue
                 case _:
                     invalidChoice()
@@ -444,7 +309,110 @@ class CombatEncounter(Encounter):
         else:
             self.end_encounter(player, True)
             return True
-            
+    
+    def target_menu(self, player):
+        while True:
+            # Displays target selection
+            enemyTable = [["", "Enemy Name", "Success Chance"]]
+            for count, enemy in enumerate(self._enemies_dict):
+                enemyTable.append(
+                    [f"{count + 1}:", f"{self._enemies_dict[enemy].name}", f"{50 + (5 * (player.agility - self._enemies_dict[enemy].agility))}% Crit Chance"])
+            enemyTable.append([f"{count + 2}:", "Go Back", ""])
+            slow_table(tabulate(enemyTable, headers="firstrow",
+                                        tablefmt="fancy_outline"))
+            # Gets target selection from player
+            try:
+                attackEnemy = int(input("? "))
+                clrscr()
+                if attackEnemy > len(self._enemies_dict) + 1:
+                    invalidChoice()
+                    continue
+                if attackEnemy == len(self._enemies_dict) + 1:
+                    return "Go Back"
+            except Exception:
+                invalidChoice()
+                continue
+            return self._enemies_dict[list(self._enemies_dict.keys())[attackEnemy - 1]].name
+
+    def magic_menu(self, player):
+        while True:
+            # Displays available spells, gets spell selection from player
+            try:
+                slow_table(tabulate([["", "Name", "Mana Cost", "What would you like to cast?"], ["1:", "Fireball", 5, "Deals 75% of Intelligence as Damage to all enemies"], ["2:", "Force Bolt", 5, "Deals 150% of Intelligence as Damage to one Enemy"], [
+                    "3:", "Force Shield", 15, "Doubles Defense for 3 Turns"], ["4:", "Heal", "Variable", "Converts 2x Mana Cost to Health"], ["5:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline"))
+                spell = int(input("? "))
+                clrscr()
+            except Exception:
+                invalidChoice()
+                continue
+            if spell == 5:
+                return "Go Back"
+            # Casts selected spell
+            self.cast_spell(spell, player)
+            break
+    
+    def cast_spell(self, spell, player):
+        # Instantiates low mana warning
+        insufficientMana = "You don't have enough mana."
+        while True:
+            # Casts spell chosen by player
+            match spell:
+                # Case 1 is fireball
+                case 1:
+                    if player.mana >= 5:
+                        player.cast_fireball(self._enemies_dict)
+                        break
+                    else:
+                        invalidChoice(insufficientMana)
+                        continue
+                # Case 2 is force bolt
+                case 2:
+                    if player.mana >= 5:
+                        # Displays target selection
+                        target = self.target_menu(player)
+                        # Damages selected target
+                        player.cast_force_bolt(self._enemies_dict[target])
+                        break
+                    else:
+                        invalidChoice(insufficientMana)
+                        continue
+                # Case 3 is shield
+                case 3:
+                    if player.mana >= 15:
+                        player.modify_attribute("mana", -15)
+                        player.modify_shieldDuration(3)
+                        break
+                    else:
+                        invalidChoice(insufficientMana)
+                        continue
+                # Case 4 is heal
+                case 4:
+                    # Gets input mana from player
+                    try:
+                        heal = int(
+                            input("How much mana will you expend? "))
+                        clrscr()
+                    except Exception:
+                        invalidChoice("Not a valid amount of mana.")
+                        continue
+                    if heal <= player.mana and heal > 0:
+                        player.modify_attribute("mana", -heal)
+                        player.modify_attribute("health", heal * 2)
+                        break
+                    elif heal <= 0:
+                        invalidChoice("You can't expend less than 1 mana.")
+                        continue
+                    else:
+                        clrscr()
+                        invalidChoice(insufficientMana)
+                        continue
+                # Case 5 is going back
+                case 5:
+                    return "Go Back"
+                case _:
+                    invalidChoice()
+                    continue
+
     def end_encounter(self, player, victory):
         if victory == True:
             # Prints victory text
