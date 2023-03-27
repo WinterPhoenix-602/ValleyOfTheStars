@@ -190,7 +190,7 @@ class Tile:
         optionsTable.extend(
             iter(
                 [
-                    [f"{count + 2}:", "Display Player Status"],
+                    [f"{count + 2}:", "Player Status"],
                     [f"{count + 3}:", "Display Map"],
                     [f"{count + 4}:", "Save Game"],
                     [f"{count + 5}:", "Exit Game"],
@@ -228,7 +228,7 @@ class Tile:
                     return self, turn, tiles_dict, False
             # If the player chose to open their inventory, do so
             elif len(self._actions) + 1 == choice:
-                player.openInventory()
+                player.display_status()
                 return self, turn, tiles_dict, False
             # If the player chose to look at the map, display it
             elif len(self._actions) + 2 == choice:
