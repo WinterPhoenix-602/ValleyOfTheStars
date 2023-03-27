@@ -77,7 +77,7 @@ def slow_table(string=tabulate([["Testing"], [1], [2]], tablefmt="fancy_outline"
 def formatForTable(inputText="", wrap=100):
     # If the text is a string, wrap it to the specified width
     if type(inputText) == str:
-        inputText = textwrap.fill(inputText, wrap, break_long_words=False, break_on_hyphens=False)
+        return textwrap.fill(inputText, wrap, break_long_words=False, break_on_hyphens=False)
     # If the text is contained in a list, iterate over each element and wrap it to the specified width
     elif type(inputText) == list:
         for count, paragraph in enumerate(inputText):
