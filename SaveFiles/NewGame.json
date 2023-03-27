@@ -585,11 +585,11 @@
                             },
                             "_inventory": {
                                 "Equipped": {
-                                    "Weapon": "Claws",
+                                    "Weapon": "Dire Rabbit Claws",
                                     "Shield": "Dire Rabbit Hide"
                                 },
                                 "Weapon": {
-                                    "Claws": {
+                                    "Dire Rabbit Claws": {
                                         "_rarity": "E",
                                         "_damage": 8,
                                         "_quantity": 1
@@ -619,21 +619,19 @@
                             10,
                             20
                         ],
-                        "Weapon": {
-                            "Claws": {
+                        "Ingredient": {
+                            "Dire Rabbit Claw": {
                                 "_rarity": "D",
                                 "_damage": 12,
                                 "_minQuantity": 1,
                                 "_maxQuantity": 2,
-                                "_dropChance": 60
-                            }
-                        },
-                        "Shield": {
+                                "_dropChance": 40
+                            },
                             "Dire Rabbit Hide": {
                                 "_rarity": "E",
                                 "_defense": 8,
                                 "_quantity": 1,
-                                "_dropChance": 40
+                                "_dropChance": 60
                             }
                         }
                     }
