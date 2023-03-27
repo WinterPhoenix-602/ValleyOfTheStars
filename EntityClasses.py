@@ -499,7 +499,9 @@ class Player(Entity):
         slow_table(tabulate(
             [[f"{Fore.YELLOW}You have no stat points left.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
         # Asks the player if they want to confirm their stat changes
-        if confirm := self.confirm_stats(statsChange):
+        if sum(statsChange) == 0:
+            return
+        elif confirm := self.confirm_stats(statsChange):
             return self.distribute_stats(statsChange)
 
     def distribute_stats(self, statsChange):
@@ -723,6 +725,58 @@ class Player(Entity):
                     + "\n"
                 )
             )
+
+    # Displays player status and options
+    def display_status(self):
+        while True:
+            # Displays the player's stats
+            slow_table(tabulate(
+                [
+                ["Current Stats", f"+{self._statPoints} Stat Points"],
+                ["Constitution:", f"{self._constitution}"],
+                ["Health:", f"{self._maxHealth}"],
+                ["Intelligence:", f"{self._intelligence}"],
+                ["Mana:", f"{self._maxMana}"],
+                ["Strength:", f"{self._strength}"],
+                ["Damage:", f"{self._damage}"],
+                ["Endurance:", f"{self._endurance}"],
+                ["Defense:", f"{self._defense}"],
+                ["Agility:", f"{self._agility}"]
+                ],
+                headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center")))
+            # Displays player options
+            slow_table(
+                tabulate(
+                    [
+                        ["", "What would you like to do?"],
+                        ["1:", "Open Inventory"],
+                        ["2:", "Distribute Stat Points"],
+                        ["3:", "Go Back"]
+                    ],
+                    headers="firstrow",
+                    tablefmt="fancy_outline",
+                )
+            )
+            # Asks player for input
+            try:
+                statusChoice = int(input("? "))
+                clrscr()
+            except Exception:
+                invalidChoice()
+                return
+            match statusChoice:
+                # Opens inventory
+                case 1:
+                    self.openInventory()
+                # Distributes stat points
+                case 2:
+                    self.stats_menu()
+                # Exits status display
+                case 3:
+                    break
+                # Invalid choice
+                case _:
+                    invalidChoice()
 
     # Opens player inventory
     def openInventory(self):
@@ -985,8 +1039,8 @@ class Player(Entity):
                 f"{Fore.YELLOW}{self._level} {int(self._levelProgress // 1)}/{self._nextLevel}{Style.RESET_ALL}",
                 f"{Fore.GREEN}{int(self._health)}/{self._maxHealth}{Style.RESET_ALL}",
                 f"{Fore.LIGHTCYAN_EX}{self._mana}/{self._maxMana}{Style.RESET_ALL}",
-                f"{Fore.RED}{self._damage} + {self._equippedWeapon.damage}{Style.RESET_ALL} ({self._equippedWeapon.name})",
-                f"{Fore.BLUE}{self._defense} + {self._equippedShield.defense}{Style.RESET_ALL} ({self._equippedShield.name})",
+                f"{Fore.RED}{self._damage} + {self._equippedWeapon.damage}{Style.RESET_ALL}",
+                f"{Fore.BLUE}{self._defense} + {self._equippedShield.defense}{Style.RESET_ALL}",
                 f"{Fore.LIGHTGREEN_EX}{self._agility}{Style.RESET_ALL}"
             ]
         ]
@@ -1101,8 +1155,8 @@ class Enemy(Entity):
             f"{Fore.YELLOW}{self._level}{Style.RESET_ALL}",
             f"{Fore.GREEN}{int(self._health)}/{int(self._maxHealth)}{Style.RESET_ALL}",
             f"{Fore.LIGHTCYAN_EX}{int(self._mana)}/{int(self._maxMana)}{Style.RESET_ALL}",
-            f"{Fore.RED}{int(self._damage)} + {self._equippedWeapon.damage}{Style.RESET_ALL} ({self._equippedWeapon.name})",
-            f"{Fore.BLUE}{int(self._defense)} + {self._equippedShield.defense}{Style.RESET_ALL} ({self._equippedShield.name})",
+            f"{Fore.RED}{int(self._damage)} + {self._equippedWeapon.damage}{Style.RESET_ALL}",
+            f"{Fore.BLUE}{int(self._defense)} + {self._equippedShield.defense}{Style.RESET_ALL}",
             f"{Fore.LIGHTGREEN_EX}{int(self._agility)}{Style.RESET_ALL}"
         ]
 
