@@ -538,7 +538,7 @@ class CombatEncounter(Encounter):
         )
         return tabulate(enemyTable, headers="firstrow", tablefmt="fancy_outline", colalign=["left", "center", "left", "left", "left", "left", "center"])
 
-def testing():
+def encounterTesting():
     # Testing
     import json
     p = Player()
@@ -565,4 +565,4 @@ def testing():
 
 # If this file is run directly, run testing()
 if __name__ == "__main__":
-    testing()
+    encounterTesting()

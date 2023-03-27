@@ -220,7 +220,7 @@ class Ingredient(Item):
         return self._use
 
 
-def testing():
+def itemTesting():
     # Testing
     import json
     with open(mainPath + "\\SaveFiles\\NewGame.json", "r") as saveFile:
@@ -237,4 +237,4 @@ def testing():
 
 # If file is run directly, run testing()
 if __name__ == "__main__":
-    testing()
+    itemTesting()

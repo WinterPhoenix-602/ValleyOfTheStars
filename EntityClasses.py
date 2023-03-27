@@ -1109,7 +1109,7 @@ class Enemy(Entity):
         return tabulate([["Name", "Level", "Health", "Mana", "Damage", "Defense", "Agility"], self.get_stats_list()], headers='firstrow', tablefmt="fancy_outline", colalign=["left", "center", "center", "center", "center", "center", "center"])
 
 
-def testing():
+def entityTesting():
     # Testing
     import json
     a = Player()
@@ -1133,4 +1133,4 @@ def testing():
 
 # If file is run directly, run testing()
 if __name__ == "__main__":
-    testing()
+    entityTesting()

@@ -105,7 +105,7 @@ class InvalidAction(Exception):
         super().__init__(self.message)
 
 # Testing function
-def testing():
+def messageTesting():
     print(inflectEngine.plural("fish"))
     waitForKey("combat")
     waitForKey("inspect")
@@ -115,4 +115,4 @@ def testing():
 
 # If this file is run directly, run testing()
 if __name__ == "__main__":
-    testing()
+    messageTesting()
