@@ -793,7 +793,7 @@ class Player(Entity):
         if len(self._inventory[inv_type]) <= 0:
             slow_table(tabulate(
                 [[f'You have no {inflectEngine.plural(inv_type)} in your inventory.']], tablefmt="fancy_outline"))
-            return
+            return "Go Back"
         # If there are items of the specified type in the inventory, display a table of the items
         elif inv_type in ["Weapon", "Shield"]:
             slow_table(
@@ -809,11 +809,11 @@ class Player(Entity):
         except Exception:
             # If the player input is not a number, display an error message and return to inventory menu
             invalidChoice()
-            return
+            return "Go Back"
         # If the player input is not a valid choice, display an error message and return to inventory menu
         if itemChoice > len(self._inventory[inv_type]) + 1:
             invalidChoice()
-            return
+            return "Go Back"
         # If the player input is a valid choice, equip/use the item
         for count, item in enumerate(self._inventory[inv_type]):
             if count + 1 == itemChoice and inv_type in ["Weapon", "Shield"]:
@@ -828,9 +828,11 @@ class Player(Entity):
                 if inv_type in ["Weapon", "Shield"]:
                     slow_table(tabulate(
                         [["You decided what you have is good enough for now."]], tablefmt="fancy_outline") + "\n")
+                    return "Go Back"
                 elif inv_type == "Consumable":
                     slow_table(tabulate(
                         [["You decided not to use anything."]], tablefmt="fancy_outline") + "\n")
+                    return "Go Back"
 
 
     # Uses selected item
