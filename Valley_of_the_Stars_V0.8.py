@@ -113,42 +113,16 @@ def mainMenu():
 def newGame():
     # Open the newGamePath file and load its contents into currentGame_dict
     while True:
-        with open(newGamePath, "r") as newGameFile:
-            currentGame_dict = json.load(newGameFile)
-            newGameFile.close()
-        # Extract the player and tiles data from currentGame_dict and create objects for them
-        player_dict = currentGame_dict["player"]
-        tiles_dict = currentGame_dict["tiles"]
-        for tile in tiles_dict:
-            # Create a new Tile object and read its data from tiles_dict
-            a = Tile(tile)
-            a.reader(tiles_dict[tile])
-            tiles_dict[tile] = a
-        # Set the currentTile to the starting tile (Crossroads) in tiles_dict
-        currentTile = tiles_dict["Crossroads"]
-        # Extract the encounter tables from currentGame_dict and create objects for them
-        encounterTables_dict = currentGame_dict["encounterTables"]
-        for biome in encounterTables_dict:
-            for encounterType in encounterTables_dict[biome]:
-                # If the encounter type is "passive", create a new PassiveEncounter object and read its data from encounterTables_dict
-                if encounterType == "passive":
-                    for encounter in encounterTables_dict[biome][encounterType]:
-                        a = PassiveEncounter(encounterType=encounterType)
-                        a.reader(
-                            encounterTables_dict[biome]["passive"][encounter])
-                        encounterTables_dict[biome]["passive"][encounter] = a
-                        continue
-                # If the encounter type is "hostile", create a new CombatEncounter object and read its data from encounterTables_dict
-                if encounterType == "hostile":
-                    for encounter in encounterTables_dict[biome][encounterType]:
-                        a = CombatEncounter(encounterType=encounterType)
-                        a.reader(
-                            encounterTables_dict[biome]["hostile"][encounter])
-                        encounterTables_dict[biome]["hostile"][encounter] = a
-                        continue
+        # Extract the tile data from newGameTiles
+        tiles_dict, currentTile = extractData(newGameTiles, Tile)
+        # Extract the player data from newGamePlayer
+        player = extractData(newGamePlayer, Player)
+        # Extract the enemy data from newGameEnemies
+        ENEMY_DICT = extractData(newGameEnemies, Enemy)
+        # Extract the encounter tables from newGameEncounters
+        encounterTables_dict = extractData(newGameEncounters, Encounter, ENEMY_DICT)
         # Prompt the player to enter a name and create a new Player object with that name
         while True:
-            player = Player()
             slow_table(tabulate(
                 [["What would you like to name your character?\nYour chosen name must be less than 25 characters long."]], tablefmt="fancy_grid"))
             player.name = input("? ")
@@ -157,9 +131,40 @@ def newGame():
                 slow_table(
                     tabulate([["I'm sorry, that name is too long."]], tablefmt="fancy_outline"))
                 continue
-            player.reader(player_dict)
             break
         return player, tiles_dict, currentTile, encounterTables_dict
+
+def extractData(dataFilePath, dataClass, ENEMY_DICT=None):
+    with open(dataFilePath, "r") as dataFile:
+            data_dict = json.load(dataFile)
+            dataFile.close()
+    # Create a new 
+    for objectType in data_dict:
+        if dataClass == Encounter:
+            for encounterType in data_dict[objectType]:
+                if encounterType == "passive":
+                    for encounter in data_dict[objectType][encounterType]:
+                        a = PassiveEncounter(encounterType=encounter)
+                        a.reader(data_dict[objectType][encounterType][encounter])
+                        data_dict[objectType][encounterType][encounter] = a
+                        continue
+                if encounterType == "hostile":
+                    for encounter in data_dict[objectType][encounterType]:
+                        a = CombatEncounter(encounterType=encounter, base_enemy_dict=ENEMY_DICT)
+                        a.reader(data_dict[objectType][encounterType][encounter])
+                        data_dict[objectType][encounterType][encounter] = a
+                        continue
+        else:
+            a = dataClass(objectType)
+            a.reader(data_dict[objectType])
+            data_dict[objectType] = a
+    # Set the current tile to the starting tile
+    if dataClass == Tile:
+        return data_dict, data_dict["Crossroads"]
+    elif dataClass == Player:
+        return data_dict["Newbie"]
+    elif dataClass in [Enemy, Encounter]:
+        return data_dict
 
 # Loads a saved game
 def loadGame():
@@ -376,6 +381,5 @@ def saveGame(saveFilePath, saveChoice, tiles_dict=None, player=Player(), current
     slow_table(
         tabulate([["Thank you for playing."]], tablefmt="fancy_outline"))
     waitForKey()
-
 
 main()
