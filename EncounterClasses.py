@@ -160,7 +160,9 @@ class PassiveEncounter(Encounter):
 
 
 class CombatEncounter(Encounter):
-    def __init__(self, name="", encounterType="", startDescription=None, enemies=None, victoryText=None, defeatText=None, expReward=0):
+    def __init__(self, name="", encounterType="", base_enemy_dict=None, startDescription=None, enemies=None, victoryText=None, defeatText=None, expReward=0):
+        if base_enemy_dict is None:
+            base_enemy_dict = {}
         if startDescription is None:
             startDescription = [""]
         if enemies is None:
@@ -170,6 +172,7 @@ class CombatEncounter(Encounter):
         if defeatText is None:
             defeatText = [""]
         super().__init__(name, encounterType, startDescription)
+        self._base_enemy_dict = base_enemy_dict
         self._enemies = enemies
         self._enemies_dict = {}
         self._victoryText = victoryText
@@ -225,14 +228,18 @@ class CombatEncounter(Encounter):
 
     def generate_enemies(self, player=Player()):
         # Creates Enemy objects based on encounter data and adds them to a dictionary
-        for enemy in self._enemies:
-            for quantity in range(self._enemies[enemy]["quantity"]):
-                a = Enemy(f"{Fore.LIGHTRED_EX}{enemy} {quantity + 1}{Style.RESET_ALL}")
-                a.reader(self._enemies[enemy])
-                self._enemies_dict[f"{Fore.LIGHTRED_EX}{enemy} {quantity + 1}{Style.RESET_ALL}"] = a
-                # Randomly levels up the enemy based on the player's challenge range
-                challenge = player.get_challenge()
-                a.level_up(level=randint(challenge[0], challenge[1]))
+        for enemy, quantity in self._enemies.items():
+            for number in range(quantity):
+                if quantity != 1:
+                    self._enemies_dict[f"{enemy} {number + 1}"] = copy.deepcopy(self._base_enemy_dict[enemy])
+                    self._enemies_dict[f"{enemy} {number + 1}"].name = f"{Fore.LIGHTRED_EX}{enemy} {number + 1}{Style.RESET_ALL}"
+                else:
+                    self._enemies_dict[f"{enemy}"] = copy.deepcopy(self._base_enemy_dict[enemy])
+                    self._enemies_dict[f"{enemy}"].name = f"{Fore.LIGHTRED_EX}{enemy}{Style.RESET_ALL}"
+        # Randomly levels up the enemy based on the player's challenge range
+        for enemy2 in self._enemies_dict.values():
+            challenge = player.get_challenge()
+            enemy2.level_up(level=randint(challenge[0], challenge[1]))
         # Calculates experience reward for the encounter based on enemy attributes
         self._expReward = 0
         for enemy in self._enemies_dict:
@@ -240,6 +247,61 @@ class CombatEncounter(Encounter):
                 self._enemies_dict[enemy].defense + self._enemies_dict[enemy].equippedWeapon.damage + \
                 self._enemies_dict[enemy].equippedShield.defense
 
+    # Returns a string describing encountered enemies based on the quantity and type
+    def encounterText(self):
+        # Initialize empty encounter text
+        encounterText = ""
+        # Calculate total number of enemies
+        totalEnemies = len(self._enemies_dict)
+        totalEnemyTypes = len(self._enemies)
+        # Case for encountering a single enemy
+        if totalEnemies == 1:
+            encounterText = f"You ran into a {self._enemies.keys()[0]}"
+        # Case for encountering two of the same enemy
+        elif totalEnemies == 2 and totalEnemyTypes == 1:
+            encounterText = f"You ran into a pair of {inflectEngine.plural(self._enemies.keys()[0])}"
+        # Case for encountering a group of enemies (3-5)
+        elif totalEnemies >= 3 and totalEnemies <= 5:
+            encounterText += "You ran into a group of "
+        # Case for encountering a horde of enemies (6 or more)
+        elif totalEnemies >= 6:
+            encounterText += "You ran into a horde of "
+        for count, (enemy, quantity) in enumerate(self._enemies.items(), start=1):
+            # Case for encountering one type of enemy with a quantity greater than 2
+            if totalEnemyTypes == 1 and totalEnemies > 2:
+                encounterText += f"{quantity} {inflectEngine.plural(enemy)}"
+            elif totalEnemyTypes == 2:
+                # Add current enemy to encounter text with appropriate pluralization
+                if count < totalEnemyTypes:
+                    encounterText += (
+                        f"{quantity} {enemy} and "
+                        if self._enemies[enemy] == 1
+                        else f"{quantity} {inflectEngine.plural(enemy)} and "
+                    )
+                elif self._enemies[enemy] == 1:
+                    encounterText += f"{quantity} {enemy}"
+                else:
+                    encounterText += f"{quantity} {inflectEngine.plural(enemy)}"
+            elif totalEnemies != 1:
+                # Add current enemy to encounter text with appropriate pluralization and punctuation
+                if count < totalEnemyTypes:
+                    encounterText += (
+                        f"{quantity} {enemy}, "
+                        if quantity == 1
+                        else f"{quantity} {inflectEngine.plural(enemy)}, "
+                    )
+                elif quantity == 1:
+                    encounterText += f"and {quantity} {enemy}"
+                else:
+                    encounterText += f"and {quantity} {inflectEngine.plural(enemy)}"
+        # Return encounter text
+        return f"{encounterText}!"
+
+    def single_enemy_type(self, arg0, arg1, encounterText):
+        enemy = list(self._enemies.keys())
+        encounterText += f"{arg0}{enemy[0]}{arg1}"
+        return encounterText
+    
     # Runs combat encounter
     def start_encounter(self, player=Player(), turn=0):
         # Generates enemies
@@ -316,7 +378,7 @@ class CombatEncounter(Encounter):
             enemyTable = [["", "Enemy Name", "Success Chance"]]
             for count, enemy in enumerate(self._enemies_dict):
                 enemyTable.append(
-                    [f"{count + 1}:", f"{self._enemies_dict[enemy].name}", f"{50 + (5 * (player.agility - self._enemies_dict[enemy].agility))}% Crit Chance"])
+                    [f"{count + 1}:", f"{self._enemies_dict[enemy].name}", f"{10 + (player.agility - self._enemies_dict[enemy].agility)}% Crit Chance"])
             enemyTable.append([f"{count + 2}:", "Go Back", ""])
             slow_table(tabulate(enemyTable, headers="firstrow",
                                         tablefmt="fancy_outline"))
@@ -332,7 +394,7 @@ class CombatEncounter(Encounter):
             except Exception:
                 invalidChoice()
                 continue
-            return self._enemies_dict[list(self._enemies_dict.keys())[attackEnemy - 1]].name
+            return escape_ansi(self._enemies_dict[list(self._enemies_dict.keys())[attackEnemy - 1]].name)
 
     def magic_menu(self, player):
         while True:
@@ -431,71 +493,6 @@ class CombatEncounter(Encounter):
             # Waits for user input before ending encounter
             waitForKey(self.encounterType, "You have been defeated.")
 
-    # Returns a string describing encountered enemies based on the quantity and type
-    def encounterText(self):
-        # Initialize empty encounter text
-        encounterText = ""
-        # Case for encountering a single enemy
-        if len(self._enemies_dict) == 1:
-            return self.single_enemy_type(
-                'You ran into a ', '!', encounterText
-            )
-        # Case for encountering two of the same enemy
-        elif len(self._enemies_dict) == 2 and len(self._enemies) == 1:
-            return self.single_enemy_type(
-                'You ran into a pair of ', 's!', encounterText
-            )
-        # Case for encountering a group of enemies (3-5)
-        elif len(self._enemies_dict) > 1 and len(self._enemies_dict) < 6:
-            encounterText += "You ran into a group of "
-        # Case for encountering a horde of enemies (6 or more)
-        elif len(self._enemies_dict) >= 6:
-            encounterText += "You ran into a horde of "
-        # Loop through each enemy in the dictionary and add to encounter text
-        for count, enemy in enumerate(self._enemies):
-            # Case for encountering one type of enemy with a quantity of 1
-            if len(self._enemies) < 2 and len(self._enemies_dict) != 1:
-                encounterText += f"{self._enemies[enemy]['quantity']} {enemy}s!"
-                return encounterText
-            # Case for encountering two types of enemies with a quantity of 1 each
-            elif len(self._enemies) < 3 and len(self._enemies_dict) != 1:
-                # Check if current enemy is not the last in the dictionary
-                if count + 1 != len(self._enemies):
-                    # Add current enemy to encounter text with appropriate pluralization
-                    if self._enemies[enemy]['quantity'] <= 1:
-                        encounterText += f"{self._enemies[enemy]['quantity']} {enemy} and "
-                    else:
-                        encounterText += f"{self._enemies[enemy]['quantity']} {enemy}s and "
-                # If current enemy is last in dictionary, add to encounter text and end string
-                else:
-                    if self._enemies[enemy]['quantity'] <= 1:
-                        encounterText += f"{self._enemies[enemy]['quantity']} {enemy}!"
-                    else:
-                        encounterText += f"{self._enemies[enemy]['quantity']} {enemy}s!"
-                    return encounterText
-            # Case for encountering multiple types of enemies
-            elif len(self._enemies_dict) != 1:
-                # Check if current enemy is not the last in the dictionary
-                if count + 1 != len(self._enemies):
-                    # Add current enemy to encounter text with appropriate pluralization and punctuation
-                    if self._enemies[enemy]['quantity'] <= 1:
-                        encounterText += f"{self._enemies[enemy]['quantity']} {enemy}, "
-                    else:
-                        encounterText += f"{self._enemies[enemy]['quantity']} {enemy}s, "
-                # If current enemy is last in dictionary, add to encounter text and end string
-                else:
-                    if self._enemies[enemy]['quantity'] <= 1:
-                        encounterText += f"and {self._enemies[enemy]['quantity']} {enemy}!"
-                    else:
-                        encounterText += f"and {self._enemies[enemy]['quantity']} {enemy}s!"
-
-                    return encounterText
-
-    def single_enemy_type(self, arg0, arg1, encounterText):
-        enemy = list(self._enemies.keys())
-        encounterText += f"{arg0}{enemy[0]}{arg1}"
-        return encounterText
-
     # Returns formatted table representation
     def __repr__(self):
         enemyTable = [["Enemy Name", "Level",
@@ -510,15 +507,24 @@ def encounterTesting():
     # Testing
     import json
     p = Player()
-    c = CombatEncounter()
     pE = PassiveEncounter()
-    with open(mainPath + "\\SaveFiles\\NewGame.json", "r") as saveFile:
-        currentGame_dict = json.load(saveFile)
-        saveFile.close()
-    player_dict = currentGame_dict["player"]
-    combat_encounter = currentGame_dict["encounterTables"]["Plains"]["hostile"]["3"]
-    passive_encounter = currentGame_dict["encounterTables"]["River"]["passive"]["1"]
-    p.reader(player_dict)
+    with open(mainPath + "\\NewGameFiles\\Player.json", "r") as playerFile:
+        player_dict = json.load(playerFile)
+        playerFile.close()
+    p.reader(player_dict["Newbie"])
+    with open(mainPath + "\\NewGameFiles\\Enemies.json", "r") as enemiesFile:
+        enemies_dict = json.load(enemiesFile)
+        enemiesFile.close()
+    for enemy in enemies_dict:
+        a = Enemy(enemy)
+        a.reader(enemies_dict[enemy])
+        enemies_dict[enemy] = a
+    c = CombatEncounter(base_enemy_dict=enemies_dict)
+    with open(mainPath + "\\NewGameFiles\\Encounters.json", "r") as encountersFile:
+        encounters_dict = json.load(encountersFile)
+        encountersFile.close()
+    combat_encounter = encounters_dict["Plains"]["hostile"]["2"]
+    passive_encounter = encounters_dict["River"]["passive"]["1"]
     """p.level_up(level=7)
     p.health = p.maxHealth
     p.mana = p.maxMana"""
