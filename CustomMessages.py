@@ -14,7 +14,10 @@ inflectEngine = inflect.engine()
 # Define the path to the current module's directory
 mainPath = os.path.dirname(__file__)
 # Define the path to "NewGame.json"
-newGamePath = os.path.join(mainPath, "SaveFiles\\NewGame.json")
+newGameTiles = os.path.join(mainPath, "NewGameFiles\\Tiles.json")
+newGamePlayer = os.path.join(mainPath, "NewGameFiles\\Player.json")
+newGameEnemies = os.path.join(mainPath, "NewGameFiles\\Enemies.json")
+newGameEncounters = os.path.join(mainPath, "NewGameFiles\\Encounters.json")
 # Define the path to "SaveFileInfo.json"
 saveFileInfoPath = os.path.join(mainPath, "SaveFiles\\SaveFileInfo.json")
 
