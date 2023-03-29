@@ -750,7 +750,7 @@ class Player(Entity):
         self.sort_inventory()
         while True:
             # Print inventory table
-            slow_table(self.full_inventory_table())
+            self.print_full_inventory_table()
             # Print options for the player to choose from
             inventoryMenu = self.inventory_menu()
             slow_table(inventoryMenu, headers="firstrow", tablefmt="fancy_outline")
@@ -918,23 +918,19 @@ class Player(Entity):
         return (rarity, -relevant_stat_value)
 
     # Returns formatted table representation of player inventory
-    def full_inventory_table(self):
-        # Initialize empty string and list for sub table
-        inventoryTableString = ""
-        subTable = []
+    def print_full_inventory_table(self):
         # Iterate through each item type in inventory
         for itemType in self._inventory:
             # Adds Gold amount to inventoryTableString
             if itemType == "Gold":
-                inventoryTableString += f"{tabulate([[f'{Fore.LIGHTYELLOW_EX}Gold:{Style.RESET_ALL}', f'{Fore.LIGHTYELLOW_EX}{self._inventory[itemType]}{Style.RESET_ALL}']], tablefmt='fancy_grid')}\n"
+                slow_table(f'{Fore.LIGHTYELLOW_EX}Gold:{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}{self._inventory[itemType]}{Style.RESET_ALL}') 
                 continue
             # Create sub-table for the current item type
             subTable = self.sub_inventory_table(itemType)
             # If sub-table has more than one row, add to inventoryTableString
             if len(subTable) > 1:
-                inventoryTableString += f"{tabulate(subTable, headers='firstrow', tablefmt='fancy_outline', colalign=('right', 'left', 'left'))}\n"
-        # Return formatted inventory table string
-        return inventoryTableString
+                slow_table(subTable, headers='firstrow', tablefmt='fancy_outline', colalign=('right', 'left', 'left'))
+ 
 
     # Returns a sub-table for a given item type
     def sub_inventory_table(self, itemType, subMenu=False):
