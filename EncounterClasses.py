@@ -255,10 +255,10 @@ class CombatEncounter(Encounter):
         totalEnemyTypes = len(self._enemies)
         # Case for encountering a single enemy
         if totalEnemies == 1:
-            encounterText = f"You ran into a {self._enemies.keys()[0]}"
+            encounterText = f"You ran into a {list(self._enemies.keys())[0]}"
         # Case for encountering two of the same enemy
         elif totalEnemies == 2 and totalEnemyTypes == 1:
-            encounterText = f"You ran into a pair of {inflectEngine.plural(self._enemies.keys()[0])}"
+            encounterText = f"You ran into a pair of {inflectEngine.plural(list(self._enemies.keys())[0])}"
         # Case for encountering a group of enemies (3-5)
         elif totalEnemies >= 3 and totalEnemies <= 5:
             encounterText += "You ran into a group of "
@@ -281,7 +281,7 @@ class CombatEncounter(Encounter):
                     encounterText += f"{quantity} {enemy}"
                 else:
                     encounterText += f"{quantity} {inflectEngine.plural(enemy)}"
-            elif totalEnemies != 1:
+            elif totalEnemies != 1 and totalEnemyTypes != 1:
                 # Add current enemy to encounter text with appropriate pluralization and punctuation
                 if count < totalEnemyTypes:
                     encounterText += (
@@ -540,7 +540,7 @@ def encounterTesting():
     with open(mainPath + "\\NewGameFiles\\Encounters.json", "r") as encountersFile:
         encounters_dict = json.load(encountersFile)
         encountersFile.close()
-    combat_encounter = encounters_dict["Plains"]["hostile"]["2"]
+    combat_encounter = encounters_dict["Plains"]["hostile"]["1"]
     passive_encounter = encounters_dict["River"]["passive"]["1"]
     """p.level_up(level=7)
     p.health = p.maxHealth
