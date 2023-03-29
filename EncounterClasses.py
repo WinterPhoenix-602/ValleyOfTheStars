@@ -6,7 +6,6 @@ from abc import ABC, abstractmethod
 from EntityClasses import *
 from colorama import Fore
 from colorama import Style
-from tabulate import tabulate
 from random import randint
 
 
@@ -478,8 +477,7 @@ class CombatEncounter(Encounter):
     def end_encounter(self, player, victory):
         if victory == True:
             # Prints victory text
-            slow_table(
-                tabulate([["\n\n".join(self._victoryText)]], tablefmt="fancy_grid"))
+            slow_table("\n\n".join(self._victoryText), tablefmt="fancy_grid")
             # Adds exp reward to player level progress
             player.level_up(self._expReward)
             # Adds any existing loot to player inventory
@@ -488,8 +486,7 @@ class CombatEncounter(Encounter):
             waitForKey(self.encounterType, "A battle well fought.")
         else:
             # Prints defeat text
-            slow_table(
-                tabulate([["\n\n".join(self._defeatText)]], tablefmt="fancy_grid"))
+            slow_table("\n\n".join(self._defeatText), tablefmt="fancy_grid")
             # Waits for user input before ending encounter
             waitForKey(self.encounterType, "You have been defeated.")
 

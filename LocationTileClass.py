@@ -139,14 +139,12 @@ class Tile:
         self._visited = True
         while True:
             # Print tile description and player status
-            slow_table(tabulate(
-                [[self._name], ["\n\n".join(self._description)]], tablefmt="fancy_grid"))
-            slow_table(player.__repr__())
+            slow_table([[self._name], ["\n\n".join(self._description)]], tablefmt="fancy_grid")
+            slow_table(player.__repr__(), headers='firstrow', tablefmt="fancy_outline", colalign=["left", "center", "left", "left", "left", "left", "center"])
             # Get the list of available actions
             optionsTable = self.tile_menu_options()
             # Print the list of available actions
-            slow_table(
-                tabulate(optionsTable, headers="firstrow", tablefmt="fancy_outline"))
+            slow_table(optionsTable, headers="firstrow", tablefmt="fancy_outline")
             # Get player choice
             try:
                 choice = int(input("? "))
@@ -388,8 +386,7 @@ class InspectElement(Action):
         # Call the parent class's take_action method
         super().take_action(tiles_dict)
         # Display the name and description of the current tile
-        slow_table(tabulate(
-            [[self._name], ["\n\n".join(self._description)]], tablefmt="fancy_grid"))
+        slow_table([[self._name], ["\n\n".join(self._description)]], tablefmt="fancy_grid")
         # Modify the tile's name if necessary
         if self._change_name[0] == True:
             currentTile.name = self._change_name[1]
@@ -447,13 +444,11 @@ class Speak(Action):
         while True:
             # If the response is not empty, print it as a table
             if self._response != [""]:
-                slow_table(
-                    tabulate([["\n\n".join(self._response)]], tablefmt="fancy_grid"))
+                slow_table("\n\n".join(self._response), tablefmt="fancy_grid")
             # If there are options available for the Speak object, display them
             if self._options != {}:
                 optionsTable = self.optionsMenu()
-                slow_table(
-                    tabulate(optionsTable, headers="firstrow", tablefmt="fancy_grid"))
+                slow_table(optionsTable, headers="firstrow", tablefmt="fancy_grid")
                 # Prompt the user to select an option
                 try:
                     choice = int(input("? "))
@@ -544,8 +539,7 @@ class Rest(Action):
         # Call the parent class's take_action method
         super().take_action(tiles_dict)
         # Display the name and description of the Rest action
-        slow_table(tabulate(
-            [[self._name], ["\n\n".join(self._description)]], tablefmt="fancy_grid"))
+        slow_table([[self._name], ["\n\n".join(self._description)]], tablefmt="fancy_grid")
         # Restore the player's health and mana to full, then wait for user input to continue
         player.health = player.maxHealth
         player.mana = player.maxMana

@@ -1,7 +1,6 @@
 # Date: 2023-03-09
 # Description: Contains the Item class and its subclasses, which are used to create items for the game.
 
-from tabulate import tabulate
 from CustomMessages import *
 from random import randint
 from colorama import Fore, Style

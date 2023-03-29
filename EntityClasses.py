@@ -1022,7 +1022,7 @@ class Player(Entity):
                 f"{Fore.LIGHTCYAN_EX}{self._shieldDuration} turns left{Style.RESET_ALL}")
             table[1][
                 5] = f"{Fore.BLUE}{self._defense} + {self._equippedShield.defense}{Style.RESET_ALL} ({self._equippedShield.name})"
-        return tabulate(table, headers='firstrow', tablefmt="fancy_outline", colalign=["left", "center", "left", "left", "left", "left", "center"])
+        return table
 
 
 # enemy class
@@ -1128,7 +1128,7 @@ class Enemy(Entity):
 
     # Returns formatted list representation
     def __repr__(self):
-        return tabulate([["Name", "Level", "Health", "Mana", "Damage", "Defense", "Agility"], self.get_stats_list()], headers='firstrow', tablefmt="fancy_outline", colalign=["left", "center", "center", "center", "center", "center", "center"])
+        return [["Name", "Level", "Health", "Mana", "Damage", "Defense", "Agility"], self.get_stats_list()]
 
 
 def entityTesting():

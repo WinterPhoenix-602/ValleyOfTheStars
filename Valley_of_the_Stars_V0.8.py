@@ -17,7 +17,7 @@ from CustomMessages import *
 from EntityClasses import Player
 from LocationTileClass import *
 from datetime import datetime
-from tabulate import tabulate
+
 
 """# enables colors on windows
 if os.name == 'nt':
@@ -77,8 +77,7 @@ def main():
 def mainMenu():
     while True:
         # Displays the options for the main menu as a table
-        slow_table(tabulate([["1: New Game"], ["2: Load Game"], [
-            "3: Exit"]], tablefmt="fancy_outline"))
+        slow_table([["1: New Game"], ["2: Load Game"], ["3: Exit"]], tablefmt="fancy_outline")
         # Prompts the user to input their choice and converts it to an integer
         try:
             choice = int(input("? "))
@@ -123,13 +122,11 @@ def newGame():
         encounterTables_dict = extractData(newGameEncounters, Encounter, ENEMY_DICT)
         # Prompt the player to enter a name and create a new Player object with that name
         while True:
-            slow_table(tabulate(
-                [["What would you like to name your character?\nYour chosen name must be less than 25 characters long."]], tablefmt="fancy_grid"))
+            slow_table("What would you like to name your character?\nYour chosen name must be less than 25 characters long.", tablefmt="fancy_grid")
             player.name = input("? ")
             clrscr()
             if len(player.name) > 25:
-                slow_table(
-                    tabulate([["I'm sorry, that name is too long."]], tablefmt="fancy_outline"))
+                slow_table("I'm sorry, that name is too long.", tablefmt="fancy_outline")
                 continue
             break
         return player, tiles_dict, currentTile, encounterTables_dict
@@ -177,8 +174,7 @@ def loadGame():
                 savesInfo.close()
         except FileNotFoundError:
             # If the file is missing, report an error and exit the function
-            slow_table(
-                tabulate([["Save file information has been corrupted, moved, or deleted."]], tablefmt="fancy_outline"))
+            slow_table("Save file information has been corrupted, moved, or deleted.", tablefmt="fancy_outline")
             break
         # Create a table showing the available saved games
         loadMenuTable = [["Which game save would you like to load?"]]
@@ -189,8 +185,7 @@ def loadGame():
                 # Add an option to go back to the main menu
                 loadMenuTable.append(["6: Go Back"])
         # Display the table of saved games and prompt the user to choose one
-        slow_table(tabulate(loadMenuTable, headers="firstrow",
-                                 tablefmt="fancy_outline"))
+        slow_table(loadMenuTable, headers="firstrow", tablefmt="fancy_outline")
         try:
             # Convert the user's input to an integer
             saveChoice = int(input("? "))
@@ -233,8 +228,7 @@ def endGame(exitGame, tiles_dict, player, currentTile, encounterTables_dict):
     # Loop until the player chooses to exit the game
     while exitGame == True:
         # Display options to the player in a table format
-        slow_table(tabulate([["", "Would you like to save your progress?"], ["1:", "Yes"], [
-                        "2:", "No"], ["3:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline"))
+        slow_table([["", "Would you like to save your progress?"], ["1:", "Yes"], ["2:", "No"], ["3:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline")
         try:
             # Get the player's choice
             save = int(input("? "))
@@ -251,8 +245,7 @@ def endGame(exitGame, tiles_dict, player, currentTile, encounterTables_dict):
             break
         elif save == 2:
             # If the player chooses to exit without saving, display a confirmation prompt
-            slow_table(tabulate([["", "Are you sure?"], ["1:", "Yes"], ["2:", "No"], [
-                            "3:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline"))
+            slow_table([["", "Are you sure?"], ["1:", "Yes"], ["2:", "No"], ["3:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline")
             try:
                 # Get the player's confirmation
                 surety = int(input("? "))
@@ -265,8 +258,7 @@ def endGame(exitGame, tiles_dict, player, currentTile, encounterTables_dict):
             # Handle the player's confirmation
             if surety == 1:
                 # If the player confirms, display a farewell message, wait for a keypress, and return from the function
-                slow_table(
-                    tabulate([["Thank you for playing."]], tablefmt="fancy_outline"))
+                slow_table("Thank you for playing.", tablefmt="fancy_outline")
                 waitForKey()
                 return exitGame
             elif surety in {2, 3}:
@@ -322,8 +314,8 @@ def saveMenu(tiles_dict=None, player=Player(), currentTile=Tile(), encounterTabl
         # If the save slot is not empty, prompt the player for confirmation before overwriting
         while True:
             if saveFiles_dict[saveFiles_keyList[saveChoice - 1]]["info"] != "(Empty)":
-                slow_table(tabulate([["", f"This will overwrite the current save for {saveFiles_dict[saveFiles_keyList[saveChoice - 1]]['name']}. Are you sure?"], [
-                                "1:", "Yes"], ["2:", "No"], ["3:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline"))
+                slow_table([["", f"This will overwrite the current save for {saveFiles_dict[saveFiles_keyList[saveChoice - 1]]['name']}. Are you sure?"], [
+                                "1:", "Yes"], ["2:", "No"], ["3:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline")
                 try:
                     surety = int(input("? "))
                 except Exception:
@@ -375,11 +367,9 @@ def saveGame(saveFilePath, saveChoice, tiles_dict=None, player=Player(), current
         saveInfo.close()
 
     # Inform the player that their progress has been saved
-    slow_table(
-        tabulate([["Your progress has been saved."]], tablefmt="fancy_outline"))
+    slow_table("Your progress has been saved.", tablefmt="fancy_outline")
     # Display farewell message and wait for key
-    slow_table(
-        tabulate([["Thank you for playing."]], tablefmt="fancy_outline"))
+    slow_table("Thank you for playing.", tablefmt="fancy_outline")
     waitForKey()
 
 main()
