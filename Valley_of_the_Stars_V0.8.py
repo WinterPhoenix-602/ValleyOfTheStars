@@ -122,11 +122,11 @@ def newGame():
         encounterTables_dict = extractData(newGameEncounters, Encounter, ENEMY_DICT)
         # Prompt the player to enter a name and create a new Player object with that name
         while True:
-            slow_table("What would you like to name your character?\nYour chosen name must be less than 25 characters long.", tablefmt="fancy_grid")
+            slow_table("What would you like to name your character?", tablefmt="fancy_grid")
             player.name = input("? ")
             clrscr()
             if len(player.name) > 25:
-                slow_table("I'm sorry, that name is too long.", tablefmt="fancy_outline")
+                slow_table("I'm sorry, your name must be shorter than 25 characters.", tablefmt="fancy_outline")
                 continue
             break
         return player, tiles_dict, currentTile, encounterTables_dict
