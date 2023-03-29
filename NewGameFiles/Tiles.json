@@ -1,0 +1,313 @@
+{
+    "Crossroads": {
+        "_name": "The Crossroads",
+        "_description": [
+            "As you stand at the crossroads, you take in the vast expanse of the grassland before you. The grass is tall and lush, swaying gently in the breeze. You can hear the rustling of the blades as they brush against each other, a soft whispering sound that fills the air.",
+            "In front of you, the path cuts through the grassland, stretching out in three different directions. To the north, the path disappears into a small thicket of trees, partially obscuring your view. However, as you peer closer, you notice plumes of smoke rising from chimneys in the distance, indicating the presence of a village.",
+            "Turning your attention to the east, the path winds its way towards a river. As you follow the path with your eyes, you spot a bridge that spans the river, providing a convenient way to cross. Once on the other side, the path continues on into a dark forest, shrouded in mystery and intrigue.",
+            "To the south, there is no path, only an expanse of green grass stretching out as far as the eye can see. Suddenly, the grassland abruptly ends, cut off by a violent river. You can hear the roar of the water as it rushes past, a powerful force that commands respect.",
+            "Finally, the path to the west continues on through the grass, turning southward and disappearing from view. You can see the gentle curve of the path as it meanders away, beckoning you to follow and see where it leads."
+        ],
+        "_actions": {
+            "Travel North": {
+                "_action": "Travel",
+                "_direction": "North",
+                "_targetTile": "CelestialSentinel"
+            },
+            "Travel East": {
+                "_action": "Travel",
+                "_direction": "East",
+                "_targetTile": "DarkwoodEntrance"
+            },
+            "Travel South": {
+                "_action": "Travel",
+                "_direction": "South",
+                "_targetTile": "ThunderingRiver"
+            }
+        },
+        "_visited": true,
+        "_image": "Crossroads.png",
+        "_mapCoords": [
+            400,
+            400
+        ],
+        "_encounterTable": [
+            "Plains",
+            0,
+            0,
+            0
+        ]
+    },
+    "CelestialSentinel": {
+        "_name": "Peaceful Clearing",
+        "_description": [
+            "You stand in the midst of a calm clearing, surrounded by tall trees that form a natural boundary around the space. The ground beneath your feet is covered in soft, loamy soil, and the sweet, earthy scent of dampness fills the air.",
+            "In the center of the clearing stands a large boulder, its surface covered in moss and lichen. A gap in the trees above allows a beam of sunlight to shine down onto the stone, creating a natural spotlight and illuminating it with an otherworldly glow.",
+            "As you gaze upon the boulder, you can sense a powerful, ancient energy emanating from it, as if it has been imbued with the wisdom and knowledge of generations past. It's possible that this stone once held great significance as a site for spiritual or cultural ceremonies, or perhaps it's simply a natural formation that has withstood the test of time.",
+            "Either way, you feel a sense of calm and tranquility settle over you as you stand in the clearing, surrounded by the peaceful beauty of nature."
+        ],
+        "_actions": {
+            "Travel North": {
+                "_action": "Travel",
+                "_direction": "North",
+                "_targetTile": "VillageGate"
+            },
+            "Travel South": {
+                "_action": "Travel",
+                "_direction": "South",
+                "_targetTile": "Crossroads"
+            },
+            "Meditate Under the Stars": {
+                "_action": "Rest",
+                "_description": [
+                    "With each breath, you feel yourself becoming more and more grounded, as if your roots are sinking deep into the earth below. You visualize your body being filled with a soft, glowing light, and you feel your health and mana being restored.",
+                    "As you sit in silence, you become aware of the sounds of nature around you - the chirping of birds, the rustling of leaves, and the gentle hum of the wind. You feel a deep connection to the natural world, and a sense of peace and harmony fills your entire being.",
+                    "After some time, you open your eyes and feel refreshed and rejuvenated, as if a weight has been lifted from your shoulders. You stand up and take a deep breath, feeling ready to face whatever challenges may lie ahead, with a newfound sense of clarity and focus."
+                ],
+                "_locked": true,
+                "_locked_message": "You have not learned the significance of this location yet.",
+                "_update_tile": {
+                    "CelestialSentinel": {
+                        "_actions": {
+                            "Meditate Under the Stars": {
+                                "_description": [
+                                    "As you return to the clearing and sit down in your familiar spot, you feel a sense of anticipation building within you. You close your eyes and focus on your breath, and as you do, you feel the energy from the boulder flowing into you once again. The carvings of the sun and moon seem to come alive, glowing with a soft, otherworldly light that surrounds you in a warm, comforting aura.",
+                                    "As before, you feel your wounds and ailments beginning to heal, your body and mind becoming stronger and more focused with each passing moment. You revel in the sensation of the healing energy coursing through your body, feeling as though you are being renewed from the inside out.",
+                                    "But this time, there is something different. You feel a sense of gratitude and appreciation for this sacred place, as if you are reconnecting with an old friend. You know that this clearing and the boulder at its center are more than just a source of healing, they are a source of spiritual nourishment and guidance. You feel humbled by the power of the energy here, and grateful for the opportunity to connect with it once again.",
+                                    "As you open your eyes and look up at the night sky, you feel a sense of wonder and awe at the beauty of the stars above you. The darkness seems less intimidating now."
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "Inspect Mossy Boulder": {
+                "_action": "Inspect",
+                "_description": [
+                    "As you approach the boulder, you notice that it's covered in intricate carvings of various celestial bodies. The images of the sun and moon are particularly prominent, their shapes and features standing out against the other stars and constellations that adorn the stone.",
+                    "As you study the carvings more closely, you begin to notice that they seem to follow a pattern or sequence, as if they were arranged in a specific order. You can't quite decipher what the pattern is, but it's clear that there was a great deal of thought and care put into the design of this sacred stone.",
+                    "The more you look at it, the more you realize that this place was undoubtedly important to those who came before you. Perhaps it was a place of worship or a site for ancient ceremonies, where the movements of the stars and planets were observed and recorded.",
+                    "Even now, you can feel the energy of the place, a sense of mystery and wonder that seems to emanate from the boulder itself. It's clear that this site still holds great significance, even if its original purpose has been lost to time."
+                ],
+                "_change_name": [
+                    true,
+                    "Celestial Sentinel"
+                ],
+                "_change_description": [
+                    true,
+                    [
+                        "You stand in the midst of a calm clearing, surrounded by tall trees that form a natural boundary around the space. The ground beneath your feet is covered in soft, loamy soil, and the sweet, earthy scent of dampness fills the air.",
+                        "The clearing is dominated by a large boulder in the center, covered in intricate carvings of celestial bodies. The carvings of the sun and moon stand out prominently, arranged in a pattern that suggests a deep understanding of the movements of the heavens.",
+                        "As you gaze at the stone, you feel a sense of awe and reverence, as if you are standing in a sacred place that has been revered for centuries. The air is filled with a palpable energy, as if the boulder itself is radiating a powerful aura that surrounds the entire clearing. It's clear that this site has held great significance to many people over the ages, and that its secrets and mysteries are still waiting to be uncovered.",
+                        "You feel a sense of calm and tranquility settle over you as you stand in the clearing, surrounded by the peaceful beauty of nature."
+                    ]
+                ],
+                "_change_image": [
+                    false
+                ],
+                "_seen": false,
+                "_update_tile": {
+                    "CelestialSentinel": {
+                        "_actions": {
+                            "Meditate Under the Stars": {
+                                "_locked": false
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "_visited": false,
+        "_image": "PeacefulClearing.png",
+        "_mapCoords": [
+            400,
+            350
+        ],
+        "_encounterTable": [
+            "Plains",
+            100,
+            30,
+            70
+        ]
+    },
+    "VillageGate": {
+        "_name": "Village Gate",
+        "_description": [
+            "As you approach the small village from the grassy plain, you see a cluster of low-rise buildings with thatched roofs nestled amidst lush greenery. The village appears to be small, with only a few dozen structures visible from your vantage point. Smoke rises lazily from a few chimneys, and you can hear the distant sounds of clucking chickens and bleating goats.",
+            "As you draw nearer, you notice the guard stationed at the gate. He seems to be a young man, dressed in simple garments and armed with a spear. His posture is tense, and he appears to be scanning the plains with a wary expression. You can't help but wonder what has put him on edge.",
+            "As you approach the gate, the guard notices you and raises his spear slightly, but he doesn't seem to suspect you of anything. Perhaps your demeanor is calm and non-threatening, or maybe he is simply accustomed to visitors."
+        ],
+        "_actions": {
+            "Travel South": {
+                "_action": "Travel",
+                "_direction": "South",
+                "_targetTile": "CelestialSentinel"
+            },
+            "Speak with the Guard": {
+                "_action": "Speak",
+                "_description": [
+                    "Speak with the guard."
+                ],
+                "_response": [
+                    ""
+                ],
+                "_seen": false,
+                "_options": {
+                    "1": {
+                        "_action": "Speak",
+                        "_description": [
+                            "\"Good day, sir. I'm just passing through your village. May I ask what has put you on edge?\""
+                        ],
+                        "_response": [
+                            "\"Good day, sir. I'm just passing through your village. May I ask what has put you on edge?\" you say to the guard at the gate.",
+                            "The guard relaxes slightly and replies, \"Good day to you too, traveler. Apologies for my tense demeanor, but we've had some trouble with bandits and raiders in the past. We're always on the lookout for potential threats.\"",
+                            "You nod sympathetically, \"I understand. Is there anything I should be aware of while I'm here?\"",
+                            "The guard thinks for a moment before responding, \"Not particularly. Just be respectful to the villagers and their customs. If you need anything, feel free to ask around or visit the local market.\""
+                        ],
+                        "_seen": false,
+                        "_options": {}
+                    },
+                    "2": {
+                        "_action": "Speak",
+                        "_description": [
+                            "\"I am a traveler seeking food and shelter for the night. Can you recommend an inn or a guesthouse?\""
+                        ],
+                        "_response": [
+                            "\"I am a traveler seeking food and shelter for the night. Can you recommend an inn or a guesthouse?\"",
+                            "The guard nods and replies, \"Of course. We have a few options in the village. The most popular one is the Golden Rooster Inn, which is just down the main road to your left. They serve hot meals and have clean rooms for a reasonable price.\"",
+                            "You thank him for the recommendation and ask if there are any other options in case the Golden Rooster is full.",
+                            "The guard nods again and responds, \"There is also the Rusty Bucket Inn, which is further down the road to your right. It's a bit cheaper, but the rooms are not as clean. And there's the Oak Tree Guesthouse, which is just outside the village gates, but it's a bit more expensive.\""
+                        ],
+                        "_seen": false,
+                        "_options": {
+                            "1": {
+                                "_action": "Speak",
+                                "_description": [
+                                    "\"Are there any particular dishes you recommend at the Golden Rooster Inn?\" you ask the guard."
+                                ],
+                                "_response": [
+                                    "\"Are there any particular dishes you recommend at the Golden Rooster Inn?\" you ask the guard.",
+                                    "The guard smiles, \"Ah, the Golden Rooster is known for their roasted chicken with potatoes and carrots. They also serve a delicious beef stew with crusty bread. And if you have a sweet tooth, their apple pie is a must-try.\""
+                                ],
+                                "_seen": false,
+                                "_options": {}
+                            },
+                            "2": {
+                                "_action": "Speak",
+                                "_description": [
+                                    "\"Excuse me,\" you say to the guard, \"but did you say that the Oak Tree Guesthouse is located outside the gates? That seems risky given the bandits and goblins around here.\""
+                                ],
+                                "_response": [
+                                    "\"Excuse me,\" you say to the guard, \"but did you say that the Oak Tree Guesthouse is located outside the gates? That seems risky given the bandits and goblins around here.\"",
+                                    "The guard nods, \"Yes, it is a bit farther out from the village, but it's a lovely place with beautiful views of the surrounding countryside. And don't worry, they have their own security measures in place to keep their guests safe.\"",
+                                    "You look a bit skeptical, \"Are you sure it's safe out there? I don't want to risk my life or belongings.\"",
+                                    "The guard assures you, \"Yes, I'm sure. The guesthouse has a reputation for being safe and secure. And if you're really concerned, you can hire a guide or an escort to accompany you there.\""
+                                ],
+                                "_seen": false,
+                                "_options": {}
+                            },
+                            "3": {
+                                "_action": "Speak",
+                                "_description": [
+                                    "\"Thanks for the recommendations. Do you have any advice for a traveler looking to explore the area around the village?\" you ask the guard."
+                                ],
+                                "_response": [
+                                    "\"Thanks for the recommendations. Do you have any advice for a traveler looking to explore the area around the village?\" you ask the guard.",
+                                    "The guard looks at you with a serious expression before responding, \"The area around the village can be quite dangerous, traveler. To the south is the Treacherous River, which lives up to its name. It's fast-moving and full of dangerous creatures like river snakes and crocodiles. The only way to cross is the Old Bridge, which is to the southwest of the village.\"",
+                                    "He continues, \"To the southeast of the village is the Darkwood Forest. It's a dangerous place filled with wolves and other creatures. There are also rumors of a necromancer who has taken up residence deep in the forest. We advise travelers to stay away from the forest if possible.\"",
+                                    "He pauses for a moment before adding, \"The grasslands around the village are mostly peaceful, but there have been increasing reports of goblin and bandit attacks lately. We're not sure why, but it's best to be cautious. And be careful of the slimes that inhabit the area, as they can be quite dangerous.\""
+                                ],
+                                "_seen": false,
+                                "_options": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "_visited": false,
+        "_image": "PeacefulClearing.png",
+        "_mapCoords": [
+            375,
+            350
+        ],
+        "_encounterTable": [
+            "Plains",
+            0,
+            0,
+            0
+        ]
+    },
+    "DarkwoodEntrance": {
+        "_name": "Entrance to Darkwood Forest",
+        "_description": [
+            "The dense canopy of trees overhead casts a dim light upon the forest floor, obscuring much of the terrain from view. A mist clings to the air, enveloping everything in a damp shroud that muffles sound and blurs the edges of your vision. The forest is alive with the sounds of rustling leaves, chirping insects, and the occasional snap of a twig, but you can't quite pinpoint their origins.",
+            "The underbrush is thick and tangled, making it difficult to move through the forest. Fallen branches and decaying logs litter the ground, providing habitats for a variety of insects and small animals. The trunks of the trees are covered in thick layers of moss and lichen, adding to the eerie and otherworldly atmosphere of the woods.",
+            "As you push deeper into the forest, the mist grows thicker, and the trees loom taller and more imposing. You can hear the distant roar of a waterfall, indicating that a river must be nearby. The mist and the dim light make it difficult to see far ahead, but you can sense that this forest is ancient and powerful, and you feel a sense of reverence and awe for the natural world that surrounds you."
+        ],
+        "_actions": {
+            "Travel West": {
+                "_action": "Travel",
+                "_direction": "West",
+                "_targetTile": "Crossroads"
+            }
+        },
+        "_visited": false,
+        "_image": "DarkwoodEntrance.png",
+        "_mapCoords": [
+            450,
+            400
+        ],
+        "_encounterTable": [
+            "Darkwood",
+            0,
+            0,
+            0
+        ]
+    },
+    "ThunderingRiver": {
+        "_name": "Thundering River",
+        "_description": [
+            "Standing on the bank of the river, you can see that the water rushes by with great force, churning over rocks and boulders as it flows downstream. The white froth of the rapids contrasts with the deep blue-green of the river's calmer stretches, creating a dynamic and captivating scene. The riverbank is steep and treacherous, making it impossible to cross here.",
+            "To the west, you can just make out what appears to be a bridge spanning the river. The bridge looks sturdy and well-constructed, offering the possibility of safe passage to the other side.",
+            "To the east, the river disappears into the dense forest, its path obscured by trees and underbrush. The sound of rushing water can still be heard, hinting at the possibility of other waterfalls or rapids further downstream.",
+            "To the north, the grassy plain stretches outwards, interrupted only by the occasional small copse of trees or boulder. The wall of the village can be seen in the distance, with the thatched roofs of its buildings visible over the top."
+        ],
+        "_actions": {
+            "Travel North": {
+                "_action": "Travel",
+                "_direction": "North",
+                "_targetTile": "Crossroads"
+            },
+            "Inspect Riverbank": {
+                "_action": "Inspect",
+                "_description": [
+                    "As you move closer to the riverbank, you notice that the ground beneath your feet is damp and muddy. The steep embankment leading down to the water's edge is covered in slippery rocks and boulders, making it clear that crossing the river here would be difficult and dangerous.",
+                    "As you look out at the rushing water, you can see that the riverbed is uneven and dotted with large rocks and boulders that create numerous rapids and small waterfalls. The water itself is a deep shade of blue-green, sparkling in the sunlight as it rushes downstream.",
+                    "You can also see that the banks of the river are lined with tall trees and thick underbrush, creating a natural barrier that would make it difficult to pass through the forest along the river's edge."
+                ],
+                "_change_name": [
+                    false
+                ],
+                "_change_description": [
+                    false
+                ],
+                "_change_image": [
+                    false
+                ]
+            }
+        },
+        "_visited": false,
+        "_image": "Crossroads.png",
+        "_mapCoords": [
+            400,
+            400
+        ],
+        "_encounterTable": [
+            "River",
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -1,0 +1,124 @@
+{
+    "Goblin": {
+        "_levelTable": {
+            "con": 0.1,
+            "int": 0,
+            "str": 0.1,
+            "end": 0.1,
+            "agi": 0.2
+        },
+        "_health": 0,
+        "_maxHealth": 0,
+        "_mana": 0,
+        "_maxMana": 0,
+        "_damage": 0,
+        "_accuracy": 50,
+        "_inventory": {
+            "Equipped": {
+                "Weapon": "Crude Club",
+                "Shield": "Fists"
+            },
+            "Weapon": {
+                "Crude Club": {
+                    "_rarity": "F",
+                    "_damage": 2,
+                    "_quantity": 1
+                }
+            },
+            "Shield": {
+                "Fists": {
+                    "_rarity": "F",
+                    "_defense": 0,
+                    "_quantity": 1
+                }
+            }
+        }
+    },
+    "Bandit": {
+        "_levelTable": {
+            "con": 0.2,
+            "int": 0,
+            "str": 0.1,
+            "end": 0.2,
+            "agi": 0.1
+        },
+        "_inventory": {
+            "Equipped": {
+                "Weapon": "Rusty Sword",
+                "Shield": "Leather Shield"
+            },
+            "Weapon": {
+                "Rusty Sword": {
+                    "_rarity": "E",
+                    "_damage": 8,
+                    "_quantity": 1
+                }
+            },
+            "Shield": {
+                "Leather Shield": {
+                    "_rarity": "E",
+                    "_defense": 5,
+                    "_quantity": 1
+                }
+            }
+        }
+    },
+    "Bandit Leader": {
+        "_levelTable": {
+            "con": 0.2,
+            "int": 0,
+            "str": 0.1,
+            "end": 0.2,
+            "agi": 0.1
+        },
+        "_inventory": {
+            "Equipped": {
+                "Weapon": "Iron Sword",
+                "Shield": "Leather Shield"
+            },
+            "Weapon": {
+                "Iron Sword": {
+                    "_rarity": "D",
+                    "_damage": 12,
+                    "_quantity": 1
+                }
+            },
+            "Shield": {
+                "Leather Shield": {
+                    "_rarity": "E",
+                    "_defense": 5,
+                    "_quantity": 1
+                }
+            }
+        }
+    },
+    "Dire Rabbit": {
+        "_levelTable": {
+            "con": 0.1,
+            "int": 0,
+            "str": 0.2,
+            "end": 0.1,
+            "agi": 0.3
+        },
+        "_inventory": {
+            "Equipped": {
+                "Weapon": "Dire Rabbit Claws",
+                "Shield": "Dire Rabbit Hide"
+            },
+            "Weapon": {
+                "Dire Rabbit Claws": {
+                    "_rarity": "E",
+                    "_damage": 8,
+                    "_quantity": 1
+                }
+            },
+            "Shield": {
+                "Dire Rabbit Hide": {
+                    "_rarity": "E",
+                    "_defense": 8,
+                    "_quantity": 1
+                }
+            }
+        }
+    }
+}

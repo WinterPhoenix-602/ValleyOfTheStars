@@ -1,0 +1,81 @@
+{
+    "Newbie": {
+        "_statPoints": 0,
+        "_shieldDuration": 0,
+        "_inventory": {
+            "Gold": 0,
+            "Headers": {
+                "Equipped": [
+                    "Equipment Slot",
+                    "Name",
+                    "Stats"
+                ],
+                "Weapon": [
+                    "Weapon Name",
+                    "Stats",
+                    "Amount"
+                ],
+                "Shield": [
+                    "Shield Name",
+                    "Stats",
+                    "Amount"
+                ],
+                "Consumable": [
+                    "Consumable Name",
+                    "Effect",
+                    "Amount"
+                ],
+                "Ingredient": [
+                    "Ingredient Name",
+                    "Used For",
+                    "Amount"
+                ]
+            },
+            "Equipped": {
+                "Weapon": "Wooden Sword",
+                "Shield": "Wooden Shield"
+            },
+            "Weapon": {
+                "Fists": {
+                    "_rarity": "F",
+                    "_damage": 0,
+                    "_quantity": 1
+                },
+                "Wooden Sword": {
+                    "_rarity": "E",
+                    "_damage": 5,
+                    "_quantity": 1
+                }
+            },
+            "Shield": {
+                "Fists": {
+                    "_rarity": "F",
+                    "_defense": 0,
+                    "_quantity": 1
+                },
+                "Wooden Shield": {
+                    "_rarity": "F",
+                    "_defense": 2,
+                    "_quantity": 1
+                }
+            },
+            "Consumable": {
+                "Burrito": {
+                    "_rarity": "D",
+                    "_stats": {
+                        "Health": 15
+                    },
+                    "_quantity": 3
+                },
+                "Block of Cheese": {
+                    "_rarity": "E",
+                    "_stats": {
+                        "Health": 5
+                    },
+                    "_quantity": 1
+                }
+            },
+            "Ingredient": {}
+        }
+    }
+}
