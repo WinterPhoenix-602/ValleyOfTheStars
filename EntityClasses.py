@@ -636,7 +636,7 @@ class Player(Entity):
         elif result == "crit":
             # Display a message indicating the attack critically hit
             slow_table(tabulate(
-                [[f"You strike a critical blow, delivering a crushing hit and dealing {Fore.RED}{damage}{Style.RESET_ALL} damage to {target.name}"]], tablefmt="fancy_outline"))
+                [[formatForTable(f"You strike a critical blow, delivering a crushing hit and dealing {Fore.RED}{damage}{Style.RESET_ALL} damage to {target.name}!")]], tablefmt="fancy_grid"))
 
     # Casts fireball on input targets
     def cast_fireball(self, targets):
@@ -1146,7 +1146,7 @@ class Enemy(Entity):
     def death(self, encounter):
         slow_table(tabulate(
             [[f"{self._name} {Fore.LIGHTBLACK_EX}falls on the floor, dead.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
-        del encounter.enemies_dict[self._name]
+        del encounter.enemies_dict[escape_ansi(self._name)]
 
     # Returns stat list
     def get_stats_list(self):
