@@ -392,15 +392,13 @@ class Player(Entity):
             self._statPoints = 0
         # If the character gained experience, print a message indicating the amount of experience gained
         if exp > 0:
-            slow_table(
-                tabulate([[f"{Fore.YELLOW}You gained {int(exp // 1)} experience.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+            slow_table(f"{Fore.YELLOW}You gained {int(exp // 1)} experience.{Style.RESET_ALL}")
             # If the character leveled up, print a message indicating their new level
             if levelChange > 0:
-                slow_table(tabulate(
-                    [[f"{Fore.YELLOW}You leveled up! {self._level - levelChange} -> {self._level}{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+                slow_table(f"{Fore.YELLOW}You leveled up! {self._level - levelChange} -> {self._level}{Style.RESET_ALL}")
                 # Ask the player if they want to increase an attribute
                 while True:
-                    slow_table(tabulate([["", "Would you like to distribute your stat points?"], ["1:", "Yes"], ["2:", "No"]], headers="firstrow", tablefmt="fancy_outline"))
+                    slow_table([["", "Would you like to distribute your stat points?"], ["1:", "Yes"], ["2:", "No"]], headers="firstrow", tablefmt="fancy_outline")
                     try:
                         choice = int(input("? "))
                     except ValueError:
@@ -416,12 +414,10 @@ class Player(Entity):
                         invalidChoice()
         # If the character lost experience, print a message indicating the amount of experience lost
         elif exp < 0:
-            slow_table(
-                tabulate([[f"{Fore.YELLOW}You lost {-int(exp // 1)} experience.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+            slow_table(f"{Fore.YELLOW}You lost {-int(exp // 1)} experience.{Style.RESET_ALL}", tablefmt="fancy_outline")
             # If the character leveled down, print a message indicating their new level
             if levelChange < 0:
-                slow_table(tabulate(
-                    [[f"{Fore.YELLOW}You leveled down. {self._level - levelChange} -> {self._level}{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+                slow_table(f"{Fore.YELLOW}You leveled down. {self._level - levelChange} -> {self._level}{Style.RESET_ALL}", tablefmt="fancy_outline")
 
     # Allows the player to distribute their stat points
     def stats_menu(self):
@@ -429,7 +425,7 @@ class Player(Entity):
         statsChange = [0, 0, 0, 0, 0]
         while self._statPoints > sum(statsChange):
             # Displays the player's stats
-            slow_table(tabulate(
+            slow_table(
                 [
                 ["Current Stats", f"+{self._statPoints - sum(statsChange)}"],
                 ["Constitution:", f"{self._constitution} + {statsChange[0]}"],
@@ -442,9 +438,10 @@ class Player(Entity):
                 ["Defense:", f"{self._defense} + {statsChange[3] * 2}"],
                 ["Agility:", f"{self._agility} + {statsChange[4]}"],
                 ], 
-                headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center")))
+                headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center")
+                )
             # Asks the player which stat they want to increase
-            slow_table(tabulate(
+            slow_table(
                 [
                 ["", "Which stat would you like to increase?"],
                 ["1:", "Constitution"],
@@ -454,7 +451,7 @@ class Player(Entity):
                 ["5:", "Agility"],
                 ["6:", "Go Back"]
                 ],
-                headers="firstrow", tablefmt="fancy_outline"))
+                headers="firstrow", tablefmt="fancy_outline")
             try:
                 choice = int(input("? "))
             except ValueError:
@@ -496,8 +493,7 @@ class Player(Entity):
             else:
                 invalidChoice()
         # Displays message indicating that the player has no stat points left
-        slow_table(tabulate(
-            [[f"{Fore.YELLOW}You have no stat points left.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+        slow_table(f"{Fore.YELLOW}You have no stat points left.{Style.RESET_ALL}", tablefmt="fancy_outline")
         # Asks the player if they want to confirm their stat changes
         if sum(statsChange) == 0:
             return
@@ -522,7 +518,7 @@ class Player(Entity):
     def increase_stat(self, statMessage, statsChange, statsChangeIndex):
         # Asks the player how many stat points they want to increase the stat by
         while True:
-            slow_table(tabulate([[statMessage]], tablefmt="fancy_outline"))
+            slow_table(statMessage, tablefmt="fancy_outline")
             try:
                 increase = int(input("? "))
             except ValueError:
@@ -538,7 +534,7 @@ class Player(Entity):
         
     def confirm_stats(self, statsChange):
         # Displays change between old and new stats
-        slow_table(tabulate(
+        slow_table(
             [
             ["Stat", "Old Stats", "New Stats"],
             ["Constitution:", self._constitution, self._constitution + statsChange[0]],
@@ -551,16 +547,17 @@ class Player(Entity):
             ["Defense:", self._defense, self._defense + statsChange[3] * 2],
             ["Agility:", self._agility, self._agility + statsChange[4]],
             ],
-            headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center", "center")))
+            headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center", "center")
+            )
         # Asks the player to confirm their changes
         while True:
-            slow_table(tabulate(
+            slow_table(
                 [
                 ["", "Are you sure you want to make these changes?"],
                 ["1:", "Yes"],
                 ["2:", "No"]
                 ],
-                headers="firstrow", tablefmt="fancy_outline"))
+                headers="firstrow", tablefmt="fancy_outline")
             try:
                 choice = int(input("? "))
             except ValueError:
@@ -587,32 +584,25 @@ class Player(Entity):
         # Displays appropriate messages based on the message received
         if message == "heal":
             # Displays heal message with the amount healed
-            slow_table(tabulate(
-                [[f"{Fore.GREEN}You are healed for {change} health points.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+            slow_table(f"{Fore.GREEN}You are healed for {change} health points.{Style.RESET_ALL}", tablefmt="fancy_grid")
         if message == "overheal":
             # Displays overheal message with the amount healed
             if change == 1:
-                slow_table(tabulate(
-                    [[f"{Fore.GREEN}You are healed for {change} health point.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+                slow_table(f"{Fore.GREEN}You are healed for {change} health point.{Style.RESET_ALL}", tablefmt="fancy_grid")
             else:
-                slow_table(tabulate(
-                    [[f"{Fore.GREEN}You are healed for {change} health points.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+                slow_table(f"{Fore.GREEN}You are healed for {change} health points.{Style.RESET_ALL}", tablefmt="fancy_grid")
         if message == "regen mana":
             # Displays mana regeneration message with the amount regenerated
-            slow_table(tabulate(
-                [[f"{Fore.LIGHTCYAN_EX}Your mana regenerates {change} points.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+            slow_table(f"{Fore.LIGHTCYAN_EX}Your mana regenerates {change} points.{Style.RESET_ALL}", tablefmt="fancy_grid")
         if message == "expend mana":
             # Displays mana expenditure message with the amount expended
-            slow_table(
-                tabulate([[f"{Fore.LIGHTCYAN_EX}You expend {change} mana.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+            slow_table(f"{Fore.LIGHTCYAN_EX}You expend {change} mana.{Style.RESET_ALL}", tablefmt="fancy_grid")
         if message == "over regen mana":
             # Displays over-regen message with the amount regenerated
             if change == 1:
-                slow_table(tabulate(
-                    [[f"{Fore.LIGHTCYAN_EX}Your mana regenerates {change} point.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+                slow_table(f"{Fore.LIGHTCYAN_EX}Your mana regenerates {change} point.{Style.RESET_ALL}", tablefmt="fancy_grid")
             elif change > 0:
-                slow_table(tabulate(
-                    [[f"{Fore.LIGHTCYAN_EX}Your mana regenerates {change} points.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+                slow_table(f"{Fore.LIGHTCYAN_EX}Your mana regenerates {change} points.{Style.RESET_ALL}", tablefmt="fancy_grid")
 
     # Displays appropriate message for melee attack
     def melee_attack(self, target):
@@ -621,22 +611,18 @@ class Player(Entity):
         # If the attack successfully hit and did damage
         if result == "hit":
             # Display a message indicating the damage dealt
-            slow_table(tabulate(
-                [[f"You hit {target.name} and deal {Fore.RED}{damage}{Style.RESET_ALL} damage!"]], tablefmt="fancy_outline"))
+            slow_table(f"You hit {target.name} and deal {Fore.RED}{damage}{Style.RESET_ALL} damage!", tablefmt="fancy_outline")
         # If the attack hit but was blocked by the target's shield
         elif result == "shield block":
             # Display a message indicating the shield blocked the attack
-            slow_table(tabulate(
-                [[f"You attempt to attack with your {self._equippedWeapon.name}, but it glances off of their {target.equippedShield.name}!"]], tablefmt="fancy_outline"))
+            slow_table(f"You attempt to attack with your {self._equippedWeapon.name}, but it glances off of their {target.equippedShield.name}!", tablefmt="fancy_outline")
         elif result == "block":
             # Display a message indicating the target blocked the attack
-            slow_table(tabulate(
-                [[f"You attempt to attack with your {self._equippedWeapon.name}, but {target.name} deflects the blow!"]], tablefmt="fancy_outline"))
+            slow_table(f"You attempt to attack with your {self._equippedWeapon.name}, but {target.name} deflects the blow!", tablefmt="fancy_outline")
         # If the attack critically hit
         elif result == "crit":
             # Display a message indicating the attack critically hit
-            slow_table(tabulate(
-                [[formatForTable(f"You strike a critical blow, delivering a crushing hit and dealing {Fore.RED}{damage}{Style.RESET_ALL} damage to {target.name}!")]], tablefmt="fancy_grid"))
+            slow_table(f"You strike a critical blow, dealing {Fore.RED}{damage}{Style.RESET_ALL} damage to {target.name}!", tablefmt="fancy_grid")
 
     # Casts fireball on input targets
     def cast_fireball(self, targets):
@@ -646,8 +632,7 @@ class Player(Entity):
             targets[enemy].modify_attribute(
                 "health", -int((self._intelligence * 0.8) // 1))
             # Displays damage dealt to target by fireball
-            slow_table(tabulate(
-                [[f"The fire engulfs {targets[enemy].name} and deals {Fore.RED}{int((self._intelligence * 0.8) // 1)}{Style.RESET_ALL} damage!"]], tablefmt="fancy_outline"))
+            slow_table(f"The fire engulfs {targets[enemy].name} and deals {Fore.RED}{int((self._intelligence * 0.8) // 1)}{Style.RESET_ALL} damage!")
 
     # Casts force bolt on input target
     def cast_force_bolt(self, target):
@@ -655,28 +640,24 @@ class Player(Entity):
         # Reduces target's health by 150% of caster's intelligence rounded down
         target.modify_attribute("health", -int((self._intelligence * 1.5) // 1))
         # Displays damage dealt to target by force bolt
-        slow_table(tabulate(
-            [[f"The bolt of force strikes {target.name} and deals {Fore.RED}{int((self._intelligence * 1.5) // 1)}{Style.RESET_ALL} damage!"]], tablefmt="fancy_outline"))
+        slow_table(f"The bolt of force strikes {target.name} and deals {Fore.RED}{int((self._intelligence * 1.5) // 1)}{Style.RESET_ALL} damage!", tablefmt="fancy_outline")
 
     # Adds/subtracts turns to shield duration and updates defense accordingly
     def modify_shieldDuration(self, turns):
         if turns > 0:
             if self._shieldDuration > 0:
                 # Displays message for reinforcing shield duration
-                slow_table(tabulate(
-                    [[f"{Fore.LIGHTCYAN_EX}Your mana flows out to reinforce your protection.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+                slow_table(f"{Fore.LIGHTCYAN_EX}Your mana flows out to reinforce your protection.{Style.RESET_ALL}", tablefmt="fancy_outline")
             else:
                 # Displays message for creating a new shield
-                slow_table(tabulate(
-                    [[f"{Fore.LIGHTCYAN_EX}Your mana surges out into a shining shield, helping to protect you from harm.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+                slow_table(f"{Fore.LIGHTCYAN_EX}Your mana surges out into a shining shield, helping to protect you from harm.{Style.RESET_ALL}", tablefmt="fancy_outline")
                 # Doubles defense while shield is active
                 self._defense = self._defense * 2
         # Updates shield duration
         self._shieldDuration += turns
         # Displays message when shield duration ends and updates defense accordingly
         if self._shieldDuration == 0:
-            slow_table(tabulate([[f"{Fore.BLACK}Your shield flickers and dies.{Style.RESET_ALL}"]],
-                                     tablefmt="fancy_outline"))
+            slow_table(f"{Fore.BLACK}Your shield flickers and dies.{Style.RESET_ALL}", tablefmt="fancy_outline")
             self._defense = int(self._defense / 2)
 
     # Equips selected item
@@ -686,51 +667,37 @@ class Player(Entity):
             if type(selected) == Weapon:
                 # If switching from a weapon to a different weapon
                 if escape_ansi(selected.name) != "Fists" and escape_ansi(self._equippedWeapon.name) != "Fists":
-                    slow_table(tabulate(
-                        [[f"You stow away your {self._equippedWeapon.name} and equip your {selected.name}."]], tablefmt='fancy_outline') + "\n")
+                    slow_table(f"You stow away your {self._equippedWeapon.name} and equip your {selected.name}.", tablefmt='fancy_outline')
                 # If switching from a weapon to fists
                 elif escape_ansi(self._equippedWeapon.name) != "Fists":
-                    slow_table(tabulate(
-                        [[f"You stow away your {self._equippedWeapon.name}."]], tablefmt="fancy_outline") + "\n")
+                    slow_table(f"You stow away your {self._equippedWeapon.name}.", tablefmt="fancy_outline")
                 # If equipping a weapon
                 else:
-                    slow_table(tabulate(
-                        [[f"You equip your {selected.name}."]], tablefmt="fancy_outline") + "\n")
+                    slow_table(f"You equip your {selected.name}.", tablefmt="fancy_outline")
                 # Set equipped weapon
                 self._equippedWeapon = selected
             # If selected item is a shield
             if type(selected) == Shield:
                 # If switching from a shield to a different shield
                 if escape_ansi(selected.name) != "Fists" and escape_ansi(self._equippedShield.name) != "Fists":
-                    slow_table(tabulate(
-                        [[f"You stow away your {self._equippedShield} and equip your {selected.name}."]], tablefmt="fancy_outline") + "\n")
+                    slow_table(f"You stow away your {self._equippedShield} and equip your {selected.name}.", tablefmt="fancy_outline")
                 # If switching from a shield to fists
                 elif escape_ansi(self._equippedShield.name) != "Fists":
-                    slow_table(tabulate(
-                        [[f"You stow away your {self._equippedShield.name}."]], tablefmt="fancy_outline") + "\n")
+                    slow_table(f"You stow away your {self._equippedShield.name}.", tablefmt="fancy_outline")
                 # If equipping a shield
                 else:
-                    slow_table(tabulate(
-                        [[f"You equip your {selected.name}."]], tablefmt="fancy_outline") + "\n")
+                    slow_table(f"You equip your {selected.name}.", tablefmt="fancy_outline")
                 # Set equipped shield
                 self._equippedShield = selected
         # If selected item is already equipped
         else:
-            slow_table(
-                (
-                    tabulate(
-                        [["You decided what you have is good enough for now."]],
-                        tablefmt="fancy_outline",
-                    )
-                    + "\n"
-                )
-            )
+            slow_table("You decided what you have is good enough for now.", tablefmt="fancy_outline")
 
     # Displays player status and options
     def display_status(self):
         while True:
             # Displays the player's stats
-            slow_table(tabulate(
+            slow_table(
                 [
                 ["Current Stats", f"+{self._statPoints} Stat Points"],
                 ["Constitution:", f"{self._constitution}"],
@@ -743,10 +710,10 @@ class Player(Entity):
                 ["Defense:", f"{self._defense}"],
                 ["Agility:", f"{self._agility}"]
                 ],
-                headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center")))
+                headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center")
+                )
             # Displays player options
             slow_table(
-                tabulate(
                     [
                         ["", "What would you like to do?"],
                         ["1:", "Open Inventory"],
@@ -756,7 +723,6 @@ class Player(Entity):
                     headers="firstrow",
                     tablefmt="fancy_outline",
                 )
-            )
             # Asks player for input
             try:
                 statusChoice = int(input("? "))
@@ -787,8 +753,7 @@ class Player(Entity):
             slow_table(self.full_inventory_table())
             # Print options for the player to choose from
             inventoryMenu = self.inventory_menu()
-            slow_table(
-                tabulate(inventoryMenu, headers="firstrow", tablefmt="fancy_outline"))
+            slow_table(inventoryMenu, headers="firstrow", tablefmt="fancy_outline")
             try:
                 inventoryChoice = int(input("? "))
                 clrscr()
@@ -845,16 +810,13 @@ class Player(Entity):
     def sub_inventory_menu(self, inv_type):
         # If there are no items of the specified type in the inventory, display a message and return to inventory menu
         if len(self._inventory[inv_type]) <= 0:
-            slow_table(tabulate(
-                [[f'You have no {inflectEngine.plural(inv_type)} in your inventory.']], tablefmt="fancy_outline"))
+            slow_table(f'You have no {inflectEngine.plural(inv_type)} in your inventory.', tablefmt="fancy_outline")
             return "Go Back"
         # If there are items of the specified type in the inventory, display a table of the items
         elif inv_type in ["Weapon", "Shield"]:
-            slow_table(
-                tabulate([[f"Which {inv_type} would you like to equip?"]], tablefmt="fancy_grid"))
+            slow_table(f"Which {inv_type} would you like to equip?", tablefmt="fancy_grid")
         elif inv_type == "Consumable":
-            slow_table(
-                tabulate([[f"Which {inv_type} would you like to use?"]], tablefmt="fancy_grid"))
+            slow_table(f"Which {inv_type} would you like to use?", tablefmt="fancy_grid")
         slow_table(self.sub_inventory_table(inv_type, subMenu=True))
         try:
             # Get player input 
@@ -880,12 +842,10 @@ class Player(Entity):
             # If player chooses to go back, display a message and return to inventory menu
             if count + 1 == len(self._inventory[inv_type]):
                 if inv_type in ["Weapon", "Shield"]:
-                    slow_table(tabulate(
-                        [["You decided what you have is good enough for now."]], tablefmt="fancy_outline") + "\n")
+                    slow_table("You decided what you have is good enough for now.", tablefmt="fancy_outline")
                     return "Go Back"
                 elif inv_type == "Consumable":
-                    slow_table(tabulate(
-                        [["You decided not to use anything."]], tablefmt="fancy_outline") + "\n")
+                    slow_table("You decided not to use anything.", tablefmt="fancy_outline")
                     return "Go Back"
 
 
@@ -896,11 +856,9 @@ class Player(Entity):
             return
         # Print a message indicating that the item is being used
         if "Potion" in item.name:
-            slow_table(tabulate(
-                [[f"You pop the cork from the vial, and down the {item.name} within."]], tablefmt="fancy_outline") + "\n")
+            slow_table(f"You pop the cork from the vial, and down the {item.name} within.", tablefmt="fancy_outline")
         else:
-            slow_table(tabulate(
-                [[f"You quickly scarf down the {item.name}."]], tablefmt="fancy_outline") + "\n")
+            slow_table(f"You quickly scarf down the {item.name}.", tablefmt="fancy_outline")
             # Modify player attributes based on the item's stats
         for stat in item.stats:
             if stat == "Health":
@@ -926,8 +884,7 @@ class Player(Entity):
     def modify_gold(self, goldAmount):
         # Increase or decrease the player's gold based on the input goldAmount, and print a message indicating the change
         self._inventory["Gold"] += goldAmount
-        slow_table(tabulate(
-            [[f"You gained {Fore.LIGHTYELLOW_EX}{goldAmount} Gold.{Style.RESET_ALL}"]], tablefmt="fancy_grid"))
+        slow_table(f"You gained {Fore.LIGHTYELLOW_EX}{goldAmount} Gold.{Style.RESET_ALL}", tablefmt="fancy_grid")
 
     # Sorts inventory dictionary by item type, and then by rarity and relevant stat value
     def sort_inventory(self):
@@ -1021,7 +978,21 @@ class Player(Entity):
             self.modify_shieldDuration(-1)
         # return updated turn counter
         return turn
-
+    
+    # Returns table representation of player combat stats
+    def combat_stats(self):
+        return [
+            ["Player", "Health", "Mana", "Damage", "Defense", "Agility"],
+            [
+                f"{Fore.YELLOW}Lv. {self._level}{Style.RESET_ALL} {self._name}",
+                f"{Fore.GREEN}{self._health}/{self._maxHealth}{Style.RESET_ALL}",
+                f"{Fore.LIGHTCYAN_EX}{self._mana}/{self._maxMana}{Style.RESET_ALL}",
+                f"{Fore.RED}{self._damage + self._equippedWeapon.damage}{Style.RESET_ALL}",
+                f"{Fore.BLUE}{self._defense + self._equippedShield.defense}{Style.RESET_ALL}",
+                f"{Fore.LIGHTGREEN_EX}{self._agility}{Style.RESET_ALL}",
+            ],
+        ]
+    
     # Returns formatted list representation
     def __repr__(self):
         table = [
@@ -1077,11 +1048,11 @@ class Enemy(Entity):
     # Distributes stats based on the enemy's leveltable
     def distribute_stats(self):
         # Add the appropriate number of points to each stat based on the enemy's leveltable
-        self._constitution += self._levelTable["con"] * self._statPoints
-        self._intelligence += self._levelTable["int"] * self._statPoints
-        self._strength += self._levelTable["str"] * self._statPoints
-        self._endurance += self._levelTable["end"] * self._statPoints
-        self._agility += self._levelTable["agi"] * self._statPoints
+        self._constitution += int(self._levelTable["con"] * self._statPoints)
+        self._intelligence += int(self._levelTable["int"] * self._statPoints)
+        self._strength += int(self._levelTable["str"] * self._statPoints)
+        self._endurance += int(self._levelTable["end"] * self._statPoints)
+        self._agility += int(self._levelTable["agi"] * self._statPoints)
         # Reset the stat points to 0
         self._statPoints = 0
         # Update the enemy's health, mana, damage, and defense based on their new stats
@@ -1124,28 +1095,23 @@ class Enemy(Entity):
         # If the attack successfully hit
         if result == "hit":
             # Display a message indicating the damage dealt
-            slow_table(tabulate(
-                [[f"{self._name} hits you and deals {Fore.RED}{damage}{Style.RESET_ALL} damage!{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+            slow_table(f"{self._name} hits you and deals {Fore.RED}{damage}{Style.RESET_ALL} damage!{Style.RESET_ALL}")
         # If the attack hit but was blocked by the player's shield
         elif result == "shield block":
             # Display a message indicating the shield blocked the attack
-            slow_table(tabulate(
-                [[f"{self._name} attempts to attack with their {self._equippedWeapon.name}, but you deflect the blow with your {target.equippedShield.name}!{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+            slow_table(f"{self._name} attempts to attack with their {self._equippedWeapon.name}, but you deflect the blow with your {target.equippedShield.name}!{Style.RESET_ALL}")
         # If the attack hit but was blocked by the player's base defense
         elif result == "block":
             # Display a message indicating the player blocked the attack
-            slow_table(tabulate(
-                [[f"{self._name} swings their {self._equippedWeapon.name} at you, but you parry the attack!{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+            slow_table(f"{self._name} swings their {self._equippedWeapon.name} at you, but you parry the attack!{Style.RESET_ALL}")
         # If the attack critically hit
         elif result == "crit":
             # Display a message indicating that they crit
-            slow_table(tabulate(
-                [[f"{self.name} lands a critical hit, striking a devastating blow and dealing {Fore.RED}{damage}{Style.RESET_ALL} damage!"]], tablefmt="fancy_outline"))
+            slow_table(f"{self.name} lands a critical hit, dealing {Fore.RED}{damage}{Style.RESET_ALL} damage!")
 
     # Displays death message, deletes self from encounter
     def death(self, encounter):
-        slow_table(tabulate(
-            [[f"{self._name} {Fore.LIGHTBLACK_EX}falls on the floor, dead.{Style.RESET_ALL}"]], tablefmt="fancy_outline"))
+        slow_table(f"{self._name} {Fore.LIGHTBLACK_EX}falls on the floor, dead.{Style.RESET_ALL}")
         del encounter.enemies_dict[escape_ansi(self._name)]
 
     # Returns stat list

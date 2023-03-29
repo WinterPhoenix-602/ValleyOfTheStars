@@ -35,12 +35,12 @@ def escape_ansi(line=""):
 def waitForKey(encounterType="", message=""):
     if encounterType == "combat":
         # If the encounter type is combat, display a victory message
-        slow_table(tabulate([[message]], tablefmt="fancy_outline"))
+        slow_table(message)
     elif encounterType == "inspect":
         # If the encounter type is inspect, display a message indicating interest
-        slow_table(tabulate([["Interesting..."]], tablefmt="fancy_outline"))
+        slow_table("Interesting...")
     # If the encounter type is conversation, rest, or passive, do nothing
-    slow_table(tabulate([["Press Enter to Continue"]], tablefmt="fancy_outline"))
+    slow_table("Press Enter to Continue")
     # Wait for the user to press Enter before continuing
     input()
     # Clear the screen
@@ -49,7 +49,7 @@ def waitForKey(encounterType="", message=""):
 # Prints an error message for an invalid choice
 def invalidChoice(invalidChoice = "I'm sorry, that is not a valid choice."):
     # Construct the error message in red using the colorama library
-    invalidChoice = f"{Fore.RED}{tabulate([[invalidChoice]], tablefmt='fancy_outline')}{Style.RESET_ALL}"
+    invalidChoice = f"{Fore.RED}{invalidChoice}{Style.RESET_ALL}"
     # Clear the screen
     clrscr()
     # Display the error message
@@ -69,7 +69,20 @@ def slow_line(string="Testing, 1, 2.", delay=0.025, end="\n"):
     print(end, end="")
 
 # Prints a formatted table with a delay between each line
-def slow_table(string=tabulate([["Testing"], [1], [2]], tablefmt="fancy_outline"), delay=0.05):
+def slow_table(string=None, tablefmt="fancy_grid", headers=False, colalign=(), delay=0.05):
+    if string is None:
+        string = [["Testing"], [1], [2]]
+    if type(string) == str:
+        # If the input is a string, wrap it to 100 characters
+        string = textwrap.fill(string, 100, break_long_words=False, break_on_hyphens=False)
+        # Wrap the string in a table
+        string = tabulate([[string]], tablefmt=tablefmt)
+    elif type(string) == list and headers is False:
+        # Wrap the string in a table
+        string = tabulate(string, tablefmt=tablefmt, colalign=colalign)
+    elif type(string) == list:
+        # Wrap the string in a table
+        string = tabulate(string, tablefmt=tablefmt, headers=headers, colalign=colalign)
     # Split the string into lines and iterate over each one
     for line in string.splitlines():
         #Print the line, wait for specified delay
@@ -86,6 +99,7 @@ def formatForTable(inputText="", wrap=100):
         for count, paragraph in enumerate(inputText):
             inputText[count] = textwrap.fill(
                 inputText[count], wrap, break_long_words=False, break_on_hyphens=False)
+        return inputText
 
 
 # Defines a custom exception for invalid endline characters
@@ -110,8 +124,8 @@ class InvalidAction(Exception):
 # Testing function
 def messageTesting():
     print(inflectEngine.plural("fish"))
-    waitForKey("combat")
-    waitForKey("inspect")
+    waitForKey("combat", "You have defeated the enemy!")
+    waitForKey("inspect", "Interesting...")
     waitForKey("conversation")
     waitForKey("passive")
     invalidChoice()

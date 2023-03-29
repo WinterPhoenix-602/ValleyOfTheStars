@@ -140,7 +140,7 @@ class Encounter(ABC):
                 gainsString = gainsString.replace(",", "")
             gainsString += "."
             # Prints the gainsString in a formatted table
-            slow_table(tabulate([[formatForTable(gainsString)]], tablefmt="fancy_grid"))
+            slow_table(gainsString)
 
 
 class PassiveEncounter(Encounter):
@@ -151,7 +151,7 @@ class PassiveEncounter(Encounter):
 
     def start_encounter(self, player=Player()):
         # Print encounter message and description
-        slow_table(tabulate([[f"You ran into a {self._name}!"], ["\n\n".join(self._startDescription)]], tablefmt="fancy_grid"))
+        slow_table([[f"You ran into a {self._name}!"], ["\n\n".join(self._startDescription)]], tablefmt="fancy_grid")
         # Adds any existing loot to player inventory
         self.drop_loot(player)
         # Waits for user input to continue
@@ -307,18 +307,14 @@ class CombatEncounter(Encounter):
         # Generates enemies
         self.generate_enemies(player)
         # Prints encounter start description
-        slow_table(tabulate([[f"{Fore.LIGHTRED_EX}{self.encounterText()}{Style.RESET_ALL}"], ["\n\n".join(self._startDescription)]],
-                                    tablefmt="fancy_grid") + "\n")
+        slow_table([[f"{Fore.LIGHTRED_EX}{self.encounterText()}{Style.RESET_ALL}"], ["\n\n".join(self._startDescription)]])
         # Runs the encounter while there are still enemies left
         while len(self._enemies_dict) > 0 and player.health > 0:
-            # Displays enemy stats
-            slow_table(f"{self.__repr__()}")
-            # Displays player stats
-            slow_table(player.__repr__())
+            # Displays enemy and player stats
+            slow_table(self.combat_table(player), tablefmt="fancy_outline", colalign=("left", "center", "center", "center", "center", "center"))
 
             # Displays combat actions, gets choice of player
-            slow_table(
-                f"{tabulate([['What would you like to do?'], ['1: Melee Attack'], ['2: Cast Magic'], ['3: Use Item']], headers='firstrow', tablefmt='fancy_outline')}")
+            slow_table([['What would you like to do?'], ['1: Melee Attack'], ['2: Cast Magic'], ['3: Use Item']], tablefmt="fancy_outline", headers="firstrow")
             try:
                 choice = int(input("? "))
                 clrscr()
@@ -375,13 +371,12 @@ class CombatEncounter(Encounter):
     def target_menu(self, player):
         while True:
             # Displays target selection
-            enemyTable = [["", "Enemy Name", "Success Chance"]]
+            combatTable = [["", "Enemy", "Success Chance"]]
             for count, enemy in enumerate(self._enemies_dict):
-                enemyTable.append(
-                    [f"{count + 1}:", f"{self._enemies_dict[enemy].name}", f"{10 + (player.agility - self._enemies_dict[enemy].agility)}% Crit Chance"])
-            enemyTable.append([f"{count + 2}:", "Go Back", ""])
-            slow_table(tabulate(enemyTable, headers="firstrow",
-                                        tablefmt="fancy_outline"))
+                combatTable.append(
+                    [f"{count + 1}:", f"{Fore.YELLOW}Lv. {self._enemies_dict[enemy].level}{Style.RESET_ALL} {self._enemies_dict[enemy].name}", f"{10 + (player.agility - self._enemies_dict[enemy].agility)}% Crit Chance"])
+            combatTable.append([f"{count + 2}:", "Go Back", ""])
+            slow_table(combatTable, headers="firstrow", tablefmt="fancy_outline")
             # Gets target selection from player
             try:
                 attackEnemy = int(input("? "))
@@ -400,8 +395,13 @@ class CombatEncounter(Encounter):
         while True:
             # Displays available spells, gets spell selection from player
             try:
-                slow_table(tabulate([["", "Name", "Mana Cost", "What would you like to cast?"], ["1:", "Fireball", 5, "Deals 75% of Intelligence as Damage to all enemies"], ["2:", "Force Bolt", 5, "Deals 150% of Intelligence as Damage to one Enemy"], [
-                    "3:", "Force Shield", 15, "Doubles Defense for 3 Turns"], ["4:", "Heal", "Variable", "Converts 2x Mana Cost to Health"], ["5:", "Go Back"]], headers="firstrow", tablefmt="fancy_outline"))
+                slow_table([["", "Name", "Mana Cost", "What would you like to cast?"], 
+                            ["1:", "Fireball", 5, f"Deals {Fore.RED}{int(player.intelligence * 0.75 // 1)} Damage{Style.RESET_ALL} to All Enemies"], 
+                            ["2:", "Force Bolt", 5, f"Deals {Fore.RED}{int(player.intelligence * 1.5 // 1)} Damage{Style.RESET_ALL} to 1 Enemy"], 
+                            ["3:", "Force Shield", 15, f"Doubles {Fore.BLUE}Endurance{Style.RESET_ALL} for 3 Turns"], 
+                            ["4:", "Heal", "Variable", "Heals for Double Mana Cost"], 
+                            ["5:", "Go Back"]], 
+                            headers="firstrow", tablefmt="fancy_outline")
                 spell = int(input("? "))
                 clrscr()
             except Exception:
@@ -493,15 +493,35 @@ class CombatEncounter(Encounter):
             # Waits for user input before ending encounter
             waitForKey(self.encounterType, "You have been defeated.")
 
-    # Returns formatted table representation
-    def __repr__(self):
-        enemyTable = [["Enemy Name", "Level",
-                       "Health", "Mana", "Damage", "Defense", "Agility"]]
-        enemyTable.extend(
-            self._enemies_dict[enemy].get_stats_list()
+    def combat_table(self, player):
+        # Returns formatted table representation
+        combatTable = [
+            ["Enemy", "Health", "Mana", "Damage", "Defense", "Agility"]
+            ]
+        combatTable.extend(
+            [
+                f"{Fore.YELLOW}Lv. {self._enemies_dict[enemy].level}{Style.RESET_ALL} {self._enemies_dict[enemy].name}",
+                f"{Fore.GREEN}{self._enemies_dict[enemy].health}/{self._enemies_dict[enemy].maxHealth}{Style.RESET_ALL}",
+                f"{Fore.LIGHTCYAN_EX}{self._enemies_dict[enemy].mana}/{self._enemies_dict[enemy].maxMana}{Style.RESET_ALL}",
+                f"{Fore.RED}{self._enemies_dict[enemy].damage + self._enemies_dict[enemy].equippedWeapon.damage}{Style.RESET_ALL}",
+                f"{Fore.BLUE}{self._enemies_dict[enemy].defense + self._enemies_dict[enemy].equippedShield.defense}{Style.RESET_ALL}",
+                f"{Fore.LIGHTGREEN_EX}{self._enemies_dict[enemy].agility}{Style.RESET_ALL}",
+            ]
             for enemy in self._enemies_dict
         )
-        return tabulate(enemyTable, headers="firstrow", tablefmt="fancy_outline", colalign=["left", "center", "left", "left", "left", "left", "center"])
+        combatTable.extend(player.combat_stats())
+        # Sets line break to length of longest row
+        lineBreak = ["", "", "", "", "", ""]
+        length = [0, 0, 0, 0, 0, 0]
+        for item in combatTable:
+            for count, entry in enumerate(item):
+                entryLength = len(escape_ansi(entry))
+                if entryLength > length[count]:
+                    length[count] = entryLength
+                    lineBreak[count] = "─" * length[count]
+        combatTable.insert(len(self._enemies_dict) + 1, lineBreak)
+        return combatTable
+
 
 def encounterTesting():
     # Testing
