@@ -548,44 +548,46 @@ class Rest(Action):
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
 
-def actionTesting():
-    # Testing
-    import json
-    from EntityClasses import Player
-    from LocationTileClass import Tile
-    with open(newGamePath, "r") as saveFile:
-        newGame_dict = json.load(saveFile)
-        saveFile.close()
-    player_dict = newGame_dict["player"]
-    tiles_dict = newGame_dict["tiles"]
-    for tile in tiles_dict:
-        a = Tile(tile)
-        a.reader(tiles_dict[tile])
-        tiles_dict[tile] = a
-    currentTile = tiles_dict["CelestialSentinel"]
-    p = Player()
-    p.reader(player_dict)
-    currentTile.tileMenu(currentTile, 0, p, tiles_dict)
-
-if __name__ == "__main__":
-    actionTesting()
-
 def tileTesting():
     # Testing
     import json
-    from EntityClasses import Player
-    with open(newGamePath, "r") as saveFile:
-        newGame_dict = json.load(saveFile)
-        saveFile.close()
-    player_dict = newGame_dict["player"]
-    tiles_dict = newGame_dict["tiles"]
+    p = Player()
+    with open(mainPath + "\\NewGameFiles\\Player.json", "r") as playerFile:
+        player_dict = json.load(playerFile)
+        playerFile.close()
+    p.reader(player_dict["Newbie"])
+    with open(mainPath + "\\NewGameFiles\\Enemies.json", "r") as enemiesFile:
+        enemies_dict = json.load(enemiesFile)
+        enemiesFile.close()
+    for enemy in enemies_dict:
+        a = Enemy(enemy)
+        a.reader(enemies_dict[enemy])
+        enemies_dict[enemy] = a
+    with open(mainPath + "\\NewGameFiles\\Encounters.json", "r") as encountersFile:
+        encounters_dict = json.load(encountersFile)
+        encountersFile.close()
+    for biome in encounters_dict:
+        for encounterType in encounters_dict[biome]:
+            if encounterType == "passive":
+                for encounter in encounters_dict[biome][encounterType]:
+                    a = PassiveEncounter(encounterType=encounter)
+                    a.reader(encounters_dict[biome][encounterType][encounter])
+                    encounters_dict[biome][encounterType][encounter] = a
+                    continue
+            if encounterType == "hostile":
+                for encounter in encounters_dict[biome][encounterType]:
+                    a = CombatEncounter(encounterType=encounter, base_enemy_dict=enemies_dict)
+                    a.reader(encounters_dict[biome][encounterType][encounter])
+                    encounters_dict[biome][encounterType][encounter] = a
+                    continue
+    with open(mainPath + "\\NewGameFiles\\Tiles.json", "r") as tilesFile:
+        tiles_dict = json.load(tilesFile)
+        tilesFile.close()
     for tile in tiles_dict:
         a = Tile(tile)
         a.reader(tiles_dict[tile])
         tiles_dict[tile] = a
     currentTile = tiles_dict["CelestialSentinel"]
-    p = Player()
-    p.reader(player_dict)
     currentTile.tileMenu(currentTile, 0, p, tiles_dict)
 
 # If this file is run directly, run tileTesting()
