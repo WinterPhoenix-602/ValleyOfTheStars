@@ -7,7 +7,7 @@
             "Headers": {
                 "Equipped": [
                     "Equipment Slot",
-                    "Name",
+                    "Item Name",
                     "Stats"
                 ],
                 "Weapon": [
