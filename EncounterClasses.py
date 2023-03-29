@@ -99,10 +99,8 @@ class Encounter(ABC):
     
     # Drops loot and adds it to player inventory
     def drop_loot(self, player=Player()):
-        # Creates an empty string to hold the gains message
-        gainsString = "You gained"
         # Iterates through each loot item
-        for count, itemType in enumerate(self._loot):
+        for itemType in self._loot:
             # If the loot is gold
             if itemType == "Gold":
                 # Calculates the amount of gold to give to the player based on the challenge level
@@ -115,22 +113,32 @@ class Encounter(ABC):
                 if randint(1, 100) <= self._loot[itemType][item].dropChance:
                     # Adds the loot to the player's inventory
                     player.add_item(self._loot[itemType][item])
-                    # Appends the loot name and quantity to the gainsString message
-                    if count + 1 < len(self._loot) and gainsString != "You gained":
-                        gainsString += (
-                            f', {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {inflectEngine.plural(escape_ansi(self._loot[itemType][item].name))}", self._loot[itemType][item].rarity)}'
-                            if self._loot[itemType][item].quantity > 1
-                            else f', {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {self._loot[itemType][item].name}", self._loot[itemType][item].rarity)}'
-                        )
-                    elif count + 1 == len(self._loot) and gainsString != "You gained":
-                        if self._loot[itemType][item].quantity > 1:
-                            gainsString += f' and {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {inflectEngine.plural(escape_ansi(self._loot[itemType][item].name))}", self._loot[itemType][item].rarity)}'
-                        else:
-                            gainsString += f' and {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {self._loot[itemType][item].name}", self._loot[itemType][item].rarity)}'
-                    elif self._loot[itemType][item].quantity > 1:
-                        gainsString += f' {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {inflectEngine.plural(escape_ansi(self._loot[itemType][item].name))}", self._loot[itemType][item].rarity)}'
+        self.print_loot_string()
+    
+    # Prints a string containing the loot
+    def print_loot_string(self):
+        # Creates an empty string to hold the gains message
+        gainsString = "You gained"
+        # Appends the loot name and quantity to the gainsString message
+        for count, itemType in enumerate(self._loot):
+            for item in self._loot[itemType]:
+                if itemType == "Gold":
+                    continue
+                if count + 1 < len(self._loot) and gainsString != "You gained":
+                    gainsString += (
+                        f', {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {inflectEngine.plural(escape_ansi(self._loot[itemType][item].name))}", self._loot[itemType][item].rarity)}'
+                        if self._loot[itemType][item].quantity > 1
+                        else f', {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {self._loot[itemType][item].name}", self._loot[itemType][item].rarity)}'
+                    )
+                elif count + 1 == len(self._loot) and gainsString != "You gained":
+                    if self._loot[itemType][item].quantity > 1:
+                        gainsString += f' and {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {inflectEngine.plural(escape_ansi(self._loot[itemType][item].name))}", self._loot[itemType][item].rarity)}'
                     else:
-                        gainsString += f' {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {self._loot[itemType][item].name}", self._loot[itemType][item].rarity)}'
+                        gainsString += f' and {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {self._loot[itemType][item].name}", self._loot[itemType][item].rarity)}'
+                elif self._loot[itemType][item].quantity > 1:
+                    gainsString += f' {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {inflectEngine.plural(escape_ansi(self._loot[itemType][item].name))}", self._loot[itemType][item].rarity)}'
+                else:
+                    gainsString += f' {Weapon().rarity_color(f"{self._loot[itemType][item].quantity} {self._loot[itemType][item].name}", self._loot[itemType][item].rarity)}'
         # Adds punctuation to the gainsString message
         if gainsString != "You gained":
             if "and" in gainsString:
@@ -536,17 +544,17 @@ def encounterTesting():
         encounters_dict = json.load(encountersFile)
         encountersFile.close()
     combat_encounter = encounters_dict["Plains"]["hostile"]["1"]
-    passive_encounter = encounters_dict["River"]["passive"]["1"]
+    passive_encounter = encounters_dict["Plains"]["passive"]["3"]
     """p.level_up(level=7)
     p.health = p.maxHealth
     p.mana = p.maxMana"""
-    c.reader(combat_encounter)
-    c.start_encounter(p)
+    """c.reader(combat_encounter)
+    c.start_encounter(p)"""
     """c.generate_enemies(p)
     print(c.encounterText())
-    c.start_encounter(p)
+    c.start_encounter(p)"""
     pE.reader(passive_encounter)
-    pE.drop_loot(p)"""
+    pE.drop_loot(p)
     
 
 # If this file is run directly, run testing()
