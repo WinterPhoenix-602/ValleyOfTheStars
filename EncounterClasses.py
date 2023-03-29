@@ -295,11 +295,6 @@ class CombatEncounter(Encounter):
                     encounterText += f"and {quantity} {inflectEngine.plural(enemy)}"
         # Return encounter text
         return f"{encounterText}!"
-
-    def single_enemy_type(self, arg0, arg1, encounterText):
-        enemy = list(self._enemies.keys())
-        encounterText += f"{arg0}{enemy[0]}{arg1}"
-        return encounterText
     
     # Runs combat encounter
     def start_encounter(self, player=Player(), turn=0):
