@@ -2,15 +2,9 @@
 # Main Game File
 
 import json
-import copy
 import os
 import shelve
-import CustomMessages
-import EntityClasses
-import LocationTileClass
 import datetime
-import tabulate
-import ItemClass
 from random import randint
 from ItemClass import *
 from CustomMessages import *
