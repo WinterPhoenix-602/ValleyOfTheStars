@@ -350,28 +350,19 @@ class Entity(abc.ABC):
 
 # Player class
 class Player(Entity):
-    def __init__(self, name="Newbie", level=1, levelProgress=0, nextLevel=50, statPoints=0, health=50, constitution=5, mana=25, intelligence=5, strength=5, endurance=5, agility=5, equippedWeapon=Weapon(), equippedShield=Shield(), shieldDuration=0, inventory=None):
+    def __init__(self, name="Newbie", level=1, levelProgress=0, nextLevel=50, statPoints=0, health=50, constitution=5, mana=25, intelligence=5, strength=5, endurance=5, agility=5, inventory=None, equippedWeapon=Weapon(), equippedShield=Shield(), shieldDuration=0):
         if inventory is None:
             inventory = {}
-        super().__init__(name, level, levelProgress, nextLevel, statPoints, health, constitution, mana, intelligence, strength, endurance, agility, equippedWeapon, equippedShield)
+        super().__init__(name, level, levelProgress, nextLevel, statPoints, health, constitution, mana, intelligence, strength, endurance, agility, inventory, equippedWeapon, equippedShield)
         self._shieldDuration = shieldDuration
-        self._inventory = inventory
 
     @property
     def shieldDuration(self):
         return self._shieldDuration
 
-    @property
-    def inventory(self):
-        return self._inventory
-
     @shieldDuration.setter
     def shieldDuration(self, shieldDuration):
         self._shieldDuration = shieldDuration
-
-    @inventory.setter
-    def inventory(self, inventory):
-        self._inventory = inventory
 
     # Display level up message and ask if the player wants to increase an attribute
     def level_up(self, exp=0, level=0):
@@ -836,7 +827,6 @@ class Player(Entity):
                     slow_table("You decided not to use anything.", tablefmt="fancy_outline")
                     return "Go Back"
 
-
     # Uses selected item
     def use_item(self, item=Consumable()):
         # Check if the item is in the Consumable category of the inventory
@@ -919,7 +909,6 @@ class Player(Entity):
             if len(subTable) > 1:
                 slow_table(subTable, headers='firstrow', tablefmt='fancy_outline', colalign=('right', 'left', 'left'))
  
-
     # Returns a sub-table for a given item type
     def sub_inventory_table(self, itemType, subMenu=False):
         # If itemType is not "Headers", add the item type header to the sub table
@@ -1009,7 +998,7 @@ class Player(Entity):
         return table
 
 
-# enemy class
+# Enemy class
 class Enemy(Entity):
     def __init__(self, name="", level=0, levelProgress=0, nextLevel=0, statPoints=0, levelTable=None, health=0, constitution=0, mana=0, intelligence=0, strength=0, endurance=0, agility=0, inventory=None, equippedWeapon=Weapon(), equippedShield=Shield()):
         if levelTable is None:
