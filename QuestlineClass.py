@@ -4,16 +4,21 @@
 from CustomMessages import *
 
 class Questline:
-    def __init__(self, name, description, quests, completed = False):
+    def __init__(self, name="", active=False, description="", quests=None, complete = False):
         self._name = name
+        self._active = active
         self._description = description
-        self._quests = quests
-        self._completed = completed
+        self._quests = [] if quests is None else quests
+        self._complete = complete
 
     # Getters
     @property
     def name(self):
         return self._name
+    
+    @property
+    def active(self):
+        return self._active
     
     @property
     def description(self):
@@ -24,13 +29,17 @@ class Questline:
         return self._quests
     
     @property
-    def completed(self):
-        return self._completed
+    def complete(self):
+        return self._complete
     
     # Setters
     @name.setter
     def name(self, name):
         self._name = name
+
+    @active.setter
+    def active(self, active):
+        self._active = active
 
     @description.setter
     def description(self, description):
@@ -40,12 +49,12 @@ class Questline:
     def quests(self, quests):
         self._quests = quests
 
-    @completed.setter
-    def completed(self, completed):
+    @complete.setter
+    def complete(self, complete):
         for quest in self._quests:
-            if quest.completed == False:
-                completed = False
-        self._completed = completed
+            if quest.complete == False:
+                complete = False
+        self._complete = complete
 
     # Sets attributes from input dictionary
     def reader(self, input_dict):
@@ -57,14 +66,21 @@ class Questline:
         # If the description is not an empty string
         if self._description != "":
             formatForTable(self._description)
+        # If there are quests
+        if len(self._quests) > 0:
+            # Iterate over each quest
+            for quest in self._quests:
+                a = Quest(quest)
+                a.reader(self._quests[quest])
+                self._quests[quest] = a
 
 class Quest:
-    def __init__(self, name, description, reward, requirements, completed = False):
-        self.name = name
-        self.description = description
-        self.reward = reward
-        self.requirements = requirements
-        self.completed = completed
+    def __init__(self, name="", description="", reward_text="", reward=None, complete = False):
+        self._name = name
+        self._description = description
+        self._reward_text = reward_text
+        self._reward = {} if reward is None else reward
+        self._complete = complete
 
     # Getters
     @property
@@ -76,16 +92,16 @@ class Quest:
         return self._description
     
     @property
-    def reward(self):
-        return self._reward
-
-    @property
-    def requirements(self):
-        return self._requirements
+    def reward_text(self):
+        return self._reward_text
     
     @property
-    def completed(self):
-        return self._completed
+    def reward(self):
+        return self._reward
+    
+    @property
+    def complete(self):
+        return self._complete
     
     # Setters
     @name.setter
@@ -96,14 +112,25 @@ class Quest:
     def description(self, description):
         self._description = description
 
+    @reward_text.setter
+    def reward_text(self, reward_text):
+        self._reward_text = reward_text
+
     @reward.setter
     def reward(self, reward):
         self._reward = reward
 
-    @requirements.setter
-    def requirements(self, requirements):
-        self._requirements = requirements
+    @complete.setter
+    def complete(self, complete):
+        self._complete = complete
 
-    @completed.setter
-    def completed(self, completed):
-        self._completed = completed
+    # Sets attributes from input dictionary
+    def reader(self, input_dict):
+        for key in input_dict:
+            try:
+                setattr(self, key, input_dict[key])
+            except Exception:
+                print("No such attribute, please consider adding it in init.")
+        # If the description is not an empty string
+        if self._description != "":
+            formatForTable(self._description)

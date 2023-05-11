@@ -132,9 +132,11 @@ class Tile:
                         a.reader(self._actions[action])
                         self._actions[action] = a
 
-    def tileMenu(self, currentTile, turn=0, player=Player(), tiles_dict=None):
+    def tileMenu(self, currentTile, turn=0, player=Player(), tiles_dict=None, quests_dict=None):
         if tiles_dict is None:
             tiles_dict = {}
+        if quests_dict is None:
+            quests_dict = {}
         exitGame = False
         self._visited = True
         while True:
@@ -153,7 +155,7 @@ class Tile:
                 invalidChoice()
                 continue
             # Perform the action
-            currentTile, turn, tiles_dict, exitGame = self.process_action(choice, turn, player, tiles_dict)
+            currentTile, turn, tiles_dict, quests_dict, exitGame = self.process_action(choice, turn, player, tiles_dict, quests_dict)
             if currentTile != self:
                 return currentTile, turn, tiles_dict, exitGame
             if exitGame in [True, "save"]:
@@ -197,51 +199,51 @@ class Tile:
         )
         return optionsTable
 
-    def process_action(self, choice, turn, player, tiles_dict):
+    def process_action(self, choice, turn, player, tiles_dict, quests_dict=None):
         for count, action in enumerate(self._actions):
             if count + 1 == choice:
                 # If the action is locked, display a message and return to the tile menu
                 if self._actions[action].locked == True:
                     invalidChoice(self._actions[action].locked_message)
-                    return self, turn, tiles_dict, False
+                    return self, turn, tiles_dict, quests_dict, False
                 # If the player chose a Travel action, update the current tile and process passive actions
                 elif isinstance(self._actions[action], Travel):
-                    currentTile = self._actions[action].take_action(tiles_dict)
+                    currentTile = self._actions[action].take_action(tiles_dict, quests_dict)
                     turn = player.passive_actions(turn)
-                    return currentTile, turn, tiles_dict, False
+                    return currentTile, turn, tiles_dict, quests_dict, False
                 # If the player chose a Rest action, process passive actions
                 elif isinstance(self._actions[action], Rest):
-                    self._actions[action].take_action(tiles_dict, player)
+                    self._actions[action].take_action(tiles_dict, quests_dict, player)
                     turn = player.passive_actions(turn)
-                    return self, turn, tiles_dict, False
+                    return self, turn, tiles_dict, quests_dict, False
                 # If the player chose an Inspect action, display information and process passive actions
                 elif isinstance(self._actions[action], InspectElement):
-                    self._actions[action].take_action(tiles_dict, self)
+                    self._actions[action].take_action(tiles_dict, quests_dict, self)
                     turn = player.passive_actions(turn)
-                    return self, turn, tiles_dict, False
+                    return self, turn, tiles_dict, quests_dict, False
                 # If the player chose a Speak action, begin conversation, then process passive actions
                 elif isinstance(self._actions[action], Speak) and self._actions[action].locked == False:
-                    self._actions[action].take_action(tiles_dict)
+                    self._actions[action].take_action(tiles_dict, quests_dict)
                     turn = player.passive_actions(turn)
-                    return self, turn, tiles_dict, False
+                    return self, turn, tiles_dict, quests_dict, False
             # If the player chose to open their inventory, do so
             elif len(self._actions) + 1 == choice:
                 player.display_status()
-                return self, turn, tiles_dict, False
+                return self, turn, tiles_dict, quests_dict, False
             # If the player chose to look at the map, display it
             elif len(self._actions) + 2 == choice:
                 self.displayMap(tiles_dict)
-                return self, turn, tiles_dict, False
+                return self, turn, tiles_dict, quests_dict, False
             # If the player chose to save the game, break from loop
             elif len(self._actions) + 3 == choice:
-                return self, turn, tiles_dict, "save"
+                return self, turn, tiles_dict, quests_dict, "save"
             # If the player chose to exit the game, break from loop
             elif len(self._actions) + 4 == choice:
-                return self, turn, tiles_dict, True
+                return self, turn, tiles_dict, quests_dict, True
             # If the player input an invalid choice, display error message and continue the loop
             elif choice > len(self._actions) + 3 or choice < 1:
                 invalidChoice()
-                return self, turn, tiles_dict, False
+                return self, turn, tiles_dict, quests_dict, False
 
     # Displays map with visited tiles
     def displayMap(self, tiles_dict):
@@ -252,7 +254,7 @@ class Tile:
 
 
 class Action(ABC):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False):
         if update_tile is None:
             update_tile = {}
         self._name = name
@@ -260,6 +262,7 @@ class Action(ABC):
         self._locked = locked
         self._locked_message = locked_message
         self._update_tile = update_tile
+        self._activate_quest = activate_quest
         self._seen = seen
     
     # Getters
@@ -282,6 +285,10 @@ class Action(ABC):
     @property
     def update_tile(self):
         return self._update_tile
+    
+    @property
+    def activate_quest(self):
+        return self._activate_quest
     
     @property
     def seen(self):
@@ -323,13 +330,16 @@ class Action(ABC):
                     setattr(dict[key], key2, value2)
                 self._update_tile = {}
         return dict
-
+    
+    # Activates quest based on action
+    def set_quest_active(self, quests_dict):
+        quests_dict[self._activate_quest].active = True
 
 class Travel(Action):
-    def __init__(self, name="", direction="", targetTile="", locked=False, locked_message="", update_tile=None, seen=False):
+    def __init__(self, name="", direction="", targetTile="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False):
         if update_tile is None:
             update_tile = {}
-        super().__init__(name, locked=locked, locked_message=locked_message, update_tile=update_tile, seen=seen)
+        super().__init__(name, locked=locked, locked_message=locked_message, update_tile=update_tile, activate_quest=activate_quest, seen=seen)
         self._direction = direction
         self._targetTile = targetTile
 
@@ -341,20 +351,25 @@ class Travel(Action):
     def targetTile(self):
         return self._targetTile
 
-    def take_action(self, tiles_dict=None):
+    def take_action(self, tiles_dict=None, quests_dict=None):
         # Call the parent class's take_action method
         super().take_action(tiles_dict)
         if tiles_dict is None:
             tiles_dict = {}
+        if quests_dict is None:
+            quests_dict = {}
         # If the action has an update_tile attribute, update the target tile's attributes
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
+        # If the action has an activate_quest attribute, activate the quest
+        if self._activate_quest != None:
+            self.set_quest_active(quests_dict)
         # Return the tile the player is now on
         return tiles_dict[self._targetTile]
 
 
 class InspectElement(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False, change_name=None, change_description=None, change_image=None):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False, change_name=None, change_description=None, change_image=None):
         if update_tile is None:
             update_tile = {}
         if change_name is None:
@@ -363,7 +378,7 @@ class InspectElement(Action):
             change_description = [False]
         if change_image is None:
             change_image = [False]
-        super().__init__(name, description, locked, locked_message, update_tile, seen)
+        super().__init__(name, description, locked, locked_message, update_tile, activate_quest, seen)
         self._change_name = change_name
         self._change_description = change_description
         self._change_image = change_image
@@ -382,7 +397,7 @@ class InspectElement(Action):
         return self._change_image
     
     # Process the action
-    def take_action(self, tiles_dict, currentTile):
+    def take_action(self, tiles_dict, quests_dict, currentTile):
         # Call the parent class's take_action method
         super().take_action(tiles_dict)
         # Display the name and description of the current tile
@@ -405,16 +420,19 @@ class InspectElement(Action):
         # If the action has an update_tile attribute, update the target tile's attributes
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
+        # If the action has an activate_quest attribute, activate the quest
+        if self._activate_quest != None:
+            self.set_quest_active(quests_dict)
 
 class Speak(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False, response=None, options=None):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False, response=None, options=None):
         if update_tile is None:
             update_tile = {}
         if response is None:
             response = [""]
         if options is None:
             options = {}
-        super().__init__(name, description, locked, locked_message, update_tile, seen)
+        super().__init__(name, description, locked, locked_message, update_tile, activate_quest, seen)
         self._response = response
         self._options = options
 
@@ -438,7 +456,7 @@ class Speak(Action):
                 self._response[count] = textwrap.fill(
                     self._response[count], 100)
 
-    def take_action(self, tiles_dict=None):
+    def take_action(self, tiles_dict=None, quests_dict=None):
         # Call the parent class's take_action method
         super().take_action(tiles_dict)
         while True:
@@ -476,19 +494,21 @@ class Speak(Action):
                             self.update_tile_attribute(tiles_dict, self._update_tile)
                 for option in self._options:
                     if self._options[option].seen == False:
-                        self._seen = False
-                        # If the action has an update_tile attribute, update the target tile's attributes
-                        if self._update_tile != {}:
-                            self.update_tile_attribute(tiles_dict, self._update_tile)
-            # If there are no options available, wait for user input to continue
+                        self.update_relevant_info(False, tiles_dict, quests_dict)
             else:
                 waitForKey("conversation")
-                # Sets the _seen property to True
-                self._seen = True
-                # If the action has an update_tile attribute, update the target tile's attributes
-                if self._update_tile != {}:
-                    self.update_tile_attribute(tiles_dict, self._update_tile)
+                self.update_relevant_info(True, tiles_dict, quests_dict)
                 break
+    
+    # Updates relevant information based on if the player has seen the action
+    def update_relevant_info(self, seen, tiles_dict, quests_dict):
+        self._seen = seen
+        # If the action has an update_tile attribute, update the target tile's attributes
+        if self._update_tile != {}:
+            self.update_tile_attribute(tiles_dict, self._update_tile)
+        # If the action has an activate_quest attribute, activate the quest
+        if self._activate_quest != None:
+            self.set_quest_active(quests_dict)
 
     def optionsMenu(self):
         optionsTable = [["", "What would you like to say?"]]
@@ -529,13 +549,13 @@ class Speak(Action):
 
 # Rest action
 class Rest(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, seen=False):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False):
         if update_tile is None:
             update_tile = {}
-        super().__init__(name, description, locked, locked_message, update_tile, seen)
+        super().__init__(name, description, locked, locked_message, update_tile,  activate_quest, seen)
 
     # Process the Rest action
-    def take_action(self, tiles_dict, player):
+    def take_action(self, tiles_dict, quests_dict, player):
         # Call the parent class's take_action method
         super().take_action(tiles_dict)
         # Display the name and description of the Rest action
@@ -547,6 +567,9 @@ class Rest(Action):
         # If the action has an update_tile attribute, update the target tile's attributes
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
+        # If the action has an activate_quest attribute, activate the quest
+        if self._activate_quest != None:
+            self.set_quest_active(quests_dict)
 
 def tileTesting():
     # Testing

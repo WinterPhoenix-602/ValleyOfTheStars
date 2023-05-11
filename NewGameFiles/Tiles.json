@@ -114,7 +114,8 @@
                             }
                         }
                     }
-                }
+                },
+                "_activate_quest": "Investigate the Celestial Sentinel"
             }
         },
         "_visited": false,

@@ -15,6 +15,7 @@ inflectEngine = inflect.engine()
 mainPath = os.path.dirname(__file__)
 # Define the path to "NewGame.json"
 newGameTiles = os.path.join(mainPath, "NewGameFiles\\Tiles.json")
+newGameQuests = os.path.join(mainPath, "NewGameFiles\\Quests.json")
 newGamePlayer = os.path.join(mainPath, "NewGameFiles\\Player.json")
 newGameEnemies = os.path.join(mainPath, "NewGameFiles\\Enemies.json")
 newGameEncounters = os.path.join(mainPath, "NewGameFiles\\Encounters.json")

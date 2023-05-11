@@ -8,6 +8,7 @@ import datetime
 from random import randint
 from ItemClass import *
 from CustomMessages import *
+from QuestlineClass import *
 from EntityClasses import Player
 from LocationTileClass import *
 from datetime import datetime
@@ -23,7 +24,7 @@ if os.name == 'nt':
 def main():
     while True:
         # Start the main menu and get initial game state
-        player, tiles_dict, currentTile, encounterTables_dict = mainMenu()
+        player, tiles_dict, quests_dict, currentTile, encounterTables_dict = mainMenu()
         turn = 0
         while True:
             # Check if current tile has an encounter and if it should trigger
@@ -53,7 +54,7 @@ def main():
                 currentTile.encounterTable[1] = currentTile.encounterTable[2]
             # Display the tile menu and update game state based on user input
             currentTile, turn, tiles_dict, exitGame = currentTile.tileMenu(
-                currentTile, turn, player, tiles_dict)
+                currentTile, turn, player, tiles_dict, quests_dict)
             # Check if player has chosen to exit the game
             if exitGame == True:
                 # End the game and check if player wants to play again
@@ -90,17 +91,17 @@ def mainMenu():
         match choice:
             case 1:
                 # Starts a new game
-                player, tiles_dict, currentTile, encounterTables_dict = newGame()
+                player, tiles_dict, quests_dict, currentTile, encounterTables_dict = newGame()
             case 2:
                 # Loads a saved game
-                player, tiles_dict, currentTile, encounterTables_dict = loadGame()
+                player, tiles_dict, quests_dict, currentTile, encounterTables_dict = loadGame()
                 if player == 0:
                     continue
             case 3:
                 # Exits the program
                 exit()
         # Returns the initial game state based on the user's choice
-        return player, tiles_dict, currentTile, encounterTables_dict
+        return player, tiles_dict, quests_dict, currentTile, encounterTables_dict
 
 # Initializes the base game state
 def newGame():
@@ -108,6 +109,8 @@ def newGame():
     while True:
         # Extract the tile data from newGameTiles
         tiles_dict, currentTile = extractData(newGameTiles, Tile)
+        # Etract the quest data from newGameQuests
+        quests_dict = extractData(newGameQuests, Questline)
         # Extract the player data from newGamePlayer
         player = extractData(newGamePlayer, Player)
         # Extract the enemy data from newGameEnemies
@@ -123,7 +126,7 @@ def newGame():
                 slow_table("I'm sorry, your name must be shorter than 25 characters.", tablefmt="fancy_outline")
                 continue
             break
-        return player, tiles_dict, currentTile, encounterTables_dict
+        return player, tiles_dict, quests_dict, currentTile, encounterTables_dict
 
 def extractData(dataFilePath, dataClass, ENEMY_DICT=None):
     with open(dataFilePath, "r") as dataFile:
@@ -152,6 +155,8 @@ def extractData(dataFilePath, dataClass, ENEMY_DICT=None):
     # Set the current tile to the starting tile
     if dataClass == Tile:
         return data_dict, data_dict["Crossroads"]
+    elif dataClass == Questline:
+        return data_dict
     elif dataClass == Player:
         return data_dict["Newbie"]
     elif dataClass in [Enemy, Encounter]:
@@ -210,10 +215,11 @@ def loadGame():
         # Extract the necessary data from the saved game and return it
         player = currentGame["player"]
         tiles_dict = currentGame["tiles_dict"]
+        quests_dict = currentGame["quests_dict"]
         currentTile = tiles_dict[currentGame["location"]]
         encounterTables_dict = currentGame["encounterTables_dict"]
         currentGame.close()
-        return player, tiles_dict, currentTile, encounterTables_dict
+        return player, tiles_dict, quests_dict, currentTile, encounterTables_dict
 
 # Gets player choices about saving the game and exiting the program
 

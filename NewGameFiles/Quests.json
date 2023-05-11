@@ -1,0 +1,33 @@
+{
+    "Investigate the Celestial Sentinel": {
+      "_active": false,
+      "_description": "",
+      "_quests": {
+        "Inspect the Mossy Boulder": {
+          "_description": "Examine the mossy boulder in the clearing to gain more information about it.",
+          "_reward_text": "50 experience points",
+          "_reward": {
+            "type": "experience",
+            "amount": 50
+          },
+          "_complete": false
+        },
+        "Find someone who knows more about the clearing": {
+          "_description": "Search for a knowledgeable person who can provide insights about the clearing surrounding the Celestial Sentinel.",
+          "_reward_text": "100 gold coins",
+          "_reward": {
+            "type": "gold",
+            "amount": 100
+          },
+          "_complete": false
+        },
+        "Speak with the knowledgeable person": {
+          "_description": "Engage in a conversation with the person who knows more about the clearing near the Celestial Sentinel.",
+          "_reward_text": "New information",
+          "_complete": false
+        }
+      },
+      "_complete": false
+    }
+  }
+  
