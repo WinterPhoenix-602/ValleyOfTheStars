@@ -3,7 +3,6 @@
 
 import abc
 import copy
-import re
 from CustomMessages import *
 from random import randint
 from ItemClass import *
