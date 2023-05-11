@@ -10,7 +10,6 @@ from colorama import Fore
 from colorama import Style
 from tabulate import tabulate
 
-
 # Abstract base class
 class Entity(abc.ABC):
     def __init__(self, name="", level=0, levelProgress=0, nextLevel=0, statPoints=0, health=0, constitution=0, mana=0, intelligence=0, strength=0, endurance=0, agility=0, inventory=None, equippedWeapon=Weapon(), equippedShield=Shield()):
@@ -125,12 +124,6 @@ class Entity(abc.ABC):
     @nextLevel.setter
     def nextLevel(self, nextLevel=0):
         self._nextLevel = nextLevel
-
-    @levelTable.setter
-    def levelTable(self, levelTable=None):
-        if levelTable is None:
-            levelTable = []
-        self._levelTable = levelTable
 
     @health.setter
     def health(self, health=0):
@@ -355,7 +348,7 @@ class Entity(abc.ABC):
         return max(damage - defense, 0), result
 
 
-# player class
+# Player class
 class Player(Entity):
     def __init__(self, name="Newbie", level=1, levelProgress=0, nextLevel=50, statPoints=0, health=50, constitution=5, mana=25, intelligence=5, strength=5, endurance=5, agility=5, equippedWeapon=Weapon(), equippedShield=Shield(), shieldDuration=0, inventory=None):
         if inventory is None:
