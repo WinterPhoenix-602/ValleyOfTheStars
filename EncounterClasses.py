@@ -165,7 +165,7 @@ class PassiveEncounter(Encounter):
         waitForKey(self._encounterType)
     
 
-
+# Class for combat encounters
 class CombatEncounter(Encounter):
     def __init__(self, name="", encounterType="", base_enemy_dict=None, startDescription=None, enemies=None, victoryText=None, defeatText=None, expReward=0):
         if base_enemy_dict is None:
