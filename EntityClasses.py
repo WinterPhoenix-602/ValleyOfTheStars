@@ -54,10 +54,6 @@ class Entity(abc.ABC):
         return self._nextLevel
 
     @property
-    def levelTable(self):
-        return self._levelTable
-
-    @property
     def health(self):
         return self._health
 
@@ -1029,6 +1025,10 @@ class Enemy(Entity):
             inventory = {}
         super().__init__(name, level, levelProgress, nextLevel, statPoints, health, constitution, mana, intelligence, strength, endurance, agility, inventory, equippedWeapon, equippedShield)
         self._levelTable = levelTable
+
+    @property
+    def levelTable(self):
+        return self._levelTable
 
     # Increases the enemy's level, health, and mana
     def level_up(self, exp=0, level=0):
