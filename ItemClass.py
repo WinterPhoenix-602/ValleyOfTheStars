@@ -124,7 +124,8 @@ class Weapon(Item):
             statsString += f"{Fore.RED}-{self._damage} Damage{Style.RESET_ALL}"
         return statsString
 
-    
+
+# Concrete Shield class
 class Shield(Item):
     def __init__(self, itemType="", name="", rarity="", quantity=0, defense=0, healthChange=0):
         super().__init__(itemType, name, rarity, quantity)
@@ -163,6 +164,7 @@ class Shield(Item):
         return statsString
 
 
+# Concrete Armor class
 class Consumable(Item):
     def __init__(self, itemType="", name="", rarity="", quantity=0, stats=None):
         if stats is None:
