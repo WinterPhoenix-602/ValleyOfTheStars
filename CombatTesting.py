@@ -98,8 +98,6 @@ def settings_menu(player=Player("Test Dummy"), maintain_progress=True):
         else:
             invalidChoice()
 
-
-# TODO Rename this here and in `settings_menu`
 def reset_stats(player=Player("Test Dummy")):
     player._constitution = 5
     player._strength = 5
