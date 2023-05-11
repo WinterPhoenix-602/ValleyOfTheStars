@@ -467,7 +467,7 @@ class Player(Entity):
             elif choice == 6:
                 if sum(statsChange) > 0:
                     if confirm := self.confirm_stats(statsChange):
-                        return self.set_stats(statsChange)
+                        return self.distribute_stats(statsChange)
                 return
             else:
                 invalidChoice()
