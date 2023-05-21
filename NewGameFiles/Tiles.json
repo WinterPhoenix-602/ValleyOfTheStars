@@ -12,7 +12,8 @@
             "Travel North": {
                 "_action": "Travel",
                 "_direction": "North",
-                "_targetTile": "CelestialSentinel"
+                "_targetTile": "CelestialSentinel",
+                "_questline_update": {"Investigate the Celestial Sentinel": {}}
             },
             "Travel East": {
                 "_action": "Travel",
@@ -115,7 +116,7 @@
                         }
                     }
                 },
-                "_activate_quest": "Investigate the Celestial Sentinel"
+                "_questline_update": {"Investigate the Celestial Sentinel": {"Inspect the Mossy Boulder":{"_complete": true}}}
             }
         },
         "_visited": false,
@@ -142,7 +143,8 @@
             "Travel South": {
                 "_action": "Travel",
                 "_direction": "South",
-                "_targetTile": "CelestialSentinel"
+                "_targetTile": "CelestialSentinel",
+                "_questline_update": {"Investigate the Celestial Sentinel": {}}
             },
             "Speak with the Guard": {
                 "_action": "Speak",
