@@ -75,12 +75,13 @@ class Questline:
                 self._quests[quest] = a
 
 class Quest:
-    def __init__(self, name="", description="", reward_text="", reward=None, complete = False):
+    def __init__(self, name="", description="", reward_text="", reward=None, complete = False, requires = False):
         self._name = name
         self._description = description
         self._reward_text = reward_text
         self._reward = {} if reward is None else reward
         self._complete = complete
+        self._requires = requires
 
     # Getters
     @property
@@ -103,6 +104,10 @@ class Quest:
     def complete(self):
         return self._complete
     
+    @property
+    def requires(self):
+        return self._requires
+    
     # Setters
     @name.setter
     def name(self, name):
@@ -123,6 +128,10 @@ class Quest:
     @complete.setter
     def complete(self, complete):
         self._complete = complete
+
+    @requires.setter
+    def requires(self, active):
+        self._requires = active
 
     # Sets attributes from input dictionary
     def reader(self, input_dict):

@@ -1,11 +1,11 @@
 # Date: 2023-03-02
 # Description: Contains the Tile class, which is used to create the tiles that make up the map
 
-from pygame import *
 from tabulate import tabulate
 from EncounterClasses import *
 from EntityClasses import Player
 from CustomMessages import *
+from QuestlineClass import *
 from abc import ABC, abstractmethod
 clrscr()
 
@@ -226,9 +226,9 @@ class Tile:
                     self._actions[action].take_action(tiles_dict, quests_dict)
                     turn = player.passive_actions(turn)
                     return self, turn, tiles_dict, quests_dict, False
-            # If the player chose to open their inventory, do so
+            # If the player chose to open their status, do so
             elif len(self._actions) + 1 == choice:
-                player.display_status()
+                player.display_status(quests_dict)
                 return self, turn, tiles_dict, quests_dict, False
             # If the player chose to look at the map, display it
             elif len(self._actions) + 2 == choice:
@@ -254,7 +254,7 @@ class Tile:
 
 
 class Action(ABC):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, questline_update=None, seen=False):
         if update_tile is None:
             update_tile = {}
         self._name = name
@@ -262,7 +262,7 @@ class Action(ABC):
         self._locked = locked
         self._locked_message = locked_message
         self._update_tile = update_tile
-        self._activate_quest = activate_quest
+        self._questline_update = questline_update
         self._seen = seen
     
     # Getters
@@ -287,8 +287,8 @@ class Action(ABC):
         return self._update_tile
     
     @property
-    def activate_quest(self):
-        return self._activate_quest
+    def questline_update(self):
+        return self._questline_update
     
     @property
     def seen(self):
@@ -332,14 +332,24 @@ class Action(ABC):
         return dict
     
     # Activates quest based on action
-    def set_quest_active(self, quests_dict):
-        quests_dict[self._activate_quest].active = True
+    def update_questline(self, questlines_dict, update):
+        for key, value in update.items():
+            if key in questlines_dict and isinstance(questlines_dict[key], Questline):
+                questline = questlines_dict[key]
+                setattr(questline, '_active', True)
+                for quest_key, quest_value in value.items():
+                    if quest_key in questline.quests and isinstance(questline.quests[quest_key], Quest):
+                        quest = questline.quests[quest_key]
+                        if questline.quests[quest.requires].complete == True:
+                            for quest_attribute, quest_attribute_value in quest_value.items():
+                                setattr(quest, quest_attribute, quest_attribute_value)
+
 
 class Travel(Action):
-    def __init__(self, name="", direction="", targetTile="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False):
+    def __init__(self, name="", direction="", targetTile="", locked=False, locked_message="", update_tile=None, questline_update=None, seen=False):
         if update_tile is None:
             update_tile = {}
-        super().__init__(name, locked=locked, locked_message=locked_message, update_tile=update_tile, activate_quest=activate_quest, seen=seen)
+        super().__init__(name, locked=locked, locked_message=locked_message, update_tile=update_tile, questline_update=questline_update, seen=seen)
         self._direction = direction
         self._targetTile = targetTile
 
@@ -361,15 +371,15 @@ class Travel(Action):
         # If the action has an update_tile attribute, update the target tile's attributes
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
-        # If the action has an activate_quest attribute, activate the quest
-        if self._activate_quest != None:
-            self.set_quest_active(quests_dict)
+        # If the action has a questline_update attribute, update the quest
+        if self._questline_update != None:
+            self.update_questline(quests_dict, self._questline_update)
         # Return the tile the player is now on
         return tiles_dict[self._targetTile]
 
 
 class InspectElement(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False, change_name=None, change_description=None, change_image=None):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, questline_update=None, seen=False, change_name=None, change_description=None, change_image=None):
         if update_tile is None:
             update_tile = {}
         if change_name is None:
@@ -378,7 +388,7 @@ class InspectElement(Action):
             change_description = [False]
         if change_image is None:
             change_image = [False]
-        super().__init__(name, description, locked, locked_message, update_tile, activate_quest, seen)
+        super().__init__(name, description, locked, locked_message, update_tile, questline_update, seen)
         self._change_name = change_name
         self._change_description = change_description
         self._change_image = change_image
@@ -420,19 +430,19 @@ class InspectElement(Action):
         # If the action has an update_tile attribute, update the target tile's attributes
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
-        # If the action has an activate_quest attribute, activate the quest
-        if self._activate_quest != None:
-            self.set_quest_active(quests_dict)
+        # If the action has a questline_update attribute, update the quest
+        if self._questline_update != None:
+            self.update_questline(quests_dict, self._questline_update)
 
 class Speak(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False, response=None, options=None):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, questline_update=None, seen=False, response=None, options=None):
         if update_tile is None:
             update_tile = {}
         if response is None:
             response = [""]
         if options is None:
             options = {}
-        super().__init__(name, description, locked, locked_message, update_tile, activate_quest, seen)
+        super().__init__(name, description, locked, locked_message, update_tile, questline_update, seen)
         self._response = response
         self._options = options
 
@@ -506,9 +516,9 @@ class Speak(Action):
         # If the action has an update_tile attribute, update the target tile's attributes
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
-        # If the action has an activate_quest attribute, activate the quest
-        if self._activate_quest != None:
-            self.set_quest_active(quests_dict)
+        # If the action has a questline_update attribute, update the quest
+        if self._questline_update != None:
+            self.update_questline(quests_dict, self._questline_update)
 
     def optionsMenu(self):
         optionsTable = [["", "What would you like to say?"]]
@@ -549,10 +559,10 @@ class Speak(Action):
 
 # Rest action
 class Rest(Action):
-    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, activate_quest=None, seen=False):
+    def __init__(self, name="", description="", locked=False, locked_message="", update_tile=None, questline_update=None, seen=False):
         if update_tile is None:
             update_tile = {}
-        super().__init__(name, description, locked, locked_message, update_tile,  activate_quest, seen)
+        super().__init__(name, description, locked, locked_message, update_tile,  questline_update, seen)
 
     # Process the Rest action
     def take_action(self, tiles_dict, quests_dict, player):
@@ -567,9 +577,9 @@ class Rest(Action):
         # If the action has an update_tile attribute, update the target tile's attributes
         if self._update_tile != {}:
             self.update_tile_attribute(tiles_dict, self._update_tile)
-        # If the action has an activate_quest attribute, activate the quest
-        if self._activate_quest != None:
-            self.set_quest_active(quests_dict)
+        # If the action has a questline_update attribute, update the quest
+        if self._questline_update != None:
+            self.update_questline(quests_dict, self._questline_update)
 
 def tileTesting():
     # Testing
