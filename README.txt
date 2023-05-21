@@ -35,7 +35,7 @@ To run the Valley of the Stars project, follow the instructions below:
 
 ### File Manifest
 
-The project directory or archive contains the following files:
+The project directory contains the following files:
 
 - **Map Folder:**
   - Map.png
