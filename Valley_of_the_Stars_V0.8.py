@@ -58,7 +58,7 @@ def main():
             # Check if player has chosen to exit the game
             if exitGame == True:
                 # End the game and check if player wants to play again
-                exitGame = endGame(exitGame, tiles_dict,
+                exitGame = endGame(exitGame, tiles_dict, quests_dict,
                                    player, currentTile, encounterTables_dict)
             if exitGame == True:
                 # Return to main menu
@@ -66,7 +66,7 @@ def main():
             # Check if player has chosen to save the game
             if exitGame == "save":
                 # Save the game
-                saveMenu(tiles_dict, player, currentTile, encounterTables_dict)
+                saveMenu(tiles_dict, quests_dict, player, currentTile, encounterTables_dict)
 
 # Displays the main menu and prompts the user to choose between starting a new game, loading a saved game, or ending the program.
 def mainMenu():
@@ -111,6 +111,9 @@ def newGame():
         tiles_dict, currentTile = extractData(newGameTiles, Tile)
         # Etract the quest data from newGameQuests
         quests_dict = extractData(newGameQuests, Questline)
+        for quest in quests_dict:
+            if type(quest) == str and quest not in ["active", "completed", "inactive"]:
+                quests_dict["inactive"].append(quest)
         # Extract the player data from newGamePlayer
         player = extractData(newGamePlayer, Player)
         # Extract the enemy data from newGameEnemies
@@ -148,6 +151,11 @@ def extractData(dataFilePath, dataClass, ENEMY_DICT=None):
                         a.reader(data_dict[objectType][encounterType][encounter])
                         data_dict[objectType][encounterType][encounter] = a
                         continue
+        elif dataClass == Questline:
+            if objectType not in ["active", "completed", "inactive"]:
+                a = dataClass(objectType)
+                a.reader(data_dict[objectType])
+                data_dict[objectType] = a
         else:
             a = dataClass(objectType)
             a.reader(data_dict[objectType])
@@ -224,7 +232,7 @@ def loadGame():
 # Gets player choices about saving the game and exiting the program
 
 
-def endGame(exitGame, tiles_dict, player, currentTile, encounterTables_dict):
+def endGame(exitGame, tiles_dict, quests_dict, player, currentTile, encounterTables_dict):
     # Loop until the player chooses to exit the game
     while exitGame == True:
         # Display options to the player in a table format
@@ -278,17 +286,19 @@ def endGame(exitGame, tiles_dict, player, currentTile, encounterTables_dict):
             continue
     # If the player chose to save and exit, call saveMenu and return from the function
     if save == "yes":
-        saveMenu(tiles_dict, player, currentTile, encounterTables_dict)
+        saveMenu(tiles_dict, quests_dict, player, currentTile, encounterTables_dict)
     return exitGame
 
 # Function that saves the current game
 
 
-def saveMenu(tiles_dict=None, player=Player(), currentTile=Tile(), encounterTables_dict=None):
+def saveMenu(tiles_dict=None, quests_dict=None, player=Player(), currentTile=Tile(), encounterTables_dict=None):
     if tiles_dict is None:
         tiles_dict = {}
     if encounterTables_dict is None:
         encounterTables_dict = {}
+    if quests_dict is None:
+        quests_dict = {}
     # Open the file that contains information about save files and load its contents
     with open(saveFileInfoPath, "r") as saveInfo:
         saveFiles_dict = json.load(saveInfo)
@@ -336,7 +346,7 @@ def saveMenu(tiles_dict=None, player=Player(), currentTile=Tile(), encounterTabl
         if saveChoice in {1, 2, 3, 4, 5}:
             saveFilePath = os.path.join(
                 mainPath, f"SaveFiles\\Save{saveChoice}")
-            saveGame(saveFilePath, saveChoice, tiles_dict, player,
+            saveGame(saveFilePath, saveChoice, tiles_dict, quests_dict, player,
                      currentTile, encounterTables_dict, saveFiles_dict)
         else:
             invalidChoice()
@@ -344,16 +354,19 @@ def saveMenu(tiles_dict=None, player=Player(), currentTile=Tile(), encounterTabl
         return tiles_dict, player, currentTile, encounterTables_dict
 
 
-def saveGame(saveFilePath, saveChoice, tiles_dict=None, player=Player(), currentTile=Tile(), encounterTables_dict=None, saveFiles_dict=None):
+def saveGame(saveFilePath, saveChoice, tiles_dict=None, quests_dict=None, player=Player(), currentTile=Tile(), encounterTables_dict=None, saveFiles_dict=None):
     if encounterTables_dict is None:
         encounterTables_dict = {}
     if saveFiles_dict is None:
         saveFiles_dict = {}
+    if quests_dict is None:
+        quests_dict = {}
     # Open the chosen save file and write the game data to it
     currentGame = shelve.open(saveFilePath, "c")
     currentGame["player"] = player
     currentGame["location"] = currentTile.id
     currentGame["tiles_dict"] = tiles_dict
+    currentGame["quests_dict"] = quests_dict
     currentGame["encounterTables_dict"] = encounterTables_dict
     currentGame.close()
     # Update the save file information in the dictionary
