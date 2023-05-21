@@ -398,7 +398,7 @@ class CombatEncounter(Encounter):
             # Displays available spells, gets spell selection from player
             try:
                 slow_table([["", "Name", "Mana Cost", "What would you like to cast?"], 
-                            ["1:", "Fireball", 5, f"Deals {Fore.RED}{int(player.intelligence * 0.75 // 1)} Damage{Style.RESET_ALL} to All Enemies"], 
+                            ["1:", "Fireball", 5, f"Deals {Fore.RED}{int(player.intelligence * 0.8 // 1)} Damage{Style.RESET_ALL} to All Enemies"], 
                             ["2:", "Force Bolt", 5, f"Deals {Fore.RED}{int(player.intelligence * 1.5 // 1)} Damage{Style.RESET_ALL} to 1 Enemy"], 
                             ["3:", "Force Shield", 15, f"Doubles {Fore.BLUE}Endurance{Style.RESET_ALL} for 3 Turns"], 
                             ["4:", "Heal", "Variable", "Heals for Double Mana Cost"], 
