@@ -659,7 +659,7 @@ class Player(Entity):
             if type(selected) == Shield:
                 # If switching from a shield to a different shield
                 if escape_ansi(selected.name) != "Fists" and escape_ansi(self._equippedShield.name) != "Fists":
-                    slow_table(f"You stow away your {self._equippedShield} and equip your {selected.name}.", tablefmt="fancy_outline")
+                    slow_table(f"You stow away your {self._equippedShield.name} and equip your {selected.name}.", tablefmt="fancy_outline")
                 # If switching from a shield to fists
                 elif escape_ansi(self._equippedShield.name) != "Fists":
                     slow_table(f"You stow away your {self._equippedShield.name}.", tablefmt="fancy_outline")
@@ -673,7 +673,7 @@ class Player(Entity):
             slow_table("You decided what you have is good enough for now.", tablefmt="fancy_outline")
 
     # Displays player status and options
-    def display_status(self):
+    def display_status(self, quests_dict):
         while True:
             # Displays the player's stats
             slow_table(
@@ -691,6 +691,19 @@ class Player(Entity):
                 ],
                 headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center")
                 )
+            """# Displays Active quests
+            active_quests = [
+                ["", "Active Quests"]
+                ["Name", "Description"]
+            ]
+            active_quests.extend(
+                [f"{quest.name}:", f"{quest.description}"]
+                for quest in quests_dict["active"]
+            )
+            if len(active_quests) <= 0:
+                slow_table(["", "You have no Active Quests"], headers="firstrow", tablefmt="fancy_outline")
+            else:
+                slow_table(active_quests, headers="firstrow", tablefmt="fancy_outline")"""
             # Displays player options
             slow_table(
                     [
@@ -935,7 +948,7 @@ class Player(Entity):
                     subTable.append([f"{count + 1}:", self._inventory[itemType][item].name, self._inventory[itemType]
                                     [item].get_stats_string(), self._inventory[itemType][item].quantity])
             subTable.append([f"{count + 2}:", "Go Back"])
-            return tabulate(subTable, headers="firstrow", tablefmt="fancy_outline")
+            return subTable
         # If itemType is "Headers", return empty list
         return []
 
