@@ -65,6 +65,12 @@ The project directory contains the following files:
 
 ---
 
+## Known Bugs
+
+- Questlines: The questline feature has been recently implemented and is currently non-functional. We are actively working on resolving this issue and plan to have it functioning properly in future updates. Thank you for your understanding.
+
+---
+
 ### Contact Information
 
 For any inquiries or issues regarding the Valley of the Stars project, please contact the author via email:
