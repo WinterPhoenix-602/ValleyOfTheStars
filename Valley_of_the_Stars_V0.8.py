@@ -135,40 +135,41 @@ def extractData(dataFilePath, dataClass, ENEMY_DICT=None):
     with open(dataFilePath, "r") as dataFile:
             data_dict = json.load(dataFile)
             dataFile.close()
-    # Create a new 
+    # Create a new
     for objectType in data_dict:
-        if dataClass == Encounter:
+        if (
+            dataClass != Encounter
+            and dataClass == Questline
+            and objectType not in ["active", "completed", "inactive"]
+            or dataClass not in [Encounter, Questline]
+        ):
+            a = dataClass(objectType)
+            a.reader(data_dict[objectType])
+            data_dict[objectType] = a
+        elif dataClass == Encounter:
             for encounterType in data_dict[objectType]:
                 if encounterType == "passive":
                     for encounter in data_dict[objectType][encounterType]:
                         a = PassiveEncounter(encounterType=encounter)
                         a.reader(data_dict[objectType][encounterType][encounter])
                         data_dict[objectType][encounterType][encounter] = a
-                        continue
                 if encounterType == "hostile":
                     for encounter in data_dict[objectType][encounterType]:
                         a = CombatEncounter(encounterType=encounter, base_enemy_dict=ENEMY_DICT)
                         a.reader(data_dict[objectType][encounterType][encounter])
                         data_dict[objectType][encounterType][encounter] = a
                         continue
-        elif dataClass == Questline:
-            if objectType not in ["active", "completed", "inactive"]:
-                a = dataClass(objectType)
-                a.reader(data_dict[objectType])
-                data_dict[objectType] = a
-        else:
-            a = dataClass(objectType)
-            a.reader(data_dict[objectType])
-            data_dict[objectType] = a
     # Set the current tile to the starting tile
     if dataClass == Tile:
         return data_dict, data_dict["Crossroads"]
-    elif dataClass == Questline:
+    elif (
+        dataClass == Questline
+        or dataClass != Player
+        and dataClass in [Enemy, Encounter]
+    ):
         return data_dict
     elif dataClass == Player:
         return data_dict["Newbie"]
-    elif dataClass in [Enemy, Encounter]:
-        return data_dict
 
 # Loads a saved game
 def loadGame():
@@ -346,43 +347,33 @@ def saveMenu(tiles_dict=None, quests_dict=None, player=Player(), currentTile=Til
         if saveChoice in {1, 2, 3, 4, 5}:
             saveFilePath = os.path.join(
                 mainPath, f"SaveFiles\\Save{saveChoice}")
-            saveGame(saveFilePath, saveChoice, tiles_dict, quests_dict, player,
-                     currentTile, encounterTables_dict, saveFiles_dict)
+            # Open the chosen save file and write the game data to it
+            currentGame = shelve.open(saveFilePath, "c")
+            currentGame["player"] = player
+            currentGame["location"] = currentTile.id
+            currentGame["tiles_dict"] = tiles_dict
+            currentGame["quests_dict"] = quests_dict
+            currentGame["encounterTables_dict"] = encounterTables_dict
+            currentGame.close()
+            # Update the save file information in the dictionary
+            saveFiles_dict[f"Save{saveChoice}"]["name"] = player.name
+            saveFiles_dict[f"Save{saveChoice}"]["info"] = f"(Last Saved: {datetime.now().replace(microsecond=0).isoformat(' ')} Location: {currentTile.name})"
+
+            # Write the updated save file information to the save file information file
+            with open(saveFileInfoPath, "w") as saveInfo:
+                saveFiles_dict = json.dumps(saveFiles_dict, indent="    ")
+                saveInfo.write(saveFiles_dict)
+                saveInfo.close()
+
+            # Inform the player that their progress has been saved
+            slow_table("Your progress has been saved.", tablefmt="fancy_outline")
+            # Display farewell message and wait for key
+            slow_table("Thank you for playing.", tablefmt="fancy_outline")
+            waitForKey()
         else:
             invalidChoice()
             continue
         return tiles_dict, player, currentTile, encounterTables_dict
 
-
-def saveGame(saveFilePath, saveChoice, tiles_dict=None, quests_dict=None, player=Player(), currentTile=Tile(), encounterTables_dict=None, saveFiles_dict=None):
-    if encounterTables_dict is None:
-        encounterTables_dict = {}
-    if saveFiles_dict is None:
-        saveFiles_dict = {}
-    if quests_dict is None:
-        quests_dict = {}
-    # Open the chosen save file and write the game data to it
-    currentGame = shelve.open(saveFilePath, "c")
-    currentGame["player"] = player
-    currentGame["location"] = currentTile.id
-    currentGame["tiles_dict"] = tiles_dict
-    currentGame["quests_dict"] = quests_dict
-    currentGame["encounterTables_dict"] = encounterTables_dict
-    currentGame.close()
-    # Update the save file information in the dictionary
-    saveFiles_dict[f"Save{str(saveChoice)}"]["name"] = player.name
-    saveFiles_dict[f"Save{str(saveChoice)}"]["info"] = f"(Last Saved: {datetime.now().replace(microsecond=0).isoformat(' ')} Location: {currentTile.name})"
-
-    # Write the updated save file information to the save file information file
-    with open(saveFileInfoPath, "w") as saveInfo:
-        saveFiles_dict = json.dumps(saveFiles_dict, indent="    ")
-        saveInfo.write(saveFiles_dict)
-        saveInfo.close()
-
-    # Inform the player that their progress has been saved
-    slow_table("Your progress has been saved.", tablefmt="fancy_outline")
-    # Display farewell message and wait for key
-    slow_table("Thank you for playing.", tablefmt="fancy_outline")
-    waitForKey()
 
 main()
