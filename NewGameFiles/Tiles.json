@@ -140,6 +140,11 @@
             "As you approach the gate, the guard notices you and raises his spear slightly, but he doesn't seem to suspect you of anything. Perhaps your demeanor is calm and non-threatening, or maybe he is simply accustomed to visitors."
         ],
         "_actions": {
+            "Travel North": {
+                "_action": "Travel",
+                "_direction": "North",
+                "_targetTile": "VillageStreet"
+            },
             "Travel South": {
                 "_action": "Travel",
                 "_direction": "South",
@@ -228,6 +233,29 @@
                 }
             }
         },
+        "_visited": false,
+        "_image": "PeacefulClearing.png",
+        "_mapCoords": [
+            0,
+            2
+        ],
+        "_encounterTable": [
+            "Plains",
+            0,
+            0,
+            0
+        ]
+    },
+    "VillageStreet": {
+        "_name": "Village Street",
+        "_description": [],
+        "_actions": {
+            "Travel South": {
+                "_action": "Travel",
+                "_direction": "South",
+                "_targetTile": "VillageGate"
+            }
+           },
         "_visited": false,
         "_image": "PeacefulClearing.png",
         "_mapCoords": [
