@@ -253,6 +253,8 @@ class Tile:
             if tile.visited == True:
                 x = tile.mapCoords[0]
                 y = tile.mapCoords[1]
+                if abs(x + 2 - self._mapCoords[0]) > 2 or abs(-(y + 3 - self._mapCoords[1])) > 3:
+                    continue
                 if tile == self:
                     display_map[-(y + 3 - self._mapCoords[1])][x + 2 - self._mapCoords[0]] = f'{Fore.GREEN}{tile.name}{Style.RESET_ALL}'
                 else:
