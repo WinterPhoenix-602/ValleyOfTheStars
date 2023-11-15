@@ -29,8 +29,8 @@
         "_visited": true,
         "_image": "Crossroads.png",
         "_mapCoords": [
-            400,
-            400
+            0,
+            0
         ],
         "_encounterTable": [
             "Plains",
@@ -122,8 +122,8 @@
         "_visited": false,
         "_image": "PeacefulClearing.png",
         "_mapCoords": [
-            400,
-            350
+            0,
+            1
         ],
         "_encounterTable": [
             "Plains",
@@ -231,8 +231,8 @@
         "_visited": false,
         "_image": "PeacefulClearing.png",
         "_mapCoords": [
-            375,
-            350
+            0,
+            2
         ],
         "_encounterTable": [
             "Plains",
@@ -258,8 +258,8 @@
         "_visited": false,
         "_image": "DarkwoodEntrance.png",
         "_mapCoords": [
-            450,
-            400
+            1,
+            0
         ],
         "_encounterTable": [
             "Darkwood",
@@ -303,8 +303,8 @@
         "_visited": false,
         "_image": "Crossroads.png",
         "_mapCoords": [
-            400,
-            400
+            -1,
+            0
         ],
         "_encounterTable": [
             "River",
