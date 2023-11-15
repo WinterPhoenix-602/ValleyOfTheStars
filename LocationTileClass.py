@@ -247,7 +247,18 @@ class Tile:
 
     # Displays map with visited tiles
     def displayMap(self, tiles_dict):
-        invalidChoice("Not yet implemented.")
+        display_map = [['' for _ in range(5)] for _ in range(5)]
+        for tile in tiles_dict:
+            tile = tiles_dict[tile]
+            if tile.visited == True:
+                x = tile.mapCoords[0]
+                y = tile.mapCoords[1]
+                if tile == self:
+                    display_map[-(y + 3 - self._mapCoords[1])][x + 2 - self._mapCoords[0]] = f'{Fore.GREEN}{tile.name}{Style.RESET_ALL}'
+                else:
+                    display_map[-(y + 3 - self._mapCoords[1])][x + 2 - self._mapCoords[0]] = tile.name
+        slow_table(display_map)
+        waitForKey()
 
     def __repr__(self):
         return tabulate([[self._name], ["\n\n".join(self._description)]], tablefmt="fancy_grid")
@@ -620,7 +631,7 @@ def tileTesting():
         a = Tile(tile)
         a.reader(tiles_dict[tile])
         tiles_dict[tile] = a
-    currentTile = tiles_dict["CelestialSentinel"]
+    currentTile = tiles_dict["Crossroads"]
     currentTile.tileMenu(currentTile, 0, p, tiles_dict)
 
 # If this file is run directly, run tileTesting()
