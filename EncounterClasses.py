@@ -428,7 +428,7 @@ class CombatEncounter(Encounter):
                         break
                     else:
                         invalidChoice(insufficientMana)
-                        continue
+                        return "Go Back"
                 # Case 2 is force bolt
                 case 2:
                     if player.mana >= 5:
@@ -439,7 +439,7 @@ class CombatEncounter(Encounter):
                         break
                     else:
                         invalidChoice(insufficientMana)
-                        continue
+                        return "Go Back"
                 # Case 3 is shield
                 case 3:
                     if player.mana >= 15:
@@ -448,34 +448,34 @@ class CombatEncounter(Encounter):
                         break
                     else:
                         invalidChoice(insufficientMana)
-                        continue
+                        return "Go Back"
                 # Case 4 is heal
                 case 4:
                     # Gets input mana from player
                     try:
                         heal = int(
-                            input("How much mana will you expend? "))
+                            input(f"How much mana will you expend? You have {Fore.LIGHTCYAN_EX}{player.mana}/{player.maxMana}{Style.RESET_ALL}: "))
                         clrscr()
                     except Exception:
                         invalidChoice("Not a valid amount of mana.")
-                        continue
+                        return "Go Back"
                     if heal <= player.mana and heal > 0:
                         player.modify_attribute("mana", -heal)
                         player.modify_attribute("health", heal * 2)
                         break
-                    elif heal <= 0:
+                    elif heal < 1:
                         invalidChoice("You can't expend less than 1 mana.")
-                        continue
+                        return "Go Back"
                     else:
                         clrscr()
                         invalidChoice(insufficientMana)
-                        continue
+                        return "Go Back"
                 # Case 5 is going back
                 case 5:
                     return "Go Back"
                 case _:
                     invalidChoice()
-                    continue
+                    return "Go Back"
 
     def end_encounter(self, player, victory):
         if victory == True:
