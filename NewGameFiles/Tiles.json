@@ -260,7 +260,7 @@
         "_image": "PeacefulClearing.png",
         "_mapCoords": [
             0,
-            2
+            3
         ],
         "_encounterTable": [
             "Plains",
@@ -331,8 +331,8 @@
         "_visited": false,
         "_image": "Crossroads.png",
         "_mapCoords": [
-            -1,
-            0
+            0,
+            -1
         ],
         "_encounterTable": [
             "River",
