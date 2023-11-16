@@ -247,18 +247,32 @@ class Tile:
 
     # Displays map with visited tiles
     def displayMap(self, tiles_dict):
+        self_x = self._mapCoords[0] + 2
+        self_y = 2 - self._mapCoords[1]
         display_map = [['' for _ in range(5)] for _ in range(5)]
+        """
+        ['','','','','']
+        ['','','','','']
+        ['','','','','']
+        ['','','','','']
+        ['','','','','']
+        """
         for tile in tiles_dict:
             tile = tiles_dict[tile]
+            tile_x = tile.mapCoords[0] + 2 
+            tile_y = 2 - tile.mapCoords[1]
+            distance_x = tile_x - self_x
+            distance_y = tile_y - self_y
+            if abs(distance_x) > 2 or abs(distance_y) > 2:
+                continue
             if tile.visited == True:
-                x = tile.mapCoords[0]
-                y = tile.mapCoords[1]
-                if abs(x + 2 - self._mapCoords[0]) > 2 or abs(-(y + 3 - self._mapCoords[1])) > 3:
-                    continue
                 if tile == self:
-                    display_map[-(y + 3 - self._mapCoords[1])][x + 2 - self._mapCoords[0]] = f'{Fore.GREEN}{tile.name}{Style.RESET_ALL}'
+                    display_map[2][2] = f'{Fore.GREEN}{tile.name}{Style.RESET_ALL}'
                 else:
-                    display_map[-(y + 3 - self._mapCoords[1])][x + 2 - self._mapCoords[0]] = tile.name
+                    display_map[2 + distance_y][2 + distance_x] = tile.name
+            else:
+                spoiler_name = f'{Fore.BLACK}■{Style.RESET_ALL}' * len(tile.name)
+                display_map[2 + distance_y][2 + distance_x] = spoiler_name
         slow_table(display_map)
         waitForKey()
 
@@ -633,8 +647,9 @@ def tileTesting():
         a = Tile(tile)
         a.reader(tiles_dict[tile])
         tiles_dict[tile] = a
-    currentTile = tiles_dict["Crossroads"]
-    currentTile.tileMenu(currentTile, 0, p, tiles_dict)
+    currentTile = tiles_dict["ThunderingRiver"]
+    #currentTile.tileMenu(currentTile, 0, p, tiles_dict)
+    currentTile.displayMap(tiles_dict)
 
 # If this file is run directly, run tileTesting()
 if __name__ == "__main__":
