@@ -29,6 +29,9 @@ def newGame():
             if len(player.name) > 25:
                 slow_table("I'm sorry, your name must be shorter than 25 characters.", tablefmt="fancy_outline")
                 continue
+            elif player.name == "":
+                slow_table("Defaulting to 'Newbie'.", tablefmt="fancy_outline")
+                player.name = "Newbie"
             break
         return player, tiles_dict, quests_dict, currentTile, encounterTables_dict
 
