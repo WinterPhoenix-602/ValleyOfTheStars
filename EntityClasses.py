@@ -693,19 +693,17 @@ class Player(Entity):
                 )
             # Displays Active quests
             active_quests = [
-                ["", "Active Quests"],
+                ["Active Quests", ""],
                 ["Name", "Description"]
             ]
             if quests_dict["active"]:
                 active_quests.extend(
-                    [f"{quest.name}:", f"{quest.description}"]
+                    [f"{quests_dict[quest].name}", f"{quests_dict[quest].description}"]
                     for quest in quests_dict["active"]
                 )
+                slow_table(active_quests, headers="firstrow", tablefmt="fancy_outline")
             else:
-                active_quests.append(
-                    ["", "You have no Active Quests"]
-                )
-            slow_table(active_quests, headers="firstrow", tablefmt="fancy_outline")
+                slow_table("You have no Active Quests")
             # Displays player options
             slow_table(
                     [
@@ -1125,13 +1123,12 @@ class Enemy(Entity):
 
 def entityTesting():
     # Testing
-    import json
-    a = Player()
-    e = Enemy("Dire Rabbit")
-    with open(mainPath + "\\SaveFiles\\NewGame.json", "r") as saveFile:
-        currentGame_dict = json.load(saveFile)
-        saveFile.close()
-    """a.openInventory()"""
+    from new_game import newGame
+    player = Player()
+    player, tiles_dict, quests_dict, currentTile, encounterTables_dict = newGame()
+    quests_dict["active"] = quests_dict["inactive"]
+    quests_dict["inactive"] = []
+    player.display_status(quests_dict)
 
 
 # If file is run directly, run testing()
