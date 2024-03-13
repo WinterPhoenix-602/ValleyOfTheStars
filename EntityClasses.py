@@ -691,19 +691,21 @@ class Player(Entity):
                 ],
                 headers="firstrow", tablefmt="fancy_outline", colalign=("right", "center")
                 )
-            """# Displays Active quests
+            # Displays Active quests
             active_quests = [
-                ["", "Active Quests"]
+                ["", "Active Quests"],
                 ["Name", "Description"]
             ]
-            active_quests.extend(
-                [f"{quest.name}:", f"{quest.description}"]
-                for quest in quests_dict["active"]
-            )
-            if len(active_quests) <= 0:
-                slow_table(["", "You have no Active Quests"], headers="firstrow", tablefmt="fancy_outline")
+            if quests_dict["active"]:
+                active_quests.extend(
+                    [f"{quest.name}:", f"{quest.description}"]
+                    for quest in quests_dict["active"]
+                )
             else:
-                slow_table(active_quests, headers="firstrow", tablefmt="fancy_outline")"""
+                active_quests.append(
+                    ["", "You have no Active Quests"]
+                )
+            slow_table(active_quests, headers="firstrow", tablefmt="fancy_outline")
             # Displays player options
             slow_table(
                     [
@@ -1129,17 +1131,6 @@ def entityTesting():
     with open(mainPath + "\\SaveFiles\\NewGame.json", "r") as saveFile:
         currentGame_dict = json.load(saveFile)
         saveFile.close()
-    player_dict = currentGame_dict["player"]
-    a.reader(player_dict)
-    """a.level_up(100, 2)"""
-    print(e)
-    e.reader(currentGame_dict["encounterTables"]
-             ["Plains"]["hostile"]["3"]["_enemies"]["Dire Rabbit"])
-    print(e)
-    e.level_up(level=2)
-    print(e)
-    e.level_up(level=3)
-    print(e)
     """a.openInventory()"""
 
 
